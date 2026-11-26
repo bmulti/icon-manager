@@ -1,0 +1,1722 @@
+source_file = cpc_icon_manager.py
+source_modified = 2026-11-20 21:12:49
+function()    first line;  -> what it calls    (where that comes from)    xN = times
+
+_deep_copy_default()    424
+    -> json.dumps    (import json)
+    -> json.loads    (import json)
+_normalize_splash_template()    358
+    -> '\n'.join    (method or call on an expression)
+    -> any    (builtin)
+    -> data.get    (local variable or parameter)
+    -> enumerate    (builtin)
+    -> incoming.get    (local variable or parameter)    x5
+    -> incoming_lines.get    (local variable or parameter)
+    -> isinstance    (builtin)    x6
+    -> json.dumps    (import json)    x4
+    -> json.loads    (import json)    x4
+    -> legacy_styles.append    (local variable or parameter)
+    -> legacy_text.append    (local variable or parameter)
+    -> len    (builtin)    x6
+    -> max    (builtin)
+    -> min    (builtin)    x2
+    -> result['line_styles'].append    (method or call on an expression)    x2
+    -> result['text'].splitlines    (method or call on an expression)
+    -> str    (builtin)    x3
+    -> str(incoming.get('name') or '').strip    (method or call on an expression)
+    -> str(incoming.get('name')).strip    (method or call on an expression)
+    -> supplied.get    (local variable or parameter)
+attach()    3665
+    -> IconManagerApp    (this file, line 458)
+load_config()    428
+    -> _deep_copy_default    (this file, line 424)
+    -> _normalize_splash_template    (this file, line 358)
+    -> CONFIG_PATH.exists    (unknown, not imported or defined here)
+    -> CONFIG_PATH.read_text    (unknown, not imported or defined here)
+    -> isinstance    (builtin)    x2
+    -> json.loads    (import json)
+    -> loaded.get    (local variable or parameter)    x4
+    -> loaded.items    (local variable or parameter)
+    -> loaded.setdefault    (local variable or parameter)    x2
+    -> old_window.get    (local variable or parameter)    x2
+main()    3669
+    -> IconManagerApp    (this file, line 458)
+    -> root.mainloop    (local variable or parameter)
+    -> tk.Tk    (import tkinter as tk)
+read_py_vars()    343
+    -> FOLDER_VAR_RE.finditer    (unknown, not imported or defined here)
+    -> match.group    (local variable or parameter)    x2
+    -> next    (builtin)
+    -> next((g for g in match.group(2, 3, 4) i…    (method or call on an expression)
+    -> Path    (from pathlib import Path)
+    -> Path(path).read_text    (method or call on an expression)
+save_config()    454
+    -> CONFIG_PATH.write_text    (unknown, not imported or defined here)
+    -> json.dumps    (import json)
+class IconManagerApp    458-3662
+    __init__()    459
+        -> bool    (builtin)    x4
+        -> int    (builtin)    x2
+        -> isinstance    (builtin)
+        -> load_config    (this file, line 428)
+        -> master.winfo_toplevel    (local variable or parameter)
+        -> self._build_ui    (this class, line 614)
+        -> self._close_startup_splash    (this class, line 603)
+        -> self._restore_tab    (this class, line 3632)
+        -> self._show_startup_splash    (this class, line 568)
+        -> self.apply_ui_choices    (this class, line 3426)
+        -> self.config_data.get    (attribute of self (inherited or set at run time))    x8
+        -> self.host_context.get    (attribute of self (inherited or set at run time))    x9
+        -> self.pack    (attribute of self (inherited or set at run time))
+        -> self.refresh_folder_files    (this class, line 1336)
+        -> self.refresh_gateway_icons    (this class, line 1929)
+        -> self.refresh_icons    (this class, line 3141)
+        -> self.window.deiconify    (attribute of self (inherited or set at run time))
+        -> self.window.geometry    (attribute of self (inherited or set at run time))
+        -> self.window.minsize    (attribute of self (inherited or set at run time))
+        -> self.window.protocol    (attribute of self (inherited or set at run time))
+        -> self.window.title    (attribute of self (inherited or set at run time))
+        -> self.window.withdraw    (attribute of self (inherited or set at run time))
+        -> str    (builtin)    x4
+        -> super().__init__    (parent class)
+        -> tk.BooleanVar    (import tkinter as tk)
+        -> tk.StringVar    (import tkinter as tk)    x5
+        -> ui_theme.apply_app_icon    (import cpc_ui_theme as ui_theme)
+    _apply_fallback_theme()    3614
+        -> self.configure    (attribute of self (inherited or set at run time))
+        -> style.configure    (local variable or parameter)    x7
+        -> style.theme_use    (local variable or parameter)
+        -> theme.lower    (local variable or parameter)
+        -> theme.lower().startswith    (method or call on an expression)
+        -> ttk.Style    (from tkinter import ttk)
+    _apply_gateway_layout()    1180
+        -> bool    (builtin)
+        -> hasattr    (builtin)
+        -> holder.columnconfigure    (local variable or parameter)    x2
+        -> holder.grid    (local variable or parameter)    x2
+        -> range    (builtin)
+        -> self.gateway_icon_detail_label.configure    (attribute of self (inherited or set at run time))    x2
+        -> self.gateway_icon_detail_label.grid    (attribute of self (inherited or set at run time))    x2
+        -> self.gateway_icon_preview_label.grid    (attribute of self (inherited or set at run time))
+        -> self.gateway_narrow_var.get    (attribute of self (inherited or set at run time))
+        -> self.gateway_preview_title.grid    (attribute of self (inherited or set at run time))
+        -> self.gateway_tree_holder.grid    (attribute of self (inherited or set at run time))    x2
+        -> split.columnconfigure    (local variable or parameter)    x2
+        -> split.rowconfigure    (local variable or parameter)    x2
+        -> widget.grid_forget    (local variable or parameter)
+    _apply_ui_choices_legacy()    3433
+        -> callable    (builtin)
+        -> func    (local variable or parameter)
+        -> getattr    (builtin)
+        -> hasattr    (builtin)    x2
+        -> int    (builtin)    x2
+        -> max    (builtin)    x3
+        -> save_config    (this file, line 454)
+        -> self._apply_fallback_theme    (this class, line 3614)
+        -> self._configure_combobox_readability    (this class, line 3563)
+        -> self._draw_process_diagram    (this class, line 3070)
+        -> self._store_window_choice_vars    (this class, line 3503)
+        -> self._update_ui_state_summary    (this class, line 3518)
+        -> self.capture_current_size    (this class, line 3485)
+        -> self.config_data.get    (attribute of self (inherited or set at run time))    x4
+        -> self.density_var.get    (attribute of self (inherited or set at run time))
+        -> self.theme_var.get    (attribute of self (inherited or set at run time))
+        -> self.window.geometry    (attribute of self (inherited or set at run time))
+        -> style.configure    (local variable or parameter)    x2
+        -> ttk.Style    (from tkinter import ttk)
+        -> {'Compact': 2, 'Normal': 5, 'Spacious':…    (method or call on an expression)
+    _assign_gateway_icon_image()    2841
+        -> '\n'.join    (method or call on an expression)
+        -> app.get    (local variable or parameter)
+        -> callable    (builtin)
+        -> cc_icons.clear_icon_cache    (import cc_icons)
+        -> getattr    (builtin)
+        -> messagebox.askyesno    (from tkinter import messagebox)
+        -> messagebox.showerror    (from tkinter import messagebox)
+        -> Path    (from pathlib import Path)
+        -> Path(result).resolve    (method or call on an expression)
+        -> path.is_file    (local variable or parameter)
+        -> path.resolve    (local variable or parameter)
+        -> RuntimeError    (builtin)
+        -> self._gateway_data_is_current    (this class, line 2173)
+        -> self._gateway_icon_destination    (this class, line 2185)
+        -> self._gateway_splash_destination    (this class, line 2331)    x2
+        -> self._make_icon_for_gateway_app    (this class, line 2747)
+        -> self._restore_gateway_assets    (this class, line 2357)    x2
+        -> self._save_gateway_icon_data    (this class, line 2801)
+        -> self._snapshot_gateway_assets    (this class, line 2344)
+        -> self._validate_gateway_icon_source    (this class, line 2158)
+        -> self.gateway_dnd_frame.set_feedback    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_drop_refused    (this class, line 2144)    x3
+        -> self.refresh_gateway_icons    (this class, line 1929)
+        -> self.refresh_icons    (this class, line 3141)
+        -> self.selected_gateway_icon_app    (this class, line 2026)
+        -> self.status_var.set    (attribute of self (inherited or set at run time))
+        -> source.resolve    (local variable or parameter)
+        -> str    (builtin)    x3
+        -> tempfile.TemporaryDirectory    (import tempfile)
+    _available_splash_font_names()    2401
+    _available_theme_names()    3533
+        -> callable    (builtin)
+        -> dict.fromkeys    (builtin)
+        -> func    (local variable or parameter)
+        -> getattr    (builtin)    x2
+        -> isinstance    (builtin)
+        -> names.extend    (local variable or parameter)    x2
+        -> names.insert    (local variable or parameter)
+        -> self.theme_var.get    (attribute of self (inherited or set at run time))
+        -> self.theme_var.get().strip    (method or call on an expression)
+        -> sorted    (builtin)
+        -> str    (builtin)    x2
+        -> values.keys    (local variable or parameter)
+    _build_config_tab()    713
+        -> action_row.grid    (local variable or parameter)
+        -> body.bind    (local variable or parameter)
+        -> body.columnconfigure    (local variable or parameter)
+        -> bool    (builtin)
+        -> canvas.bind    (local variable or parameter)
+        -> canvas.bind_all    (local variable or parameter)
+        -> canvas.configure    (local variable or parameter)
+        -> canvas.create_window    (local variable or parameter)
+        -> canvas.grid    (local variable or parameter)
+        -> canvas.yview_scroll    (local variable or parameter)
+        -> int    (builtin)
+        -> outer.columnconfigure    (local variable or parameter)
+        -> outer.pack    (local variable or parameter)
+        -> outer.rowconfigure    (local variable or parameter)
+        -> self._rebuild_splash_style_rows    (this class, line 983)
+        -> self.config_data.get    (attribute of self (inherited or set at run time))    x5
+        -> self.splash_style_frame.columnconfigure    (attribute of self (inherited or set at run time))
+        -> self.splash_style_frame.grid    (attribute of self (inherited or set at run time))
+        -> self.splash_template_text.bind    (attribute of self (inherited or set at run time))
+        -> self.splash_template_text.grid    (attribute of self (inherited or set at run time))
+        -> self.splash_template_text.insert    (attribute of self (inherited or set at run time))
+        -> splash_box.columnconfigure    (local variable or parameter)
+        -> splash_box.grid    (local variable or parameter)
+        -> str    (builtin)    x2
+        -> template.get    (local variable or parameter)
+        -> tk.BooleanVar    (import tkinter as tk)
+        -> tk.Canvas    (import tkinter as tk)
+        -> tk.StringVar    (import tkinter as tk)    x3
+        -> tk.Text    (import tkinter as tk)
+        -> top.grid    (local variable or parameter)
+        -> ttk.Button    (from tkinter import ttk)    x4
+        -> ttk.Button(action_row, text='Edit JSON'…    (method or call on an expression)
+        -> ttk.Button(action_row, text='Save Confi…    (method or call on an expression)
+        -> ttk.Button(body, text='Browse', command…    (method or call on an expression)    x2
+        -> ttk.Checkbutton    (from tkinter import ttk)
+        -> ttk.Checkbutton(action_row, text='Also …    (method or call on an expression)
+        -> ttk.Entry    (from tkinter import ttk)    x3
+        -> ttk.Entry(body, textvariable=self.gatew…    (method or call on an expression)
+        -> ttk.Entry(body, textvariable=self.icon_…    (method or call on an expression)
+        -> ttk.Entry(top, textvariable=self.splash…    (method or call on an expression)
+        -> ttk.Frame    (from tkinter import ttk)    x5
+        -> ttk.Label    (from tkinter import ttk)    x7
+        -> ttk.Label(body, text='Gateway JSON').gr…    (method or call on an expression)
+        -> ttk.Label(body, text='Shared icon direc…    (method or call on an expression)
+        -> ttk.Label(body, text=help_text, justify…    (method or call on an expression)
+        -> ttk.Label(splash_box, text='Fields: {{w…    (method or call on an expression)
+        -> ttk.Label(splash_box, text='Line styles…    (method or call on an expression)
+        -> ttk.Label(splash_box, text='Template te…    (method or call on an expression)
+        -> ttk.Label(top, text='Final splash heigh…    (method or call on an expression)
+        -> ttk.LabelFrame    (from tkinter import ttk)
+        -> ttk.Scrollbar    (from tkinter import ttk)
+        -> vscroll.grid    (local variable or parameter)
+        _config_body_changed()    729
+            -> canvas.bbox    (unknown, not imported or defined here)
+            -> canvas.configure    (unknown, not imported or defined here)
+        _config_canvas_changed()    732
+            -> canvas.itemconfigure    (unknown, not imported or defined here)
+    _build_folder_tab()    1212
+        -> build_treeview    (from cpc_treeviews import build_treeview)
+        -> child.cget    (local variable or parameter)
+        -> child.grid_configure    (local variable or parameter)
+        -> child.grid_remove    (local variable or parameter)
+        -> dnd_holder.grid    (local variable or parameter)
+        -> DnDThreeSomeFrame    (from dnd_3some import DnDThreeSomeFrame)
+        -> lower.columnconfigure    (local variable or parameter)
+        -> lower.grid    (local variable or parameter)
+        -> outer.columnconfigure    (local variable or parameter)
+        -> outer.pack    (local variable or parameter)
+        -> outer.rowconfigure    (local variable or parameter)
+        -> preview_box.grid    (local variable or parameter)
+        -> RuntimeError    (builtin)
+        -> self.config_data.get    (attribute of self (inherited or set at run time))
+        -> self.folder_dnd_frame.columnconfigure    (attribute of self (inherited or set at run time))    x3
+        -> self.folder_dnd_frame.pack    (attribute of self (inherited or set at run time))
+        -> self.folder_dnd_frame.set_feedback    (attribute of self (inherited or set at run time))
+        -> self.folder_dnd_frame.winfo_children    (attribute of self (inherited or set at run time))
+        -> self.folder_preview_label.pack    (attribute of self (inherited or set at run time))
+        -> self.folder_tree._cc_hscroll.grid    (attribute of self (inherited or set at run time))
+        -> self.folder_tree._cc_vscroll.grid    (attribute of self (inherited or set at run time))
+        -> self.folder_tree.configure    (attribute of self (inherited or set at run time))
+        -> self.folder_tree.grid    (attribute of self (inherited or set at run time))
+        -> self.refresh_folder_files    (this class, line 1336)
+        -> self.status_var.set    (attribute of self (inherited or set at run time))
+        -> str    (builtin)    x2
+        -> tk.StringVar    (import tkinter as tk)    x5
+        -> toolbar.grid    (local variable or parameter)
+        -> tree_box.columnconfigure    (local variable or parameter)
+        -> tree_box.grid    (local variable or parameter)
+        -> tree_box.rowconfigure    (local variable or parameter)
+        -> ttk.Button    (from tkinter import ttk)    x4
+        -> ttk.Button(dnd_holder, text='Select a .…    (method or call on an expression)
+        -> ttk.Button(toolbar, text='Browse Folder…    (method or call on an expression)
+        -> ttk.Button(toolbar, text='Choose PNG or…    (method or call on an expression)
+        -> ttk.Button(toolbar, text='Refresh', com…    (method or call on an expression)
+        -> ttk.Combobox    (from tkinter import ttk)
+        -> ttk.Combobox(toolbar, textvariable=self…    (method or call on an expression)
+        -> ttk.Frame    (from tkinter import ttk)    x4
+        -> ttk.Label    (from tkinter import ttk)    x6
+        -> ttk.Label(lower, textvariable=self.fold…    (method or call on an expression)
+        -> ttk.Label(outer, textvariable=self.fold…    (method or call on an expression)
+        -> ttk.Label(preview_box, textvariable=sel…    (method or call on an expression)
+        -> ttk.Label(toolbar, text='Icon crop').pa…    (method or call on an expression)
+        -> ttk.Label(toolbar, textvariable=self.fo…    (method or call on an expression)
+        -> ttk.LabelFrame    (from tkinter import ttk)    x2
+    _build_gateway_icons_tab()    1037
+        -> bool    (builtin)
+        -> build_treeview    (from cpc_treeviews import build_treeview)
+        -> child.cget    (local variable or parameter)
+        -> child.grid_configure    (local variable or parameter)
+        -> child.grid_remove    (local variable or parameter)
+        -> dnd_holder.pack    (local variable or parameter)
+        -> DnDThreeSomeFrame    (from dnd_3some import DnDThreeSomeFrame)
+        -> gateway_search.bind    (local variable or parameter)
+        -> gateway_search.pack    (local variable or parameter)
+        -> outer.pack    (local variable or parameter)
+        -> RuntimeError    (builtin)
+        -> self._apply_gateway_layout    (this class, line 1180)
+        -> self.config_data.get    (attribute of self (inherited or set at run time))    x2
+        -> self.gateway_dnd_frame.columnconfigure    (attribute of self (inherited or set at run time))    x3
+        -> self.gateway_dnd_frame.pack    (attribute of self (inherited or set at run time))
+        -> self.gateway_dnd_frame.set_feedback    (attribute of self (inherited or set at run time))
+        -> self.gateway_dnd_frame.winfo_children    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_search_var.set    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_tree.configure    (attribute of self (inherited or set at run time))
+        -> self.gateway_split.pack    (attribute of self (inherited or set at run time))
+        -> self.populate_gateway_icon_tree    (this class, line 1970)    x2
+        -> self.refresh_gateway_icons    (this class, line 1929)
+        -> self.status_var.set    (attribute of self (inherited or set at run time))
+        -> str    (builtin)
+        -> tk.BooleanVar    (import tkinter as tk)    x2
+        -> tk.StringVar    (import tkinter as tk)    x6
+        -> toolbar.pack    (local variable or parameter)
+        -> ttk.Button    (from tkinter import ttk)    x6
+        -> ttk.Button(dnd_holder, text='Select an …    (method or call on an expression)
+        -> ttk.Button(toolbar, text='Choose PNG, J…    (method or call on an expression)
+        -> ttk.Button(toolbar, text='Generate All …    (method or call on an expression)
+        -> ttk.Button(toolbar, text='Generate Sele…    (method or call on an expression)
+        -> ttk.Button(toolbar, text='Refresh Gatew…    (method or call on an expression)
+        -> ttk.Button(toolbar, text='X', width=3, …    (method or call on an expression)
+        -> ttk.Checkbutton    (from tkinter import ttk)    x2
+        -> ttk.Checkbutton(toolbar, text='Missing …    (method or call on an expression)
+        -> ttk.Checkbutton(toolbar, text='Narrow l…    (method or call on an expression)
+        -> ttk.Combobox    (from tkinter import ttk)
+        -> ttk.Combobox(toolbar, textvariable=self…    (method or call on an expression)
+        -> ttk.Entry    (from tkinter import ttk)
+        -> ttk.Frame    (from tkinter import ttk)    x5
+        -> ttk.Label    (from tkinter import ttk)    x7
+        -> ttk.Label(outer, textvariable=self.gate…    (method or call on an expression)
+        -> ttk.Label(toolbar, text='Icon crop').pa…    (method or call on an expression)
+        -> ttk.Label(toolbar, text='Search').pack    (method or call on an expression)
+        -> ttk.Label(toolbar, textvariable=self.ga…    (method or call on an expression)
+        -> ttk.LabelFrame    (from tkinter import ttk)
+    _build_gateway_tab()    1794
+        -> controller    (local variable or parameter)
+        -> getattr    (builtin)
+        -> self.gateway_host.pack    (attribute of self (inherited or set at run time))
+        -> ttk.Button    (from tkinter import ttk)
+        -> ttk.Button(self.gateway_host, text='Ope…    (method or call on an expression)
+        -> ttk.Frame    (from tkinter import ttk)
+        -> ttk.Label    (from tkinter import ttk)
+        -> ttk.Label(self.gateway_host, text='Gate…    (method or call on an expression)
+    _build_icons_tab()    652
+        -> actions.grid    (local variable or parameter)
+        -> build_treeview    (from cpc_treeviews import build_treeview)
+        -> ent.bind    (local variable or parameter)
+        -> ent.pack    (local variable or parameter)
+        -> outer.columnconfigure    (local variable or parameter)
+        -> outer.pack    (local variable or parameter)
+        -> outer.rowconfigure    (local variable or parameter)
+        -> preview.columnconfigure    (local variable or parameter)
+        -> preview.grid    (local variable or parameter)
+        -> search_row.grid    (local variable or parameter)
+        -> self.open_selected_file    (this class, line 3350)
+        -> self.populate_tree    (this class, line 3166)
+        -> self.preview_label.grid    (attribute of self (inherited or set at run time))
+        -> self.tree._cc_hscroll.grid    (attribute of self (inherited or set at run time))
+        -> self.tree._cc_vscroll.grid    (attribute of self (inherited or set at run time))
+        -> self.tree.configure    (attribute of self (inherited or set at run time))
+        -> self.tree.grid    (attribute of self (inherited or set at run time))
+        -> tk.StringVar    (import tkinter as tk)    x2
+        -> ttk.Button    (from tkinter import ttk)    x4
+        -> ttk.Button(actions, text=label, command…    (method or call on an expression)
+        -> ttk.Button(search_row, text='Clear', co…    (method or call on an expression)
+        -> ttk.Button(search_row, text='Open Folde…    (method or call on an expression)
+        -> ttk.Button(search_row, text='Refresh', …    (method or call on an expression)
+        -> ttk.Entry    (from tkinter import ttk)
+        -> ttk.Frame    (from tkinter import ttk)    x4
+        -> ttk.Label    (from tkinter import ttk)    x3
+        -> ttk.Label(preview, textvariable=self.de…    (method or call on an expression)
+        -> ttk.Label(search_row, text='Search icon…    (method or call on an expression)
+        -> ttk.LabelFrame    (from tkinter import ttk)
+        -> workspace.columnconfigure    (local variable or parameter)
+        -> workspace.grid    (local variable or parameter)
+        -> workspace.rowconfigure    (local variable or parameter)
+    _build_legacy_ui_choices_tab()    1691
+        -> '\n'.join    (method or call on an expression)
+        -> appearance.columnconfigure    (local variable or parameter)
+        -> appearance.grid    (local variable or parameter)
+        -> body.columnconfigure    (local variable or parameter)
+        -> body.pack    (local variable or parameter)
+        -> controls.grid    (local variable or parameter)
+        -> getattr    (builtin)
+        -> module_lines.append    (local variable or parameter)    x3
+        -> modules_box.grid    (local variable or parameter)
+        -> self._available_theme_names    (this class, line 3533)
+        -> self._update_ui_state_summary    (this class, line 3518)
+        -> self.capture_current_size    (this class, line 3485)
+        -> self.config_data.get    (attribute of self (inherited or set at run time))    x2
+        -> self.density_combo.grid    (attribute of self (inherited or set at run time))
+        -> self.theme_combo.grid    (attribute of self (inherited or set at run time))
+        -> state_box.grid    (local variable or parameter)
+        -> str    (builtin)    x2
+        -> tk.StringVar    (import tkinter as tk)    x4
+        -> ttk.Button    (from tkinter import ttk)    x3
+        -> ttk.Button(controls, text='Apply', comm…    (method or call on an expression)
+        -> ttk.Button(controls, text='Save', comma…    (method or call on an expression)
+        -> ttk.Button(window_box, text='Use Curren…    (method or call on an expression)
+        -> ttk.Combobox    (from tkinter import ttk)    x2
+        -> ttk.Entry    (from tkinter import ttk)    x2
+        -> ttk.Entry(window_box, textvariable=self…    (method or call on an expression)    x2
+        -> ttk.Frame    (from tkinter import ttk)    x2
+        -> ttk.Label    (from tkinter import ttk)    x13
+        -> ttk.Label(appearance, text='Changes pad…    (method or call on an expression)
+        -> ttk.Label(appearance, text='Controls th…    (method or call on an expression)
+        -> ttk.Label(appearance, text='Density').g…    (method or call on an expression)
+        -> ttk.Label(appearance, text='Theme').grid    (method or call on an expression)
+        -> ttk.Label(body, text='Combobox readabil…    (method or call on an expression)
+        -> ttk.Label(body, text='These are the app…    (method or call on an expression)
+        -> ttk.Label(body, text='UI Choices', font…    (method or call on an expression)
+        -> ttk.Label(modules_box, text='\n'.join(m…    (method or call on an expression)
+        -> ttk.Label(state_box, textvariable=self.…    (method or call on an expression)
+        -> ttk.Label(window_box, text='Saved heigh…    (method or call on an expression)
+        -> ttk.Label(window_box, text='Saved width…    (method or call on an expression)
+        -> ttk.Label(window_box, text=mode_text, j…    (method or call on an expression)
+        -> ttk.Label(window_box, textvariable=self…    (method or call on an expression)
+        -> ttk.LabelFrame    (from tkinter import ttk)    x4
+        -> window_box.columnconfigure    (local variable or parameter)
+        -> window_box.grid    (local variable or parameter)
+    _build_process_tab()    1576
+        -> box.grid    (local variable or parameter)
+        -> caller.grid    (local variable or parameter)
+        -> details.columnconfigure    (local variable or parameter)    x2
+        -> details.pack    (local variable or parameter)
+        -> diagram_frame.pack    (local variable or parameter)
+        -> enumerate    (builtin)
+        -> generated.grid    (local variable or parameter)
+        -> outer.pack    (local variable or parameter)
+        -> self._draw_process_diagram    (this class, line 3070)
+        -> self.process_canvas.bind    (attribute of self (inherited or set at run time))
+        -> self.process_canvas.pack    (attribute of self (inherited or set at run time))
+        -> stats.columnconfigure    (local variable or parameter)
+        -> stats.pack    (local variable or parameter)
+        -> tk.Canvas    (import tkinter as tk)
+        -> tk.StringVar    (import tkinter as tk)    x4
+        -> ttk.Frame    (from tkinter import ttk)    x3
+        -> ttk.Label    (from tkinter import ttk)    x6
+        -> ttk.Label(box, text=help_text, justify=…    (method or call on an expression)
+        -> ttk.Label(box, textvariable=self.proces…    (method or call on an expression)
+        -> ttk.Label(caller, text='Preferred API:\…    (method or call on an expression)
+        -> ttk.Label(generated, text='ICO internal…    (method or call on an expression)
+        -> ttk.Label(outer, text='Icon Resolution …    (method or call on an expression)
+        -> ttk.Label(outer, text='This page shows …    (method or call on an expression)
+        -> ttk.LabelFrame    (from tkinter import ttk)    x4
+    _build_splash_tab()    806
+        -> build_treeview    (from cpc_treeviews import build_treeview)
+        -> lower.add    (local variable or parameter)    x2
+        -> lower.grid    (local variable or parameter)
+        -> outer.columnconfigure    (local variable or parameter)
+        -> outer.pack    (local variable or parameter)
+        -> outer.rowconfigure    (local variable or parameter)
+        -> RuntimeError    (builtin)
+        -> self.populate_splash_tree    (this class, line 2205)    x2
+        -> self.refresh_gateway_icons    (this class, line 1929)
+        -> self.splash_preview_label.pack    (attribute of self (inherited or set at run time))
+        -> self.splash_search_var.set    (attribute of self (inherited or set at run time))
+        -> self.splash_tree._cc_hscroll.grid    (attribute of self (inherited or set at run time))
+        -> self.splash_tree._cc_vscroll.grid    (attribute of self (inherited or set at run time))
+        -> self.splash_tree.configure    (attribute of self (inherited or set at run time))
+        -> self.splash_tree.grid    (attribute of self (inherited or set at run time))
+        -> splash_search.bind    (local variable or parameter)
+        -> splash_search.pack    (local variable or parameter)
+        -> tk.StringVar    (import tkinter as tk)    x5
+        -> toolbar.grid    (local variable or parameter)
+        -> tree_box.columnconfigure    (local variable or parameter)
+        -> tree_box.grid    (local variable or parameter)
+        -> ttk.Button    (from tkinter import ttk)    x5
+        -> ttk.Button(toolbar, text='Create Select…    (method or call on an expression)
+        -> ttk.Button(toolbar, text='Preview Selec…    (method or call on an expression)
+        -> ttk.Button(toolbar, text='Refresh Gatew…    (method or call on an expression)
+        -> ttk.Button(toolbar, text='Sample', comm…    (method or call on an expression)
+        -> ttk.Button(toolbar, text='X', width=3, …    (method or call on an expression)
+        -> ttk.Entry    (from tkinter import ttk)
+        -> ttk.Frame    (from tkinter import ttk)    x4
+        -> ttk.Label    (from tkinter import ttk)    x7
+        -> ttk.Label(metadata, text='Selected Gate…    (method or call on an expression)
+        -> ttk.Label(metadata, textvariable=self.s…    (method or call on an expression)
+        -> ttk.Label(outer, textvariable=self.spla…    (method or call on an expression)
+        -> ttk.Label(preview, textvariable=self.sp…    (method or call on an expression)
+        -> ttk.Label(toolbar, text='Search').pack    (method or call on an expression)
+        -> ttk.Label(toolbar, textvariable=self.sp…    (method or call on an expression)
+        -> ttk.LabelFrame    (from tkinter import ttk)
+        -> ttk.Panedwindow    (from tkinter import ttk)
+    _build_ui()    614
+        -> self._build_config_tab    (this class, line 713)
+        -> self._build_folder_tab    (this class, line 1212)
+        -> self._build_gateway_icons_tab    (this class, line 1037)
+        -> self._build_gateway_tab    (this class, line 1794)
+        -> self._build_icons_tab    (this class, line 652)
+        -> self._build_process_tab    (this class, line 1576)
+        -> self._build_splash_tab    (this class, line 806)
+        -> self._build_ui_choices_tab    (this class, line 1653)
+        -> self.notebook.add    (attribute of self (inherited or set at run time))    x8
+        -> self.notebook.pack    (attribute of self (inherited or set at run time))
+        -> tk.StringVar    (import tkinter as tk)
+        -> ttk.Frame    (from tkinter import ttk)    x8
+        -> ttk.Label    (from tkinter import ttk)
+        -> ttk.Label(self, textvariable=self.statu…    (method or call on an expression)
+        -> ttk.Notebook    (from tkinter import ttk)
+    _build_ui_choices_tab()    1653
+        -> attach_func    (local variable or parameter)
+        -> callable    (builtin)
+        -> getattr    (builtin)
+        -> self._build_legacy_ui_choices_tab    (this class, line 1691)
+    _close_startup_splash()    603
+        -> splash.destroy    (local variable or parameter)
+    _configure_combobox_readability()    3563
+        -> option_pairs.items    (local variable or parameter)
+        -> self.config_data.get    (attribute of self (inherited or set at run time))
+        -> self.window.option_add    (attribute of self (inherited or set at run time))
+        -> str    (builtin)
+        -> style.configure    (local variable or parameter)
+        -> style.map    (local variable or parameter)
+        -> theme.lower    (local variable or parameter)
+        -> theme.lower().startswith    (method or call on an expression)
+        -> ttk.Style    (from tkinter import ttk)
+    _create_folder_assets()    1520
+        -> base.resize    (local variable or parameter)
+        -> callable    (builtin)
+        -> cc_icons.clear_icon_cache    (import cc_icons)
+        -> FileNotFoundError    (builtin)
+        -> getattr    (builtin)
+        -> ico_buffer.getvalue    (local variable or parameter)
+        -> ico_path.write_bytes    (local variable or parameter)
+        -> Image.open    (from PIL import Image)    x2
+        -> ImageOps.exif_transpose    (from PIL import ImageOps)
+        -> ImageOps.exif_transpose(opened).convert    (method or call on an expression)
+        -> int    (builtin)
+        -> io.BytesIO    (import io)    x2
+        -> max    (builtin)    x2
+        -> messagebox.showerror    (from tkinter import messagebox)
+        -> opened.verify    (local variable or parameter)
+        -> os.path.expanduser    (import os)
+        -> os.path.expandvars    (import os)
+        -> Path    (from pathlib import Path)
+        -> png_buffer.getvalue    (local variable or parameter)
+        -> py.with_name    (local variable or parameter)
+        -> py.with_suffix    (local variable or parameter)
+        -> read_py_vars    (this file, line 343)
+        -> round    (builtin)
+        -> RuntimeError    (builtin)
+        -> save_config    (this file, line 454)
+        -> self._draw_splash_text_overlay    (this class, line 2535)
+        -> self._folder_field_map    (this class, line 1410)
+        -> self._pillow_icon_from_image    (this class, line 2365)
+        -> self.config_data.get    (attribute of self (inherited or set at run time))
+        -> self.folder_dnd_frame.set_feedback    (attribute of self (inherited or set at run time))
+        -> self.folder_drop_refused    (this class, line 1511)    x2
+        -> self.refresh_folder_files    (this class, line 1336)
+        -> self.selected_folder_py    (this class, line 1328)
+        -> self.status_var.set    (attribute of self (inherited or set at run time))
+        -> source.is_file    (local variable or parameter)
+        -> source.suffix.casefold    (local variable or parameter)
+        -> splash.save    (local variable or parameter)
+        -> splash_path.write_bytes    (local variable or parameter)
+        -> str    (builtin)    x2
+        -> ValueError    (builtin)    x2
+    _current_splash_style_values()    963
+        -> bool    (builtin)    x2
+        -> enumerate    (builtin)
+        -> getattr    (builtin)
+        -> int    (builtin)
+        -> json.dumps    (import json)
+        -> json.loads    (import json)
+        -> len    (builtin)
+        -> max    (builtin)
+        -> min    (builtin)
+        -> re.fullmatch    (import re)
+        -> values.append    (local variable or parameter)
+        -> vars_for_line['background_enabled'].get    (method or call on an expression)
+        -> vars_for_line['font'].get    (method or call on an expression)
+        -> vars_for_line['font'].get().strip    (method or call on an expression)
+        -> vars_for_line['shadow_enabled'].get    (method or call on an expression)
+        -> vars_for_line['size'].get    (method or call on an expression)
+        -> vars_for_line[field].get    (method or call on an expression)
+        -> vars_for_line[field].get().strip    (method or call on an expression)
+    _draw_process_diagram()    3070
+        -> c.configure    (local variable or parameter)
+        -> c.create_line    (local variable or parameter)    x2
+        -> c.create_rectangle    (local variable or parameter)
+        -> c.create_text    (local variable or parameter)    x3
+        -> c.delete    (local variable or parameter)
+        -> c.winfo_height    (local variable or parameter)
+        -> c.winfo_width    (local variable or parameter)
+        -> card    (local variable or parameter)    x5
+        -> centers.append    (local variable or parameter)
+        -> hasattr    (builtin)
+        -> max    (builtin)    x4
+        -> min    (builtin)    x2
+        -> range    (builtin)    x2
+        -> self._theme_is_dark    (this class, line 3053)
+        -> self.theme_var.get    (attribute of self (inherited or set at run time))
+        card()    3104
+            -> c.create_rectangle    (unknown, not imported or defined here)
+            -> c.create_text    (unknown, not imported or defined here)    x2
+    _draw_splash_text_overlay()    2535
+        -> base_style.get    (local variable or parameter)    x2
+        -> base_style.update    (local variable or parameter)
+        -> blocks.append    (local variable or parameter)    x2
+        -> draw.rounded_rectangle    (local variable or parameter)
+        -> draw.text    (local variable or parameter)    x2
+        -> draw.textbbox    (local variable or parameter)
+        -> enumerate    (builtin)
+        -> image.convert    (local variable or parameter)
+        -> ImageDraw.Draw    (from PIL import ImageDraw)
+        -> int    (builtin)    x9
+        -> isinstance    (builtin)
+        -> json.dumps    (import json)
+        -> json.loads    (import json)
+        -> len    (builtin)    x3
+        -> list    (builtin)
+        -> max    (builtin)    x14
+        -> min    (builtin)
+        -> self._load_splash_font    (this class, line 2443)
+        -> self._render_splash_template_text    (this class, line 2503)
+        -> self._sync_splash_config_from_widgets    (this class, line 2410)
+        -> self._template_text_lines    (this class, line 2510)
+        -> self.config_data.get    (attribute of self (inherited or set at run time))
+        -> source_line.strip    (local variable or parameter)
+        -> str    (builtin)
+        -> style.get    (local variable or parameter)    x9
+        -> sum    (builtin)
+        -> template.get    (local variable or parameter)    x2
+        -> template_text.splitlines    (local variable or parameter)
+        -> zip    (builtin)
+    _draw_text_block()    2519
+        -> draw.text    (local variable or parameter)    x2
+        -> draw.textbbox    (local variable or parameter)
+        -> len    (builtin)
+        -> max    (builtin)
+        -> sum    (builtin)
+        -> zip    (builtin)
+    _folder_field_map()    1410
+        -> datetime.fromtimestamp    (import datetime)
+        -> datetime.fromtimestamp(py.stat().st_mti…    (method or call on an expression)
+        -> py.stat    (local variable or parameter)
+    _folder_show_preview()    1429
+        -> Image.open    (from PIL import Image)
+        -> image.thumbnail    (local variable or parameter)
+        -> ImageTk.PhotoImage    (from PIL import ImageTk)
+        -> opened.convert    (local variable or parameter)
+        -> py.with_name    (local variable or parameter)
+        -> self._draw_splash_text_overlay    (this class, line 2535)
+        -> self._folder_field_map    (this class, line 1410)
+        -> self._sample_splash_background    (this class, line 2609)
+        -> self.folder_preview_detail_var.set    (attribute of self (inherited or set at run time))    x2
+        -> self.folder_preview_label.configure    (attribute of self (inherited or set at run time))    x3
+        -> splash_path.is_file    (local variable or parameter)
+        -> str    (builtin)
+    _format_splash_metadata_time()    2452
+        -> datetime.fromtimestamp    (import datetime)
+        -> datetime.fromtimestamp(stamp).strftime    (method or call on an expression)
+        -> float    (builtin)
+        -> str    (builtin)
+        -> str(value).strip    (method or call on an expression)
+    _gateway_app_name()    1851
+        -> app.get    (local variable or parameter)    x4
+        -> Path    (from pathlib import Path)
+        -> str    (builtin)    x2
+        -> str(app.get('app_full_path') or '').str…    (method or call on an expression)
+        -> str(app.get('name') or app.get('app_nam…    (method or call on an expression)
+    _gateway_application_path()    1866
+        -> app.get    (local variable or parameter)    x2
+        -> app_path.is_absolute    (local variable or parameter)
+        -> app_path.resolve    (local variable or parameter)    x2
+        -> os.path.expanduser    (import os)    x2
+        -> os.path.expandvars    (import os)    x2
+        -> Path    (from pathlib import Path)    x2
+        -> self.gateway_json_path    (this class, line 1814)    x2
+        -> start_dir.is_absolute    (local variable or parameter)
+        -> str    (builtin)    x2
+        -> str(app.get('app_full_path') or '').str…    (method or call on an expression)
+        -> str(app.get('start_dir') or '').strip    (method or call on an expression)
+    _gateway_data_is_current()    2173
+        -> messagebox.showwarning    (from tkinter import messagebox)
+        -> self._gateway_stamp    (this class, line 1859)
+        -> self.gateway_json_path    (this class, line 1814)
+        -> self.refresh_gateway_icons    (this class, line 1929)
+    _gateway_drop_paths()    2075
+        -> event.widget.tk.splitlist    (local variable or parameter)
+        -> getattr    (builtin)
+        -> list    (builtin)
+        -> Path    (from pathlib import Path)
+        -> raw.strip    (local variable or parameter)
+        -> str    (builtin)    x2
+        -> str(getattr(event, 'data', '') or '').s…    (method or call on an expression)
+        -> str(value).strip    (method or call on an expression)
+    _gateway_icon_destination()    2185
+        -> app.get    (local variable or parameter)
+        -> app_path.is_file    (local variable or parameter)
+        -> app_path.parent.is_dir    (local variable or parameter)
+        -> app_path.with_suffix    (local variable or parameter)
+        -> FileNotFoundError    (builtin)    x2
+        -> self._gateway_application_path    (this class, line 1866)
+        -> str    (builtin)
+        -> str(app.get('app_full_path') or '').str…    (method or call on an expression)
+        -> ValueError    (builtin)    x2
+    _gateway_icon_file_name()    2153
+        -> re.sub    (import re)
+        -> re.sub('[^A-Za-z0-9_-]+', '_', name).st…    (method or call on an expression)
+        -> self._gateway_app_name    (this class, line 1851)
+    _gateway_icon_status()    1921
+        -> app.get    (local variable or parameter)
+        -> self._resolve_gateway_icon    (this class, line 1885)
+        -> str    (builtin)
+        -> str(app.get('icon') or '').strip    (method or call on an expression)
+    _gateway_modified_splash_destination()    2337
+        -> app_path.is_file    (local variable or parameter)
+        -> app_path.with_name    (local variable or parameter)
+        -> FileNotFoundError    (builtin)
+        -> self._gateway_application_path    (this class, line 1866)
+    _gateway_splash_destination()    2331
+        -> app_path.is_file    (local variable or parameter)
+        -> app_path.with_name    (local variable or parameter)
+        -> FileNotFoundError    (builtin)
+        -> self._gateway_application_path    (this class, line 1866)
+    _gateway_stamp()    1859
+        -> path.stat    (local variable or parameter)
+    _load_splash_font()    2443
+        -> ImageFont.load_default    (from PIL import ImageFont)
+        -> ImageFont.truetype    (from PIL import ImageFont)
+        -> int    (builtin)
+        -> max    (builtin)
+        -> self._splash_font_candidates    (this class, line 2421)
+    _make_icon_for_gateway_app()    2747
+        -> ''.join    (method or call on an expression)
+        -> ''.join((char for char in self._gateway…    (method or call on an expression)
+        -> callable    (builtin)
+        -> candidate.is_file    (local variable or parameter)
+        -> cc_icons.request_icon    (import cc_icons)
+        -> char.isalnum    (local variable or parameter)
+        -> destination.resolve    (local variable or parameter)
+        -> generator    (local variable or parameter)
+        -> getattr    (builtin)
+        -> Path    (from pathlib import Path)    x5
+        -> Path(result).is_file    (method or call on an expression)    x2
+        -> RuntimeError    (builtin)
+        -> self._gateway_app_name    (this class, line 1851)
+        -> self._gateway_application_path    (this class, line 1866)
+        -> self._gateway_icon_destination    (this class, line 2185)
+        -> self._gateway_splash_destination    (this class, line 2331)
+        -> self._pillow_glyph_icon    (this class, line 2722)
+        -> self._pillow_icon_from_image    (this class, line 2365)    x2
+        -> self._pillow_splash_from_image    (this class, line 2389)    x4
+        -> self._validate_gateway_icon_source    (this class, line 2158)
+        -> shutil.copy2    (import shutil)
+        -> source_path.resolve    (local variable or parameter)
+        -> source_path.suffix.casefold    (local variable or parameter)
+        -> str    (builtin)    x3
+    _on_common_ui_applied()    1685
+        -> hasattr    (builtin)
+        -> self._draw_process_diagram    (this class, line 3070)
+        -> self.density_var.get    (attribute of self (inherited or set at run time))
+        -> self.status_var.set    (attribute of self (inherited or set at run time))
+        -> self.theme_var.get    (attribute of self (inherited or set at run time))
+    _open_in_file_manager()    3339
+        -> FileNotFoundError    (builtin)
+        -> hasattr    (builtin)
+        -> os.startfile    (import os)
+        -> Path    (from pathlib import Path)
+        -> Path(path).expanduser    (method or call on an expression)
+        -> str    (builtin)    x3
+        -> subprocess.Popen    (import subprocess)    x2
+        -> target.exists    (local variable or parameter)
+    _pillow_glyph_icon()    2722
+        -> ''.join    (method or call on an expression)
+        -> ''.join((char for char in name if char.…    (method or call on an expression)
+        -> char.isalnum    (local variable or parameter)
+        -> draw.text    (local variable or parameter)
+        -> draw.textbbox    (local variable or parameter)
+        -> Image.new    (from PIL import Image)
+        -> image.save    (local variable or parameter)
+        -> ImageDraw.Draw    (from PIL import ImageDraw)
+        -> ImageFont.load_default    (from PIL import ImageFont)
+        -> ImageFont.truetype    (from PIL import ImageFont)
+        -> self._gateway_app_name    (this class, line 1851)
+    _pillow_icon_from_image()    2365
+        -> hasattr    (builtin)    x2
+        -> Image.open    (from PIL import Image)
+        -> image.save    (local variable or parameter)
+        -> ImageOps.exif_transpose    (from PIL import ImageOps)
+        -> ImageOps.exif_transpose(opened).convert    (method or call on an expression)
+        -> ImageOps.fit    (from PIL import ImageOps)
+        -> self.config_data.get    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_crop_var.get    (attribute of self (inherited or set at run time))
+    _pillow_splash_from_image()    2389
+        -> Image.open    (from PIL import Image)
+        -> image.resize    (local variable or parameter)
+        -> image.save    (local variable or parameter)
+        -> ImageOps.exif_transpose    (from PIL import ImageOps)
+        -> ImageOps.exif_transpose(opened).convert    (method or call on an expression)
+        -> max    (builtin)
+        -> round    (builtin)
+        -> ValueError    (builtin)
+    _process_folder_drop()    1496
+        -> self._create_folder_assets    (this class, line 1520)
+        -> self.folder_drop_refused    (this class, line 1511)
+    _process_gateway_icon_drop()    2129
+        -> self._assign_gateway_icon_image    (this class, line 2841)
+        -> self.gateway_icon_drop_refused    (this class, line 2144)
+    _rebuild_splash_style_rows()    983
+        -> bool    (builtin)    x2
+        -> child.destroy    (local variable or parameter)
+        -> default_style.update    (local variable or parameter)
+        -> enumerate    (builtin)
+        -> hasattr    (builtin)    x2
+        -> isinstance    (builtin)
+        -> json.dumps    (import json)
+        -> json.loads    (import json)
+        -> len    (builtin)    x3
+        -> line_box.columnconfigure    (local variable or parameter)
+        -> line_box.grid    (local variable or parameter)
+        -> list    (builtin)
+        -> min    (builtin)
+        -> self._available_splash_font_names    (this class, line 2401)
+        -> self._current_splash_style_values    (this class, line 963)
+        -> self._splash_color_editor    (this class, line 895)    x3
+        -> self._sync_splash_template_from_widgets    (this class, line 926)
+        -> self.config_data.get    (attribute of self (inherited or set at run time))
+        -> self.splash_style_frame.winfo_children    (attribute of self (inherited or set at run time))
+        -> self.splash_template_text.get    (attribute of self (inherited or set at run time))
+        -> self.splash_template_text.get('1.0', 'e…    (method or call on an expression)
+        -> self.splash_template_vars.append    (attribute of self (inherited or set at run time))
+        -> source_line.strip    (local variable or parameter)
+        -> str    (builtin)    x5
+        -> template.get    (local variable or parameter)
+        -> tk.BooleanVar    (import tkinter as tk)    x2
+        -> tk.StringVar    (import tkinter as tk)    x5
+        -> ttk.Checkbutton    (from tkinter import ttk)    x2
+        -> ttk.Checkbutton(line_box, text='BG', va…    (method or call on an expression)
+        -> ttk.Checkbutton(line_box, text='Shadow'…    (method or call on an expression)
+        -> ttk.Combobox    (from tkinter import ttk)
+        -> ttk.Combobox(line_box, textvariable=var…    (method or call on an expression)
+        -> ttk.Entry    (from tkinter import ttk)
+        -> ttk.Entry(line_box, textvariable=vars_f…    (method or call on an expression)
+        -> ttk.Frame    (from tkinter import ttk)
+        -> ttk.Label    (from tkinter import ttk)    x2
+        -> ttk.Label(line_box, text=f'{index + 1}'…    (method or call on an expression)
+        -> ttk.Label(line_box, text=preview_text, …    (method or call on an expression)
+    _record_status()    3030
+        -> bool    (builtin)
+        -> expected_pngs.issubset    (local variable or parameter)
+        -> isinstance    (builtin)
+        -> rec.get    (local variable or parameter)    x3
+    _render_modified_splash_image()    2619
+        -> FileNotFoundError    (builtin)
+        -> Image.open    (from PIL import Image)
+        -> image.resize    (local variable or parameter)
+        -> ImageOps.exif_transpose    (from PIL import ImageOps)
+        -> ImageOps.exif_transpose(opened).convert    (method or call on an expression)
+        -> int    (builtin)
+        -> max    (builtin)    x2
+        -> round    (builtin)
+        -> self._draw_splash_text_overlay    (this class, line 2535)
+        -> self._gateway_splash_destination    (this class, line 2331)
+        -> self._splash_text_content    (this class, line 2466)
+        -> self.config_data.get    (attribute of self (inherited or set at run time))
+        -> source.is_file    (local variable or parameter)
+    _render_splash_template_text()    2503
+        -> re.sub    (import re)
+        -> rendered.strip    (local variable or parameter)
+        -> str    (builtin)
+        replace_match()    2505
+            -> field_map.get    (unknown, not imported or defined here)
+            -> match.group    (local variable or parameter)
+            -> match.group(1).strip    (method or call on an expression)
+            -> str    (builtin)
+    _resolve_gateway_icon()    1885
+        -> app.get    (local variable or parameter)
+        -> app_path.with_suffix    (local variable or parameter)
+        -> candidate.is_file    (local variable or parameter)
+        -> candidates.append    (local variable or parameter)
+        -> candidates.extend    (local variable or parameter)    x2
+        -> icon_path.is_absolute    (local variable or parameter)
+        -> os.path.abspath    (import os)
+        -> os.path.expanduser    (import os)
+        -> os.path.expandvars    (import os)
+        -> os.path.normcase    (import os)
+        -> Path    (from pathlib import Path)
+        -> seen.add    (local variable or parameter)
+        -> self._gateway_application_path    (this class, line 1866)
+        -> self.gateway_json_path    (this class, line 1814)    x2
+        -> set    (builtin)
+        -> str    (builtin)    x2
+        -> str(app.get('icon') or '').strip    (method or call on an expression)
+    _restore_gateway_assets()    2357
+        -> path.is_file    (local variable or parameter)
+        -> path.unlink    (local variable or parameter)
+        -> shutil.copy2    (import shutil)
+        -> snapshots.items    (local variable or parameter)
+    _restore_tab()    3632
+        -> range    (builtin)
+        -> self.config_data.get    (attribute of self (inherited or set at run time))
+        -> self.notebook.index    (attribute of self (inherited or set at run time))
+        -> self.notebook.select    (attribute of self (inherited or set at run time))
+        -> self.notebook.tab    (attribute of self (inherited or set at run time))
+    _sample_splash_background()    2609
+        -> draw.line    (local variable or parameter)
+        -> draw.rectangle    (local variable or parameter)    x2
+        -> draw.rounded_rectangle    (local variable or parameter)    x2
+        -> Image.new    (from PIL import Image)
+        -> ImageDraw.Draw    (from PIL import ImageDraw)
+        -> int    (builtin)    x2
+    _save_gateway_icon_data()    2801
+        -> json.dump    (import json)
+        -> messagebox.showerror    (from tkinter import messagebox)
+        -> messagebox.showwarning    (from tkinter import messagebox)
+        -> os.fsync    (import os)
+        -> os.getpid    (import os)
+        -> os.replace    (import os)
+        -> output.fileno    (local variable or parameter)
+        -> output.flush    (local variable or parameter)
+        -> output.write    (local variable or parameter)
+        -> path.parent.mkdir    (local variable or parameter)
+        -> path.with_name    (local variable or parameter)
+        -> self._gateway_stamp    (this class, line 1859)    x2
+        -> self.gateway_json_path    (this class, line 1814)
+        -> self.refresh_gateway_icons    (this class, line 1929)
+        -> temporary.is_file    (local variable or parameter)
+        -> temporary.open    (local variable or parameter)
+        -> temporary.unlink    (local variable or parameter)
+    _select_name()    3323
+        -> name.lower    (local variable or parameter)
+        -> self.show_selected_preview    (this class, line 3190)
+        -> self.tree.exists    (attribute of self (inherited or set at run time))
+        -> self.tree.focus    (attribute of self (inherited or set at run time))
+        -> self.tree.see    (attribute of self (inherited or set at run time))
+        -> self.tree.selection_set    (attribute of self (inherited or set at run time))
+    _show_splash_preview()    2659
+        -> image.copy    (local variable or parameter)
+        -> ImageTk.PhotoImage    (from PIL import ImageTk)
+        -> preview.thumbnail    (local variable or parameter)
+        -> self._draw_splash_text_overlay    (this class, line 2535)
+        -> self._sample_splash_background    (this class, line 2609)
+        -> self.splash_preview_detail_var.set    (attribute of self (inherited or set at run time))    x2
+        -> self.splash_preview_label.configure    (attribute of self (inherited or set at run time))    x2
+    _show_startup_splash()    568
+        -> Image.open    (from PIL import Image)
+        -> ImageOps.exif_transpose    (from PIL import ImageOps)
+        -> ImageOps.exif_transpose(opened).convert    (method or call on an expression)
+        -> ImageTk.PhotoImage    (from PIL import ImageTk)
+        -> max    (builtin)    x2
+        -> self._startup_splash_path    (this class, line 557)
+        -> splash.attributes    (local variable or parameter)
+        -> splash.deiconify    (local variable or parameter)
+        -> splash.geometry    (local variable or parameter)
+        -> splash.lift    (local variable or parameter)
+        -> splash.overrideredirect    (local variable or parameter)
+        -> splash.update    (local variable or parameter)
+        -> splash.update_idletasks    (local variable or parameter)
+        -> splash.winfo_screenheight    (local variable or parameter)
+        -> splash.winfo_screenwidth    (local variable or parameter)
+        -> splash.withdraw    (local variable or parameter)
+        -> tk.Toplevel    (import tkinter as tk)
+        -> ttk.Label    (from tkinter import ttk)
+        -> ttk.Label(splash, image=self.startup_sp…    (method or call on an expression)
+    _snapshot_gateway_assets()    2344
+        -> enumerate    (builtin)
+        -> Path    (from pathlib import Path)    x2
+        -> path.is_file    (local variable or parameter)
+        -> shutil.copy2    (import shutil)
+    _splash_color_editor()    895
+        -> holder.grid    (local variable or parameter)
+        -> self.choose_splash_template_color    (this class, line 905)
+        -> ttk.Button    (from tkinter import ttk)
+        -> ttk.Button(holder, text='...', width=3,…    (method or call on an expression)
+        -> ttk.Entry    (from tkinter import ttk)
+        -> ttk.Entry(holder, textvariable=var, wid…    (method or call on an expression)
+        -> ttk.Frame    (from tkinter import ttk)
+    _splash_font_candidates()    2421
+        -> candidates.append    (local variable or parameter)    x2
+        -> mapped.get    (local variable or parameter)
+        -> os.path.isabs    (import os)
+        -> os.path.join    (import os)
+        -> str    (builtin)    x3
+        -> str(font_name or '').strip    (method or call on an expression)
+    _splash_message_value()    2408
+    _splash_template_text_changed()    960
+        -> self._rebuild_splash_style_rows    (this class, line 983)
+    _splash_text_content()    2466
+        -> app.get    (local variable or parameter)    x8
+        -> Path    (from pathlib import Path)
+        -> self._format_splash_metadata_time    (this class, line 2452)
+        -> self._gateway_app_name    (this class, line 1851)    x3
+        -> self._gateway_application_path    (this class, line 1866)
+        -> self._sync_splash_config_from_widgets    (this class, line 2410)
+        -> str    (builtin)    x7
+        -> str(app.get('app_name') or self._gatewa…    (method or call on an expression)
+        -> str(app.get('desc') or '').strip    (method or call on an expression)
+        -> str(app.get('metadata_checked_at') or '…    (method or call on an expression)
+        -> str(app.get('project') or '').strip    (method or call on an expression)
+        -> str(app.get('purpose_note') or '').strip    (method or call on an expression)
+        -> str(app.get('version') or '').strip    (method or call on an expression)
+        -> str(app.get('window_title') or app_name…    (method or call on an expression)
+    _splash_version_source()    2198
+        -> app.get    (local variable or parameter)    x3
+        -> self._format_splash_metadata_time    (this class, line 2452)
+        -> str    (builtin)    x2
+        -> str(app.get('metadata_checked_at') or '…    (method or call on an expression)
+        -> str(app.get('version') or '').strip    (method or call on an expression)
+    _startup_splash_path()    557
+        -> app_path.with_name    (local variable or parameter)    x2
+        -> edited.is_file    (local variable or parameter)
+        -> original.is_file    (local variable or parameter)
+        -> Path    (from pathlib import Path)
+        -> Path(__file__).resolve    (method or call on an expression)
+    _store_window_choice_vars()    3503
+        -> controller.capture_into_config    (local variable or parameter)
+        -> getattr    (builtin)
+        -> hasattr    (builtin)
+        -> int    (builtin)    x2
+        -> max    (builtin)    x2
+        -> self.config_data.get    (attribute of self (inherited or set at run time))    x2
+        -> self.window_height_var.get    (attribute of self (inherited or set at run time))
+        -> self.window_height_var.set    (attribute of self (inherited or set at run time))
+        -> self.window_width_var.get    (attribute of self (inherited or set at run time))
+        -> self.window_width_var.set    (attribute of self (inherited or set at run time))
+        -> str    (builtin)    x2
+    _sync_splash_config_from_widgets()    2410
+        -> hasattr    (builtin)
+        -> int    (builtin)    x2
+        -> max    (builtin)
+        -> self._sync_splash_template_from_widgets    (this class, line 926)
+        -> self.config_data.get    (attribute of self (inherited or set at run time))
+        -> self.splash_output_height_var.get    (attribute of self (inherited or set at run time))
+        -> self.splash_output_height_var.set    (attribute of self (inherited or set at run time))
+        -> str    (builtin)
+    _sync_splash_template_from_widgets()    926
+        -> (self.config_data.get('splash_template'…    (method or call on an expression)
+        -> _normalize_splash_template    (this file, line 358)
+        -> bool    (builtin)    x2
+        -> hasattr    (builtin)
+        -> int    (builtin)
+        -> json.dumps    (import json)
+        -> json.loads    (import json)
+        -> len    (builtin)    x3
+        -> max    (builtin)
+        -> min    (builtin)
+        -> range    (builtin)
+        -> re.fullmatch    (import re)
+        -> self.config_data.get    (attribute of self (inherited or set at run time))
+        -> self.splash_template_text.get    (attribute of self (inherited or set at run time))
+        -> str    (builtin)    x2
+        -> template['line_styles'].append    (method or call on an expression)
+        -> template_text.splitlines    (local variable or parameter)
+        -> vars_for_line['background_enabled'].get    (method or call on an expression)
+        -> vars_for_line['font'].get    (method or call on an expression)
+        -> vars_for_line['font'].get().strip    (method or call on an expression)
+        -> vars_for_line['shadow_enabled'].get    (method or call on an expression)
+        -> vars_for_line['size'].get    (method or call on an expression)
+        -> vars_for_line['size'].set    (method or call on an expression)
+        -> vars_for_line[field].get    (method or call on an expression)
+        -> vars_for_line[field].get().strip    (method or call on an expression)
+        -> vars_for_line[field].set    (method or call on an expression)
+    _template_text_lines()    2510
+        -> max    (builtin)
+        -> output.extend    (local variable or parameter)
+        -> piece.strip    (local variable or parameter)    x2
+        -> raw_line.strip    (local variable or parameter)
+        -> str    (builtin)
+        -> str(rendered_text or '').splitlines    (method or call on an expression)
+        -> textwrap.wrap    (import textwrap)
+    _theme_is_dark()    3053
+        -> callable    (builtin)
+        -> getattr    (builtin)
+        -> name.startswith    (local variable or parameter)
+        -> palette_func    (local variable or parameter)
+        -> palette_func(theme_name).get    (method or call on an expression)
+        -> self.window.winfo_rgb    (attribute of self (inherited or set at run time))
+        -> str    (builtin)    x2
+        -> str(theme_name or '').lower    (method or call on an expression)
+    _update_process_dashboard()    3044
+        -> hasattr    (builtin)
+        -> len    (builtin)
+        -> self._record_status    (this class, line 3030)
+        -> self.process_stat_vars['complete'].set    (method or call on an expression)
+        -> self.process_stat_vars['missing_ico'].s…    (method or call on an expression)
+        -> self.process_stat_vars['partial'].set    (method or call on an expression)
+        -> self.process_stat_vars['sets'].set    (method or call on an expression)
+        -> str    (builtin)    x4
+        -> sum    (builtin)    x3
+    _update_ui_state_summary()    3518
+        -> 'Last top-level tab: {tab}\nSaved recor…    (method or call on an expression)
+        -> controller.refresh_state_summary    (local variable or parameter)
+        -> getattr    (builtin)
+        -> hasattr    (builtin)
+        -> self.config_data.get    (attribute of self (inherited or set at run time))    x3
+        -> self.ui_state_summary_var.set    (attribute of self (inherited or set at run time))
+    _validate_gateway_icon_source()    2158
+        -> FileNotFoundError    (builtin)
+        -> Image.open    (from PIL import Image)
+        -> opened.verify    (local variable or parameter)
+        -> os.path.expanduser    (import os)
+        -> os.path.expandvars    (import os)
+        -> Path    (from pathlib import Path)
+        -> RuntimeError    (builtin)
+        -> source_path.is_file    (local variable or parameter)
+        -> source_path.suffix.casefold    (local variable or parameter)
+        -> str    (builtin)
+        -> ValueError    (builtin)    x2
+    _wrap_splash_text()    2461
+        -> line.strip    (local variable or parameter)    x2
+        -> str    (builtin)
+        -> str(text_value or '').strip    (method or call on an expression)
+        -> textwrap.wrap    (import textwrap)
+    apply_ui_choices()    3426
+        -> controller.apply    (local variable or parameter)
+        -> getattr    (builtin)
+        -> self._apply_ui_choices_legacy    (this class, line 3433)
+    browse_folder()    1316
+        -> filedialog.askdirectory    (from tkinter import filedialog)
+        -> Path    (from pathlib import Path)
+        -> Path(start).is_dir    (method or call on an expression)
+        -> Path.home    (from pathlib import Path)
+        -> save_config    (this file, line 454)
+        -> self.folder_dir_var.get    (attribute of self (inherited or set at run time))
+        -> self.folder_dir_var.get().strip    (method or call on an expression)
+        -> self.folder_dir_var.set    (attribute of self (inherited or set at run time))
+        -> self.refresh_folder_files    (this class, line 1336)
+        -> str    (builtin)
+    capture_current_size()    3485
+        -> hasattr    (builtin)    x3
+        -> int    (builtin)    x2
+        -> self._update_ui_state_summary    (this class, line 3518)
+        -> self.current_size_var.set    (attribute of self (inherited or set at run time))
+        -> self.window.update_idletasks    (attribute of self (inherited or set at run time))
+        -> self.window.winfo_height    (attribute of self (inherited or set at run time))
+        -> self.window.winfo_width    (attribute of self (inherited or set at run time))
+        -> self.window_height_var.set    (attribute of self (inherited or set at run time))
+        -> self.window_width_var.set    (attribute of self (inherited or set at run time))
+        -> str    (builtin)    x2
+    choose_folder_image()    1453
+        -> filedialog.askopenfilename    (from tkinter import filedialog)
+        -> messagebox.showinfo    (from tkinter import messagebox)
+        -> Path    (from pathlib import Path)    x2
+        -> self._create_folder_assets    (this class, line 1520)
+        -> self.config_data.get    (attribute of self (inherited or set at run time))
+        -> self.selected_folder_py    (this class, line 1328)
+        -> str    (builtin)    x2
+    choose_gateway_icon_image()    2083
+        -> filedialog.askopenfilename    (from tkinter import filedialog)
+        -> messagebox.showinfo    (from tkinter import messagebox)
+        -> Path    (from pathlib import Path)    x2
+        -> Path.home    (from pathlib import Path)
+        -> self._assign_gateway_icon_image    (this class, line 2841)
+        -> self._gateway_app_name    (this class, line 1851)
+        -> self.config_data.get    (attribute of self (inherited or set at run time))
+        -> self.selected_gateway_icon_app    (this class, line 2026)
+        -> str    (builtin)    x2
+    choose_gateway_json()    3373
+        -> filedialog.askopenfilename    (from tkinter import filedialog)
+        -> self.gateway_json_var.set    (attribute of self (inherited or set at run time))
+        -> self.refresh_gateway_icons    (this class, line 1929)
+    choose_icon_dir()    3368
+        -> filedialog.askdirectory    (from tkinter import filedialog)
+        -> Path.home    (from pathlib import Path)
+        -> self.icon_dir_var.get    (attribute of self (inherited or set at run time))
+        -> self.icon_dir_var.set    (attribute of self (inherited or set at run time))
+        -> str    (builtin)
+    choose_splash_template_color()    905
+        -> colorchooser.askcolor    (from tkinter import colorchooser)
+        -> getattr    (builtin)
+        -> self._sync_splash_template_from_widgets    (this class, line 926)
+        -> self.preview_selected_gateway_splash    (this class, line 2688)
+        -> var.get    (local variable or parameter)
+        -> var.set    (local variable or parameter)
+    clear_search()    3221
+        -> self.populate_tree    (this class, line 3166)
+        -> self.search_var.set    (attribute of self (inherited or set at run time))
+    copy_selected_path()    3331
+        -> self.clipboard_append    (attribute of self (inherited or set at run time))
+        -> self.clipboard_clear    (attribute of self (inherited or set at run time))
+        -> self.selected_record    (this class, line 3183)
+        -> self.status_var.set    (attribute of self (inherited or set at run time))
+    delete_selected()    3305
+        -> '\n'.join    (method or call on an expression)
+        -> cc_icons.clear_icon_cache    (import cc_icons)
+        -> failures.append    (local variable or parameter)
+        -> messagebox.askyesno    (from tkinter import messagebox)
+        -> messagebox.showwarning    (from tkinter import messagebox)
+        -> os.remove    (import os)
+        -> self.refresh_icons    (this class, line 3141)
+        -> self.selected_record    (this class, line 3183)
+    edit_config_json()    3411
+        -> os.startfile    (import os)
+        -> save_config    (this file, line 454)
+        -> str    (builtin)    x2
+        -> subprocess.Popen    (import subprocess)
+    folder_drop_refused()    1511
+        -> len    (builtin)
+        -> self.folder_dnd_frame.set_feedback    (attribute of self (inherited or set at run time))
+        -> self.status_var.set    (attribute of self (inherited or set at run time))
+        -> str    (builtin)
+    folder_image_dropped()    1469
+        -> len    (builtin)
+        -> self._gateway_drop_paths    (this class, line 2075)
+        -> self.after_idle    (attribute of self (inherited or set at run time))
+        -> self.folder_dnd_frame.set_feedback    (attribute of self (inherited or set at run time))
+        -> self.folder_drop_refused    (this class, line 1511)    x5
+        -> self.selected_folder_py    (this class, line 1328)
+        -> source.is_file    (local variable or parameter)
+        -> source.suffix.casefold    (local variable or parameter)
+    folder_link_refused()    1507
+        -> self.folder_drop_refused    (this class, line 1511)
+    folder_tree_selected()    1393
+        -> read_py_vars    (this file, line 343)
+        -> self._folder_show_preview    (this class, line 1429)
+        -> self.folder_dnd_frame.set_feedback    (attribute of self (inherited or set at run time))
+        -> self.folder_dnd_frame.set_identity    (attribute of self (inherited or set at run time))
+        -> self.folder_meta_var.set    (attribute of self (inherited or set at run time))
+        -> self.selected_folder_py    (this class, line 1328)
+    folder_url_refused()    1504
+        -> self.folder_drop_refused    (this class, line 1511)
+    gateway_icon_drop_refused()    2144
+        -> len    (builtin)
+        -> self.gateway_dnd_frame.set_feedback    (attribute of self (inherited or set at run time))
+        -> self.status_var.set    (attribute of self (inherited or set at run time))
+        -> str    (builtin)
+    gateway_icon_image_dropped()    2099
+        -> len    (builtin)
+        -> self._gateway_drop_paths    (this class, line 2075)
+        -> self.after_idle    (attribute of self (inherited or set at run time))
+        -> self.gateway_dnd_frame.set_feedback    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_drop_refused    (this class, line 2144)    x5
+        -> self.selected_gateway_icon_app    (this class, line 2026)
+        -> source.is_file    (local variable or parameter)
+        -> source.suffix.casefold    (local variable or parameter)
+    gateway_icon_link_refused()    2140
+        -> self.gateway_icon_drop_refused    (this class, line 2144)
+    gateway_icon_selected()    2037
+        -> app.get    (local variable or parameter)    x3
+        -> app_target.is_file    (local variable or parameter)
+        -> Image.open    (from PIL import Image)
+        -> image.thumbnail    (local variable or parameter)
+        -> ImageTk.PhotoImage    (from PIL import ImageTk)
+        -> self._gateway_app_name    (this class, line 1851)
+        -> self._gateway_application_path    (this class, line 1866)
+        -> self._gateway_icon_status    (this class, line 1921)
+        -> self.gateway_dnd_frame.set_feedback    (attribute of self (inherited or set at run time))    x2
+        -> self.gateway_dnd_frame.set_identity    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_detail_var.set    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_preview_label.configure    (attribute of self (inherited or set at run time))    x2
+        -> self.selected_gateway_icon_app    (this class, line 2026)
+        -> source.convert    (local variable or parameter)
+        -> str    (builtin)    x3
+        -> str(app.get('app_full_path') or '').str…    (method or call on an expression)
+        -> str(app.get('icon') or '').strip    (method or call on an expression)
+        -> str(app.get('project') or '').strip    (method or call on an expression)
+    gateway_icon_url_refused()    2137
+        -> self.gateway_icon_drop_refused    (this class, line 2144)
+    gateway_json_path()    1814
+        -> candidate.is_file    (local variable or parameter)
+        -> config_locations.insert    (local variable or parameter)
+        -> config_path.read_text    (local variable or parameter)
+        -> controller_path.is_file    (local variable or parameter)
+        -> discovered.is_absolute    (local variable or parameter)
+        -> discovered.is_file    (local variable or parameter)
+        -> getattr    (builtin)    x3
+        -> json.loads    (import json)
+        -> loaded.get    (local variable or parameter)
+        -> os.path.expanduser    (import os)    x2
+        -> os.path.expandvars    (import os)    x2
+        -> Path    (from pathlib import Path)    x4
+        -> Path(module_file).resolve    (method or call on an expression)
+        -> self.gateway_json_var.get    (attribute of self (inherited or set at run time))
+        -> self.gateway_json_var.get().strip    (method or call on an expression)
+        -> self.gateway_json_var.set    (attribute of self (inherited or set at run time))    x2
+        -> str    (builtin)    x3
+        -> str(loaded.get('gateway_file') or '').s…    (method or call on an expression)
+    generate_all_missing_gateway_icons()    2949
+        -> '\n'.join    (method or call on an expression)
+        -> enumerate    (builtin)
+        -> failures.append    (local variable or parameter)
+        -> len    (builtin)    x2
+        -> messagebox.askyesno    (from tkinter import messagebox)
+        -> messagebox.showinfo    (from tkinter import messagebox)
+        -> messagebox.showwarning    (from tkinter import messagebox)    x2
+        -> Path    (from pathlib import Path)
+        -> Path(result).resolve    (method or call on an expression)
+        -> RuntimeError    (builtin)
+        -> self._gateway_app_name    (this class, line 1851)
+        -> self._gateway_icon_status    (this class, line 1921)
+        -> self._gateway_stamp    (this class, line 1859)
+        -> self._make_icon_for_gateway_app    (this class, line 2747)
+        -> self._save_gateway_icon_data    (this class, line 2801)
+        -> self.gateway_json_path    (this class, line 1814)
+        -> self.refresh_gateway_icons    (this class, line 1929)    x2
+        -> self.refresh_icons    (this class, line 3141)
+        -> self.status_var.set    (attribute of self (inherited or set at run time))
+        -> str    (builtin)
+    generate_from_source()    3225
+        -> cc_icons.request_icon    (import cc_icons)
+        -> filedialog.askopenfilename    (from tkinter import filedialog)
+        -> messagebox.showerror    (from tkinter import messagebox)    x2
+        -> Path    (from pathlib import Path)    x2
+        -> Path.home    (from pathlib import Path)
+        -> self._select_name    (this class, line 3323)
+        -> self.config_data.get    (attribute of self (inherited or set at run time))
+        -> self.copy_local_var.get    (attribute of self (inherited or set at run time))
+        -> self.refresh_icons    (this class, line 3141)
+        -> self.status_var.set    (attribute of self (inherited or set at run time))
+        -> str    (builtin)    x3
+    generate_glyph_dialog()    3244
+        -> ''.join    (method or call on an expression)
+        -> ''.join((c for c in clean if c.isalnum(…    (method or call on an expression)
+        -> c.isalnum    (local variable or parameter)
+        -> cc_icons.generate_glyph_icon    (import cc_icons)
+        -> clean.lower    (local variable or parameter)
+        -> colorchooser.askcolor    (from tkinter import colorchooser)    x2
+        -> getattr    (builtin)
+        -> getattr(cc_icons, 'GLYPH_ICON_RECIPES',…    (method or call on an expression)
+        -> messagebox.showerror    (from tkinter import messagebox)    x2
+        -> name.strip    (local variable or parameter)
+        -> self._select_name    (this class, line 3323)
+        -> self.refresh_icons    (this class, line 3141)
+        -> self.status_var.set    (attribute of self (inherited or set at run time))
+        -> simpledialog.askstring    (from tkinter import simpledialog)    x2
+        -> str    (builtin)
+        -> tuple    (builtin)    x2
+    generate_recipe_set()    3276
+        -> cc_icons.generate_recipe_set    (import cc_icons)
+        -> getattr    (builtin)
+        -> len    (builtin)    x2
+        -> messagebox.askyesno    (from tkinter import messagebox)
+        -> messagebox.showerror    (from tkinter import messagebox)
+        -> messagebox.showinfo    (from tkinter import messagebox)
+        -> results.values    (local variable or parameter)
+        -> self.refresh_icons    (this class, line 3141)
+        -> self.status_var.set    (attribute of self (inherited or set at run time))
+        -> str    (builtin)
+        -> sum    (builtin)
+    generate_selected_gateway_icon()    2902
+        -> '\n'.join    (method or call on an expression)
+        -> app.get    (local variable or parameter)
+        -> messagebox.askyesno    (from tkinter import messagebox)
+        -> messagebox.showerror    (from tkinter import messagebox)
+        -> messagebox.showinfo    (from tkinter import messagebox)
+        -> Path    (from pathlib import Path)
+        -> Path(result).resolve    (method or call on an expression)
+        -> path.is_file    (local variable or parameter)
+        -> RuntimeError    (builtin)
+        -> self._gateway_data_is_current    (this class, line 2173)
+        -> self._gateway_icon_destination    (this class, line 2185)
+        -> self._gateway_splash_destination    (this class, line 2331)    x2
+        -> self._make_icon_for_gateway_app    (this class, line 2747)
+        -> self._restore_gateway_assets    (this class, line 2357)    x2
+        -> self._save_gateway_icon_data    (this class, line 2801)
+        -> self._snapshot_gateway_assets    (this class, line 2344)
+        -> self.refresh_gateway_icons    (this class, line 1929)
+        -> self.refresh_icons    (this class, line 3141)
+        -> self.selected_gateway_icon_app    (this class, line 2026)
+        -> self.status_var.set    (attribute of self (inherited or set at run time))
+        -> str    (builtin)    x3
+        -> tempfile.TemporaryDirectory    (import tempfile)
+    get_selected_gateway_app()    2325
+        -> self.selected_gateway_icon_app    (this class, line 2026)
+        -> self.selected_splash_app    (this class, line 2283)
+    icon_dir()    2996
+        -> os.path.expanduser    (import os)
+        -> os.path.expandvars    (import os)
+        -> Path    (from pathlib import Path)
+        -> self.icon_dir_var.get    (attribute of self (inherited or set at run time))
+        -> self.icon_dir_var.get().strip    (method or call on an expression)
+    on_close()    3659
+        -> self.shutdown    (this class, line 3639)
+        -> self.window.destroy    (attribute of self (inherited or set at run time))
+    open_gateway_json()    3418
+        -> messagebox.showerror    (from tkinter import messagebox)
+        -> os.path.expandvars    (import os)
+        -> os.startfile    (import os)
+        -> Path    (from pathlib import Path)
+        -> self.gateway_json_var.get    (attribute of self (inherited or set at run time))
+        -> str    (builtin)    x2
+    open_icon_folder()    3358
+        -> folder.mkdir    (local variable or parameter)
+        -> messagebox.showerror    (from tkinter import messagebox)
+        -> self._open_in_file_manager    (this class, line 3339)
+        -> self.status_var.set    (attribute of self (inherited or set at run time))
+        -> str    (builtin)
+    open_selected_file()    3350
+        -> messagebox.showerror    (from tkinter import messagebox)
+        -> self._open_in_file_manager    (this class, line 3339)
+        -> self.selected_record    (this class, line 3183)
+        -> str    (builtin)
+    populate_gateway_icon_tree()    1970
+        -> ' '.join    (method or call on an expression)
+        -> ' '.join((name, project, status, raw_ic…    (method or call on an expression)
+        -> app.get    (local variable or parameter)    x3
+        -> enumerate    (builtin)
+        -> hasattr    (builtin)
+        -> insert_row    (from cpc_treeviews import insert_row)
+        -> len    (builtin)
+        -> self._gateway_app_name    (this class, line 1851)
+        -> self._gateway_icon_status    (this class, line 1921)
+        -> self.gateway_dnd_frame.set_feedback    (attribute of self (inherited or set at run time))
+        -> self.gateway_dnd_frame.set_identity    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_detail_var.set    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_preview_label.configure    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_rows.clear    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_search_var.get    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_search_var.get().strip    (method or call on an expression)
+        -> self.gateway_icon_search_var.get().stri…    (method or call on an expression)
+        -> self.gateway_icon_selected    (this class, line 2037)
+        -> self.gateway_icon_summary_var.set    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_tree.delete    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_tree.exists    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_tree.focus    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_tree.get_children    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_tree.see    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_tree.selection_set    (attribute of self (inherited or set at run time))
+        -> self.gateway_missing_only_var.get    (attribute of self (inherited or set at run time))
+        -> self.selected_gateway_icon_app    (this class, line 2026)
+        -> status.casefold    (local variable or parameter)
+        -> status.casefold().replace    (method or call on an expression)
+        -> str    (builtin)    x4
+        -> str(app.get('app_full_path') or '').str…    (method or call on an expression)
+        -> str(app.get('icon') or '').strip    (method or call on an expression)
+        -> str(app.get('project') or '').strip    (method or call on an expression)
+    populate_splash_tree()    2205
+        -> ' '.join    (method or call on an expression)
+        -> ' '.join((name, window_title, version_s…    (method or call on an expression)
+        -> app.get    (local variable or parameter)    x4
+        -> enumerate    (builtin)
+        -> hasattr    (builtin)    x2
+        -> insert_row    (from cpc_treeviews import insert_row)
+        -> len    (builtin)
+        -> modified.is_file    (local variable or parameter)
+        -> original.is_file    (local variable or parameter)
+        -> self._gateway_app_name    (this class, line 1851)
+        -> self._gateway_modified_splash_destination    (this class, line 2337)
+        -> self._gateway_splash_destination    (this class, line 2331)
+        -> self._splash_version_source    (this class, line 2198)
+        -> self.gateway_json_path    (this class, line 1814)
+        -> self.selected_splash_app    (this class, line 2283)
+        -> self.splash_gateway_path_var.set    (attribute of self (inherited or set at run time))
+        -> self.splash_metadata_var.set    (attribute of self (inherited or set at run time))
+        -> self.splash_preview_detail_var.set    (attribute of self (inherited or set at run time))
+        -> self.splash_preview_label.configure    (attribute of self (inherited or set at run time))
+        -> self.splash_rows.clear    (attribute of self (inherited or set at run time))
+        -> self.splash_search_var.get    (attribute of self (inherited or set at run time))
+        -> self.splash_search_var.get().strip    (method or call on an expression)
+        -> self.splash_search_var.get().strip().ca…    (method or call on an expression)
+        -> self.splash_summary_var.set    (attribute of self (inherited or set at run time))
+        -> self.splash_tree.delete    (attribute of self (inherited or set at run time))
+        -> self.splash_tree.exists    (attribute of self (inherited or set at run time))
+        -> self.splash_tree.focus    (attribute of self (inherited or set at run time))
+        -> self.splash_tree.get_children    (attribute of self (inherited or set at run time))
+        -> self.splash_tree.see    (attribute of self (inherited or set at run time))
+        -> self.splash_tree.selection_set    (attribute of self (inherited or set at run time))
+        -> self.splash_tree_selected    (this class, line 2295)
+        -> str    (builtin)    x4
+        -> str(app.get('purpose_note') or '').strip    (method or call on an expression)
+        -> str(app.get('window_title') or '').strip    (method or call on an expression)
+    populate_tree()    3166
+        -> ', '.join    (method or call on an expression)
+        -> datetime.datetime.fromtimestamp    (import datetime)
+        -> datetime.datetime.fromtimestamp(rec['up…    (method or call on an expression)
+        -> hasattr    (builtin)
+        -> insert_row    (from cpc_treeviews import insert_row)
+        -> rec['name'].lower    (method or call on an expression)    x2
+        -> rec['path'].lower    (method or call on an expression)
+        -> self._record_status    (this class, line 3030)
+        -> self.search_var.get    (attribute of self (inherited or set at run time))
+        -> self.search_var.get().strip    (method or call on an expression)
+        -> self.search_var.get().strip().lower    (method or call on an expression)
+        -> self.tree.delete    (attribute of self (inherited or set at run time))
+        -> self.tree.get_children    (attribute of self (inherited or set at run time))
+        -> str    (builtin)
+    preview_sample_splash()    2672
+        -> self._show_splash_preview    (this class, line 2659)
+        -> self._sync_splash_config_from_widgets    (this class, line 2410)
+        -> self.status_var.set    (attribute of self (inherited or set at run time))
+    preview_selected_gateway_splash()    2688
+        -> image.copy    (local variable or parameter)
+        -> ImageTk.PhotoImage    (from PIL import ImageTk)
+        -> original.is_file    (local variable or parameter)
+        -> preview.thumbnail    (local variable or parameter)
+        -> self._gateway_modified_splash_destination    (this class, line 2337)
+        -> self._gateway_splash_destination    (this class, line 2331)
+        -> self._render_modified_splash_image    (this class, line 2619)
+        -> self._sync_splash_config_from_widgets    (this class, line 2410)
+        -> self.get_selected_gateway_app    (this class, line 2325)
+        -> self.preview_sample_splash    (this class, line 2672)
+        -> self.splash_preview_detail_var.set    (attribute of self (inherited or set at run time))    x3
+        -> self.splash_preview_label.configure    (attribute of self (inherited or set at run time))    x3
+        -> self.status_var.set    (attribute of self (inherited or set at run time))    x4
+        -> str    (builtin)
+    refresh_folder_files()    1336
+        -> enumerate    (builtin)
+        -> folder.is_dir    (local variable or parameter)    x2
+        -> folder.iterdir    (local variable or parameter)
+        -> hasattr    (builtin)
+        -> insert_row    (from cpc_treeviews import insert_row)
+        -> len    (builtin)
+        -> os.path.expanduser    (import os)
+        -> os.path.expandvars    (import os)
+        -> p.is_file    (local variable or parameter)
+        -> p.name.lower    (local variable or parameter)
+        -> p.suffix.lower    (local variable or parameter)
+        -> Path    (from pathlib import Path)
+        -> py.with_name    (local variable or parameter)
+        -> py.with_name(f'{py.stem}_splash.png').i…    (method or call on an expression)
+        -> py.with_suffix    (local variable or parameter)
+        -> py.with_suffix('.ico').is_file    (method or call on an expression)
+        -> read_py_vars    (this file, line 343)
+        -> self.folder_dir_var.get    (attribute of self (inherited or set at run time))
+        -> self.folder_dir_var.get().strip    (method or call on an expression)
+        -> self.folder_dnd_frame.set_feedback    (attribute of self (inherited or set at run time))
+        -> self.folder_dnd_frame.set_identity    (attribute of self (inherited or set at run time))
+        -> self.folder_meta_var.set    (attribute of self (inherited or set at run time))
+        -> self.folder_preview_detail_var.set    (attribute of self (inherited or set at run time))
+        -> self.folder_preview_label.configure    (attribute of self (inherited or set at run time))
+        -> self.folder_rows.clear    (attribute of self (inherited or set at run time))
+        -> self.folder_rows.items    (attribute of self (inherited or set at run time))
+        -> self.folder_summary_var.set    (attribute of self (inherited or set at run time))    x3
+        -> self.folder_tree.delete    (attribute of self (inherited or set at run time))
+        -> self.folder_tree.focus    (attribute of self (inherited or set at run time))
+        -> self.folder_tree.get_children    (attribute of self (inherited or set at run time))
+        -> self.folder_tree.see    (attribute of self (inherited or set at run time))
+        -> self.folder_tree.selection_set    (attribute of self (inherited or set at run time))
+        -> self.folder_tree_selected    (this class, line 1393)
+        -> self.selected_folder_py    (this class, line 1328)
+        -> sorted    (builtin)
+    refresh_gateway_icons()    1929
+        -> any    (builtin)
+        -> data.get    (local variable or parameter)
+        -> hasattr    (builtin)
+        -> isinstance    (builtin)    x4
+        -> json.load    (import json)
+        -> len    (builtin)
+        -> messagebox.showerror    (from tkinter import messagebox)
+        -> path.open    (local variable or parameter)
+        -> self._gateway_stamp    (this class, line 1859)
+        -> self.gateway_icon_detail_var.set    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_path_var.set    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_summary_var.set    (attribute of self (inherited or set at run time))
+        -> self.gateway_json_path    (this class, line 1814)
+        -> self.populate_gateway_icon_tree    (this class, line 1970)    x2
+        -> self.populate_splash_tree    (this class, line 2205)    x2
+        -> self.selected_gateway_icon_app    (this class, line 2026)
+        -> self.status_var.set    (attribute of self (inherited or set at run time))    x2
+        -> ValueError    (builtin)    x3
+    refresh_icons()    3141
+        -> callable    (builtin)
+        -> clear_cache    (local variable or parameter)
+        -> configured_dir.mkdir    (local variable or parameter)
+        -> getattr    (builtin)
+        -> hasattr    (builtin)
+        -> len    (builtin)
+        -> self._select_name    (this class, line 3323)
+        -> self._update_process_dashboard    (this class, line 3044)
+        -> self.populate_tree    (this class, line 3166)
+        -> self.scan_records    (this class, line 2999)
+        -> self.selected_record    (this class, line 3183)
+        -> self.status_var.set    (attribute of self (inherited or set at run time))    x2
+        -> str    (builtin)
+        -> type    (builtin)
+    regenerate_selected()    3291
+        -> cc_icons.request_icon    (import cc_icons)
+        -> filedialog.askopenfilename    (from tkinter import filedialog)
+        -> Path    (from pathlib import Path)
+        -> Path.home    (from pathlib import Path)
+        -> self._select_name    (this class, line 3323)
+        -> self.config_data.get    (attribute of self (inherited or set at run time))
+        -> self.copy_local_var.get    (attribute of self (inherited or set at run time))
+        -> self.refresh_icons    (this class, line 3141)
+        -> self.selected_record    (this class, line 3183)
+        -> str    (builtin)    x3
+    reset_splash_template()    914
+        -> hasattr    (builtin)    x3
+        -> json.dumps    (import json)
+        -> json.loads    (import json)
+        -> save_config    (this file, line 454)
+        -> self._rebuild_splash_style_rows    (this class, line 983)
+        -> self.splash_template_name_var.set    (attribute of self (inherited or set at run time))
+        -> self.splash_template_text.delete    (attribute of self (inherited or set at run time))
+        -> self.splash_template_text.insert    (attribute of self (inherited or set at run time))
+        -> self.status_var.set    (attribute of self (inherited or set at run time))
+    save_config_from_ui()    3379
+        -> callable    (builtin)
+        -> clear_cache    (local variable or parameter)
+        -> getattr    (builtin)
+        -> icon_dir.mkdir    (local variable or parameter)
+        -> messagebox.showerror    (from tkinter import messagebox)
+        -> os.path.expanduser    (import os)
+        -> os.path.expandvars    (import os)
+        -> Path    (from pathlib import Path)
+        -> save_config    (this file, line 454)
+        -> self._store_window_choice_vars    (this class, line 3503)
+        -> self._sync_splash_config_from_widgets    (this class, line 2410)
+        -> self._update_ui_state_summary    (this class, line 3518)
+        -> self.copy_local_var.get    (attribute of self (inherited or set at run time))
+        -> self.density_var.get    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_crop_var.get    (attribute of self (inherited or set at run time))
+        -> self.gateway_json_var.get    (attribute of self (inherited or set at run time))
+        -> self.gateway_json_var.get().strip    (method or call on an expression)
+        -> self.icon_dir_var.get    (attribute of self (inherited or set at run time))
+        -> self.icon_dir_var.get().strip    (method or call on an expression)
+        -> self.icon_dir_var.set    (attribute of self (inherited or set at run time))
+        -> self.refresh_gateway_icons    (this class, line 1929)
+        -> self.refresh_icons    (this class, line 3141)
+        -> self.status_var.set    (attribute of self (inherited or set at run time))
+        -> self.theme_var.get    (attribute of self (inherited or set at run time))
+        -> str    (builtin)    x4
+        -> ValueError    (builtin)
+    save_selected_gateway_splash()    2631
+        -> '\n'.join    (method or call on an expression)
+        -> completed.append    (local variable or parameter)
+        -> failed.append    (local variable or parameter)
+        -> image.save    (local variable or parameter)
+        -> len    (builtin)    x4
+        -> messagebox.showerror    (from tkinter import messagebox)
+        -> messagebox.showwarning    (from tkinter import messagebox)
+        -> save_config    (this file, line 454)
+        -> self._gateway_app_name    (this class, line 1851)
+        -> self._gateway_modified_splash_destination    (this class, line 2337)
+        -> self._render_modified_splash_image    (this class, line 2619)
+        -> self._sync_splash_config_from_widgets    (this class, line 2410)
+        -> self.populate_splash_tree    (this class, line 2205)
+        -> self.selected_splash_apps    (this class, line 2271)
+        -> self.splash_preview_detail_var.set    (attribute of self (inherited or set at run time))
+        -> self.status_var.set    (attribute of self (inherited or set at run time))    x2
+    save_ui_choices()    3477
+        -> controller.save    (local variable or parameter)
+        -> getattr    (builtin)
+        -> self.apply_ui_choices    (this class, line 3426)
+        -> self.status_var.set    (attribute of self (inherited or set at run time))
+    scan_records()    2999
+        -> base.lower    (local variable or parameter)
+        -> groups.setdefault    (local variable or parameter)
+        -> groups.values    (local variable or parameter)
+        -> icon_dir.exists    (local variable or parameter)
+        -> icon_dir.iterdir    (local variable or parameter)
+        -> int    (builtin)
+        -> isinstance    (builtin)
+        -> list    (builtin)
+        -> max    (builtin)
+        -> maybe_size.isdigit    (local variable or parameter)
+        -> p.is_file    (local variable or parameter)
+        -> p.stat    (local variable or parameter)
+        -> p.suffix.lower    (local variable or parameter)    x3
+        -> r['name'].lower    (method or call on an expression)
+        -> rec['files'].append    (method or call on an expression)
+        -> rec['pngs'].append    (method or call on an expression)    x2
+        -> sorted    (builtin)    x2
+        -> stem.rsplit    (local variable or parameter)
+        -> str    (builtin)    x3
+    selected_folder_py()    1328
+        -> hasattr    (builtin)
+        -> self.folder_rows.get    (attribute of self (inherited or set at run time))
+        -> self.folder_tree.selection    (attribute of self (inherited or set at run time))
+    selected_gateway_icon_app()    2026
+        -> hasattr    (builtin)
+        -> len    (builtin)
+        -> self.gateway_icon_rows.get    (attribute of self (inherited or set at run time))
+        -> self.gateway_icon_tree.selection    (attribute of self (inherited or set at run time))
+    selected_record()    3183
+        -> next    (builtin)
+        -> r['name'].lower    (method or call on an expression)
+        -> self.tree.selection    (attribute of self (inherited or set at run time))
+    selected_splash_app()    2283
+        -> hasattr    (builtin)
+        -> self.selected_splash_apps    (this class, line 2271)
+        -> self.splash_rows.get    (attribute of self (inherited or set at run time))
+        -> self.splash_tree.focus    (attribute of self (inherited or set at run time))
+    selected_splash_apps()    2271
+        -> hasattr    (builtin)
+        -> len    (builtin)
+        -> list    (builtin)
+        -> result.append    (local variable or parameter)
+        -> self.splash_rows.get    (attribute of self (inherited or set at run time))
+        -> self.splash_tree.selection    (attribute of self (inherited or set at run time))
+    show_selected_preview()    3190
+        -> ', '.join    (method or call on an expression)
+        -> Image.open    (from PIL import Image)
+        -> Image.open(path).convert    (method or call on an expression)
+        -> ImageTk.PhotoImage    (from PIL import ImageTk)
+        -> img.thumbnail    (local variable or parameter)
+        -> len    (builtin)
+        -> map    (builtin)
+        -> os.path.exists    (import os)
+        -> self._record_status    (this class, line 3030)
+        -> self.detail_var.set    (attribute of self (inherited or set at run time))    x2
+        -> self.preview_label.configure    (attribute of self (inherited or set at run time))    x3
+        -> self.selected_record    (this class, line 3183)
+    shutdown()    3639
+        -> bool    (builtin)
+        -> hasattr    (builtin)    x2
+        -> save_config    (this file, line 454)
+        -> self._store_window_choice_vars    (this class, line 3503)
+        -> self._sync_splash_config_from_widgets    (this class, line 2410)
+        -> self.copy_local_var.get    (attribute of self (inherited or set at run time))
+        -> self.density_var.get    (attribute of self (inherited or set at run time))
+        -> self.folder_dir_var.get    (attribute of self (inherited or set at run time))
+        -> self.folder_dir_var.get().strip    (method or call on an expression)
+        -> self.gateway_icon_crop_var.get    (attribute of self (inherited or set at run time))
+        -> self.gateway_json_var.get    (attribute of self (inherited or set at run time))
+        -> self.gateway_json_var.get().strip    (method or call on an expression)
+        -> self.gateway_narrow_var.get    (attribute of self (inherited or set at run time))
+        -> self.icon_dir_var.get    (attribute of self (inherited or set at run time))
+        -> self.icon_dir_var.get().strip    (method or call on an expression)
+        -> self.notebook.select    (attribute of self (inherited or set at run time))
+        -> self.notebook.tab    (attribute of self (inherited or set at run time))
+        -> self.theme_var.get    (attribute of self (inherited or set at run time))
+        -> self.window.winfo_height    (attribute of self (inherited or set at run time))
+        -> self.window.winfo_width    (attribute of self (inherited or set at run time))
+    sort_tree()    3217
+        -> sort_treeview    (from cpc_treeviews import sort_treeview)
+    splash_tree_selected()    2295
+        -> app.get    (local variable or parameter)    x5
+        -> len    (builtin)    x2
+        -> self._gateway_app_name    (this class, line 1851)
+        -> self._gateway_modified_splash_destination    (this class, line 2337)
+        -> self._gateway_splash_destination    (this class, line 2331)
+        -> self.preview_selected_gateway_splash    (this class, line 2688)
+        -> self.selected_splash_app    (this class, line 2283)
+        -> self.selected_splash_apps    (this class, line 2271)
+        -> self.splash_metadata_var.set    (attribute of self (inherited or set at run time))
+        -> str    (builtin)    x7
+        -> str(app.get('app_full_path') or '').str…    (method or call on an expression)
+        -> str(app.get('metadata_source_mtime') or…    (method or call on an expression)
+        -> str(app.get('purpose_note') or '').strip    (method or call on an expression)
+        -> str(app.get('version') or '').strip    (method or call on an expression)
+        -> str(app.get('window_title') or '').strip    (method or call on an expression)
+(module level)
+    -> main    (this file, line 3669)
+    -> Path    (from pathlib import Path)    x2
+    -> Path(__file__).resolve    (method or call on an expression)    x2
+    -> re.compile    (import re)
+    -> str    (builtin)    x3
+    -> sys.path.insert    (import sys)

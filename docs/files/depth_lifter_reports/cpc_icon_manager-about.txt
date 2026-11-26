@@ -1,0 +1,81 @@
+Python Code Depth Lifter 4.7
+Dissect a python file
+project: Python
+
+Folders in use
+    Settings   \\192.168.1.10\shared\cc_lib\_pub\cpc_depth_lifter\cc_depth_lifter.json
+    Reports    X:\cc_lib\_pub\cpc_icon_manager\depth_lifter_reports
+    Backups    \\192.168.1.10\shared\cc_lib\_pub\cpc_depth_lifter\backups
+    Crash log  \\192.168.1.10\shared\cc_lib\_pub\cpc_depth_lifter\depth_lifter.log
+
+File        cpc_icon_manager.py
+Modified    2026-11-20 21:12:49
+Encoding    UTF-8
+Line ends   LF (Unix, GitHub)
+
+Cautions
+    Caution 17 of 34 imports do not name the source file at the call: from pathlib import Path, from datetime import datetime, from pathlib import Path, from tkinter import colorchooser, from tkinter import filedialog, from tkinter import messagebox ...
+
+Statistics
+    Lines                         3676   (code 3339, comments 51, blank 286)
+    Classes                       1
+    Functions and methods         143   (module level 7, methods 132, nested 4, async 0)
+    Deepest nesting               2
+    Function length (lines)       average 22.4   median 13   shortest 2 (_config_body_changed)   longest 142 (_build_gateway_icons_tab)
+    Longest functions             _build_gateway_icons_tab 142, _build_folder_tab 103, _build_legacy_ui_choices_tab 102, __init__ 97, _build_config_tab 91
+    Over 50 lines                 18   (_build_gateway_icons_tab, _build_folder_tab, _build_legacy_ui_choices_tab, __init__, _build_config_tab, _build_splash_tab, _build_process_tab, _draw_splash_text_overlay)
+    Parameters per function       average 0.8   most 7 (_draw_text_block)
+    With a docstring              15 of 143   (10%)   module docstring: no
+    With a return type            0 of 143   (0%)
+    Decorated                     8
+    Variables                     module 26, class 0, self attributes 92, in functions 608
+    Call sites                    2091   (762 distinct callees)
+
+Imports
+    34 imports: 17 by module or alias, 17 by bare name, 0 star
+    The source file is named at the call for 50% of them
+
+Named by module or alias (good: a call reads os.path.join or np.array, so the source shows)
+    import sys                                     standard library               line 155   used 3x
+    import io                                      standard library               line 171   used 2x
+    import json                                    standard library               line 172   used 25x
+    import os                                      standard library               line 173   used 34x
+    import re                                      standard library               line 174   used 6x
+    import shutil                                  standard library               line 175   used 3x
+    import subprocess                              standard library               line 176   used 3x
+    import sys                                     standard library               line 177   used 3x
+    import tempfile                                standard library               line 178   used 2x
+    import textwrap                                standard library               line 179   used 2x
+    import tkinter as tk                           standard library               line 180   used 60x
+    import cc_icons                                third party or your own file   line 260   used 26x
+    import cpc_ui_theme as ui_theme                third party or your own file   line 267   used 11x
+    import cpc_ui_state as ui_state                third party or your own file   line 271   used 2x
+    import cpc_ui_choices as ui_choices            third party or your own file   line 275   used 3x
+    import gateway_controller                      third party or your own file   line 280   used 5x
+    import datetime                                standard library               line 3173  used 3x
+
+Bare names (a call reads Path(...) and does not say it came from pathlib;
+prefer: import pathlib, then pathlib.Path(...), or import pathlib as pl)
+    from pathlib import Path                       standard library               line 154   used 44x
+    from datetime import datetime                  standard library               line 181   used 3x
+    from pathlib import Path                       standard library               line 182   used 44x
+    from tkinter import colorchooser               standard library               line 183   used 3x
+    from tkinter import filedialog                 standard library               line 183   used 7x
+    from tkinter import messagebox                 standard library               line 183   used 31x
+    from tkinter import simpledialog               standard library               line 183   used 2x
+    from tkinter import ttk                        standard library               line 183   used 160x
+    from PIL import Image                          third party or your own file   line 186   used 31x
+    from PIL import ImageDraw                      third party or your own file   line 186   used 4x
+    from PIL import ImageFont                      third party or your own file   line 186   used 5x
+    from PIL import ImageOps                       third party or your own file   line 186   used 9x
+    from PIL import ImageTk                        third party or your own file   line 186   used 11x
+    from dnd_3some import DnDThreeSomeFrame        third party or your own file   line 285   used 4x
+    from cpc_treeviews import build_treeview       third party or your own file   line 289   used 4x
+    from cpc_treeviews import insert_row           third party or your own file   line 289   used 4x
+    from cpc_treeviews import sort_treeview        third party or your own file   line 289   used 1x
+
+Star imports (names cannot be traced to a file)
+    none
+
+Imported but never used (may be re-exported)
+    none

@@ -1,0 +1,1435 @@
+<!doctype html>
+<html lang="en" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>cpc_icon_manager-vars_index.html</title>
+<style id="cpc-code-css">
+:root{--code-font:'JetBrains Mono','Cascadia Code','Fira Code',Consolas,Menlo,monospace;--code-size:13px;--code-lh:1.55;--tab:4;--maxw:1300px}
+html[data-mode="projector"]{--code-size:22px;--code-lh:1.6;--maxw:none}
+html[data-theme="light"]{--page:#ffffff;--text:#1f2328;--panel:#f6f8fa;--border:#d0d7de;--muted:#59636e;--link:#0969da;--accent:#0969da;--on-accent:#ffffff;--shadow:0 1px 2px rgba(31,35,40,.06),0 4px 14px rgba(31,35,40,.06);--keyword:#cf222e;--builtin:#0550ae;--string:#0a3069;--comment:#6a737d;--number:#0550ae;--operator:#24292f;--definition:#8250df;--decorator:#953800}
+html[data-theme="dark"]{--page:#0d1117;--text:#e6edf3;--panel:#161b22;--border:#30363d;--muted:#8b949e;--link:#58a6ff;--accent:#1f6feb;--on-accent:#ffffff;--shadow:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.35);--keyword:#ff7b72;--builtin:#79c0ff;--string:#a5d6ff;--comment:#8b949e;--number:#79c0ff;--operator:#e6edf3;--definition:#d2a8ff;--decorator:#ffa657}
+
+
+/* cpc_code_html_template.css
+   Page and code-card styles for the published source pages.
+
+   OPTIONAL: if this file is missing it is re-created from the copy built into
+   cpc_treeviews.py; if it is present, it is used exactly as written.
+
+   It is placed AFTER the generated theme/root variables (--page, --text,
+   --code-size ...), so a rule or variable here overrides them, e.g.
+       :root { --code-size: 15px; }
+       html[data-theme='dark'] { --accent: #f78166; }
+*/
+html {
+  color-scheme: light;
+}
+html[data-theme='dark'] {
+  color-scheme: dark;
+}
+html[data-mode='projector'][data-theme='light'] {
+  --page: #ffffff;
+  --text: #000000;
+  --muted: #2f3640;
+  --border: #9aa4b2;
+}
+html[data-mode='projector'][data-theme='dark'] {
+  --page: #000000;
+  --text: #ffffff;
+  --panel: #0b0f14;
+  --muted: #c9d1d9;
+  --border: #586374;
+}
+body {
+  background: var(--page);
+  color: var(--text);
+  font:
+    15px/1.6 system-ui,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  margin: 0;
+  padding: 0 26px 48px;
+  -webkit-font-smoothing: antialiased;
+}
+html[data-mode='projector'] body {
+  font-size: 20px;
+}
+#cpc-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  margin: 0 -26px;
+  padding: 9px 26px;
+  background: var(--page);
+  background: color-mix(in srgb, var(--page) 88%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.cpc-bar-in {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+.cpc-logo {
+  height: 26px;
+  width: auto;
+  border-radius: 5px;
+  display: block;
+}
+.cpc-home {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 4px 2px;
+}
+.cpc-home:hover {
+  color: var(--link);
+}
+.cpc-grow {
+  flex: 1;
+}
+.cpc-btn {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 5px 11px;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.3;
+  cursor: pointer;
+  transition:
+    background 0.12s,
+    border-color 0.12s;
+}
+.cpc-btn:hover {
+  border-color: var(--accent);
+}
+.cpc-btn[aria-pressed='true'] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+.cpc-btn:focus-visible,
+.cpc-copy:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.cpc-seg {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.cpc-seg .cpc-btn {
+  border: 0;
+  border-radius: 0;
+  border-left: 1px solid var(--border);
+}
+.cpc-seg .cpc-btn:first-child {
+  border-left: 0;
+}
+main {
+  max-width: var(--maxw);
+  margin: 22px auto;
+}
+h1 {
+  font-size: 1.6rem;
+  letter-spacing: -0.01em;
+  margin: 12px 0 6px;
+}
+h2 {
+  font-size: 1.1rem;
+  margin: 22px 0 8px;
+}
+a {
+  color: var(--link);
+}
+.meta {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.report {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 16px 18px;
+  font-family: var(--code-font);
+  font-size: calc(var(--code-size) + var(--code-delta, 0px));
+  line-height: var(--code-lh);
+  tab-size: var(--tab);
+}
+.cpc-card {
+  margin: 14px 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.cpc-card[hidden] {
+  display: none;
+}
+.cpc-card.code {
+  margin-left: 36px;
+}
+.cpc-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px 5px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+  font:
+    600 11px/1.2 system-ui,
+    sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.cpc-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.cpc-copy:hover {
+  color: var(--text);
+  border-color: var(--border);
+  background: var(--page);
+}
+.cpc-copy.done {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.cpc-card pre.source {
+  margin: 0;
+  padding: 10px 0;
+  overflow: auto;
+  background: transparent;
+  border: 0;
+  font-family: var(--code-font);
+  font-size: calc(var(--code-size) + var(--code-delta, 0px));
+  line-height: var(--code-lh);
+  tab-size: var(--tab);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.cpc-card code {
+  font: inherit;
+}
+.source-line {
+  display: block;
+  white-space: pre;
+  padding: 0 16px 0 0;
+  border-left: 3px solid transparent;
+  scroll-margin-top: 96px;
+}
+.source-line:target {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border-left-color: var(--accent);
+}
+.line-number {
+  display: inline-block;
+  box-sizing: content-box;
+  width: var(--gut, 3ch);
+  padding: 0 10px 0 12px;
+  margin-right: 14px;
+  text-align: right;
+  border-right: 1px solid var(--border);
+  color: var(--muted);
+  user-select: none;
+  text-decoration: none;
+  font-variant-numeric: tabular-nums;
+}
+a.line-number:hover {
+  color: var(--link);
+}
+html[data-lines='off'] .line-number {
+  display: none;
+}
+html[data-lines='off'] .source-line {
+  padding-left: 16px;
+}
+html[data-wrap='on'] .source-line {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.tok-keyword {
+  color: var(--keyword);
+  font-weight: 600;
+}
+.tok-builtin {
+  color: var(--builtin);
+}
+.tok-string {
+  color: var(--string);
+}
+.tok-comment {
+  color: var(--comment);
+  font-style: italic;
+}
+.tok-number {
+  color: var(--number);
+}
+.tok-operator {
+  color: var(--operator);
+}
+.tok-definition {
+  color: var(--definition);
+  font-weight: 600;
+}
+.tok-decorator {
+  color: var(--decorator);
+}
+.index-list {
+  columns: 2;
+  column-width: 270px;
+  padding-left: 22px;
+}
+.index-list li {
+  break-inside: avoid;
+  margin: 2px 0;
+}
+.index-list a {
+  overflow-wrap: anywhere;
+}
+.index-list small {
+  color: var(--muted);
+}
+html[data-mode='projector'] nav[aria-label='Definitions'] {
+  display: none;
+}
+#cpc-filter {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 420px;
+  margin: 10px 0 4px;
+  padding: 8px 12px;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font: inherit;
+}
+#cpc-filter:focus {
+  outline: 2px solid var(--accent);
+  border-color: var(--accent);
+}
+#nav,
+#bottom-nav {
+  display: none;
+}
+@media (max-width: 650px) {
+  :root {
+    --code-size: 12px;
+  }
+  body {
+    padding: 0 10px 32px;
+  }
+  #cpc-bar {
+    margin: 0 -10px;
+    padding: 8px 10px;
+  }
+  .index-list {
+    columns: 1;
+  }
+  .cpc-card.code {
+    margin-left: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+@media print {
+  #cpc-bar {
+    display: none;
+  }
+  body {
+    padding: 0;
+  }
+  .cpc-card {
+    box-shadow: none;
+  }
+  .cpc-copy {
+    display: none;
+  }
+}
+
+</style>
+<script id="cpc-code-js">
+
+/* cpc_code_html_template.js
+   Control bar (theme / projector / size / lines / wrap / reset), copy buttons
+   and keyboard shortcuts (t, p, /) for the published source pages.
+
+   OPTIONAL: if this file is missing it is re-created from the copy built into
+   cpc_treeviews.py; if it is present, it is used exactly as written.
+
+   Keep the config placeholder on the first 'var C =' line: it is replaced with
+   the page's config (theme, mode, logo, index_href ...) when the page is built.
+*/
+(function () {
+  var C = {"theme": "light", "mode": "normal", "line_numbers": true, "wrap": false, "logo": "logo.png", "host_address": "", "index_href": "index.html", "storage_key": "cpc_code_view"},
+    KEY = C.storage_key,
+    root = document.documentElement;
+  var S = { theme: C.theme, mode: C.mode, delta: 0, lines: C.line_numbers, wrap: C.wrap };
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) {
+        var o = JSON.parse(raw);
+        for (var k in S) {
+          if (o && o[k] !== undefined) S[k] = o[k];
+        }
+      } else {
+        var old = localStorage.getItem('depth_lifter_html_theme');
+        if (old === 'light' || old === 'dark') S.theme = old;
+      }
+    } catch (e) {}
+  }
+  function save() {
+    try {
+      localStorage.setItem(KEY, JSON.stringify(S));
+    } catch (e) {}
+  }
+  function apply() {
+    root.dataset.theme = S.theme === 'dark' ? 'dark' : 'light';
+    root.dataset.mode = S.mode === 'projector' ? 'projector' : 'normal';
+    root.dataset.lines = S.lines ? 'on' : 'off';
+    root.dataset.wrap = S.wrap ? 'on' : 'off';
+    root.style.setProperty('--code-delta', S.delta + 'px');
+    var P = {
+      'theme:light': S.theme !== 'dark',
+      'theme:dark': S.theme === 'dark',
+      projector: S.mode === 'projector',
+      lines: !!S.lines,
+      wrap: !!S.wrap,
+    };
+    var bs = document.querySelectorAll('[data-cpc]');
+    for (var i = 0; i < bs.length; i++) {
+      var k = bs[i].dataset.cpc;
+      if (k in P) bs[i].setAttribute('aria-pressed', String(P[k]));
+    }
+  }
+  function act(n) {
+    if (n === 'theme:light' || n === 'theme:dark') S.theme = n.slice(6);
+    else if (n === 'projector') S.mode = S.mode === 'projector' ? 'normal' : 'projector';
+    else if (n === 'lines') S.lines = !S.lines;
+    else if (n === 'wrap') S.wrap = !S.wrap;
+    else if (n === 'bigger') S.delta = Math.min(S.delta + 1, 20);
+    else if (n === 'smaller') S.delta = Math.max(S.delta - 1, -4);
+    else if (n === 'reset') {
+      S.theme = C.theme;
+      S.mode = C.mode;
+      S.delta = 0;
+      S.lines = C.line_numbers;
+      S.wrap = C.wrap;
+      try {
+        localStorage.removeItem(KEY);
+      } catch (e) {}
+      apply();
+      return;
+    }
+    apply();
+    save();
+  }
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function btn(label, name, title, parent) {
+    var b = el('button', 'cpc-btn', label);
+    b.type = 'button';
+    b.dataset.cpc = name;
+    b.title = title || label;
+    b.addEventListener('click', function () {
+      act(name);
+    });
+    parent.appendChild(b);
+    return b;
+  }
+  function url(p) {
+    return C.host_address ? C.host_address.replace(/\/+$/, '') + '/' + p.replace(/^\/+/, '') : p;
+  }
+  function build() {
+    var bar = document.getElementById('cpc-bar');
+    if (!bar) return;
+    bar.textContent = '';
+    var row = el('div', 'cpc-bar-in');
+    if (C.logo) {
+      var img = el('img', 'cpc-logo');
+      img.alt = '';
+      img.src = url(C.logo);
+      img.addEventListener('error', function () {
+        img.remove();
+      });
+      if (C.index_href) {
+        var la = el('a');
+        la.href = url(C.index_href);
+        la.appendChild(img);
+        row.appendChild(la);
+      } else row.appendChild(img);
+    }
+    if (C.index_href) {
+      var h = el('a', 'cpc-home', '\u2190 Index');
+      h.href = url(C.index_href);
+      row.appendChild(h);
+    }
+    row.appendChild(el('span', 'cpc-grow'));
+    var seg = el('span', 'cpc-seg');
+    btn('Light', 'theme:light', 'Light theme (t)', seg);
+    btn('Dark', 'theme:dark', 'Dark theme (t)', seg);
+    row.appendChild(seg);
+    btn('Projector', 'projector', 'Projector mode (p)', row);
+    var sz = el('span', 'cpc-seg');
+    btn('A\u2212', 'smaller', 'Smaller code', sz);
+    btn('A+', 'bigger', 'Larger code', sz);
+    row.appendChild(sz);
+    if (document.querySelector('.source-line')) {
+      btn('# Lines', 'lines', 'Line numbers', row);
+      btn('Wrap', 'wrap', 'Wrap long lines', row);
+    }
+    btn('Reset', 'reset', 'Back to the page defaults', row);
+    bar.appendChild(row);
+    apply();
+  }
+  function cardText(card) {
+    var pre = card.querySelector('pre');
+    if (!pre) return card.textContent;
+    var rows = pre.querySelectorAll('.source-line');
+    if (!rows.length) return pre.textContent;
+    return Array.prototype.map
+      .call(rows, function (r) {
+        var c = r.cloneNode(true),
+          n = c.querySelector('.line-number');
+        if (n) n.remove();
+        return c.textContent;
+      })
+      .join('\n');
+  }
+  function fallback(t, ok) {
+    var a = document.createElement('textarea');
+    a.value = t;
+    a.style.position = 'fixed';
+    a.style.opacity = '0';
+    document.body.appendChild(a);
+    a.select();
+    try {
+      if (document.execCommand('copy')) ok();
+    } catch (e) {}
+    document.body.removeChild(a);
+  }
+  function copyText(t, b) {
+    function ok() {
+      b.classList.add('done');
+      b.title = 'Copied';
+      setTimeout(function () {
+        b.classList.remove('done');
+        b.title = 'Copy code';
+      }, 1200);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText)
+      navigator.clipboard.writeText(t).then(ok, function () {
+        fallback(t, ok);
+      });
+    else fallback(t, ok);
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('.cpc-copy');
+    if (!b) return;
+    var card = b.closest('.cpc-card');
+    if (card) copyText(cardText(card), b);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    var t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    if (e.key === 't') act(S.theme === 'dark' ? 'theme:light' : 'theme:dark');
+    else if (e.key === 'p') act('projector');
+    else if (e.key === '/') {
+      var f = document.getElementById('cpc-filter');
+      if (f) {
+        e.preventDefault();
+        f.focus();
+      }
+    }
+  });
+  window.chooseTheme = function (t) {
+    act('theme:' + (t === 'dark' ? 'dark' : 'light'));
+  };
+  load();
+  apply();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', build);
+  else build();
+})();
+
+</script>
+<style id="page-css"></style></head><body><header id="cpc-bar"></header><div id="nav" hidden></div><main><h1>cpc_icon_manager-vars_index.html</h1><pre class="report">source_file = cpc_icon_manager.py
+source_modified = 2026-11-20 21:12:49
+name: annotation = value    line numbers   (functions: name() with their variables indented; classes: first-last)
+
+APP_DIR = Path(__file__).resolve().parent    190
+cc_icons = None    262
+CONFIG_PATH = APP_DIR / &#x27;cc_icon_manager.json&#x27;    191
+DEFAULT_CONFIG = {&#x27;icon_dir&#x27;: &#x27;\\icons&#x27;, &#x27;gateway_json&#x27;: &#x27;\\cc_lib…    223
+DEFAULT_SPLASH_TEMPLATE = {&#x27;name&#x27;: &#x27;Gateway Metadata Compact&#x27;, &#x27;text&#x27;: &#x27;{{w…    194
+description = &#x27;Splash editor plus startup display of this appli…    169
+DnDThreeSomeFrame = None    287
+FOLDER_VAR_RE = re.compile(&#x27;^(project|named|version|description)\…    336
+gateway_controller = None    282
+ICON_IMPORT_ERROR = &#x27;&#x27;    263, 265
+Image = None    188
+ImageDraw = None    188
+ImageFont = None    188
+ImageOps = None    188
+ImageTk = None    188
+named = &#x27;Icon Manager&#x27;    167
+project = &#x27;Util&#x27;    166
+shared_path = Path(__file__).resolve().parent.parent    157
+TV_FOLDER_FILES = {&#x27;title&#x27;: &#x27;Folder Python Files&#x27;, &#x27;columns&#x27;: (&#x27;fil…    326
+TV_GATEWAY_ICONS = {&#x27;title&#x27;: &#x27;Gateway Application Icons&#x27;, &#x27;columns&#x27;:…    304
+TV_GATEWAY_SPLASH = {&#x27;title&#x27;: &#x27;Gateway Splash Files&#x27;, &#x27;columns&#x27;: (&#x27;ap…    315
+TV_ICON_SETS = {&#x27;title&#x27;: &#x27;Icon Sets&#x27;, &#x27;columns&#x27;: (&#x27;name&#x27;, &#x27;statu…    292
+ui_choices = None    277
+ui_state = None    273
+ui_theme = None    269
+version = &#x27;32&#x27;    168
+_normalize_splash_template()
+    base_index
+    default
+    fallback_text
+    field
+    incoming
+    incoming_lines
+    incoming_styles
+    index
+    key
+    legacy_field_order
+    legacy_order
+    legacy_styles
+    legacy_text
+    line_count
+    result
+    source_keys
+    style
+    supplied
+load_config()
+    data
+    key
+    loaded
+    old_window
+    value
+main()
+    root
+read_py_vars()
+    key
+    match
+    result
+    text
+class IconManagerApp    458-3662
+    self.config_data = load_config()    475
+    self.config_tab = ttk.Frame(self.notebook)    622
+    self.copy_local_var = tk.BooleanVar(value=bool(self.config_data.get(&#x27;co…    741
+    self.current_size_var = tk.StringVar(value=&#x27;Current size: —&#x27;)    1742
+    self.density_combo = ttk.Combobox(appearance, textvariable=self.densit…    1725
+    self.density_var = tk.StringVar(value=self.config_data.get(&#x27;ui_densi…    497, 1677
+    self.detail_var = tk.StringVar(value=&#x27;No icon selected&#x27;)    708
+    self.embedded = bool(embedded or not isinstance(master, (tk.Tk, t…    462
+    self.folder_dir_var = tk.StringVar(value=str(self.config_data.get(&#x27;fold…    1233
+    self.folder_dnd_frame = None    534, 1281
+    self.folder_drop_busy = False    535, 1485, 1491, 1502
+    self.folder_meta_var = tk.StringVar(value=&#x27;Select a .py file&#x27;)    1262
+    self.folder_photo = None    533, 1385, 1430, 1446
+    self.folder_preview_detail_var = tk.StringVar(value=&#x27;&#x27;)    1270
+    self.folder_preview_label = ttk.Label(preview_box, text=&#x27;&#x27;, anchor=&#x27;center&#x27;)    1268
+    self.folder_rows = {}    532
+    self.folder_summary_var = tk.StringVar(value=&#x27;No folder&#x27;)    1230
+    self.folder_tab = ttk.Frame(self.notebook)    620
+    self.folder_target_var = tk.StringVar(value=&#x27;Select a .py file first&#x27;)    1279
+    self.folder_tree = build_treeview(tree_box, TV_FOLDER_FILES, owner=s…    1242
+    self.gateway_apps = []    522, 1952, 1959
+    self.gateway_container_kind = &#x27;dict&#x27;    523, 1941, 1944
+    self.gateway_controller_instance = None    1799, 1805, 1808
+    self.gateway_data = {&#x27;apps&#x27;: []}    521, 1951, 1958
+    self.gateway_dnd_frame = None    527, 1143
+    self.gateway_drop_busy = False    528, 2118, 2124, 2135
+    self.gateway_host = ttk.Frame(self.gateway_tab)    1797
+    self.gateway_icon_crop_var = tk.StringVar(value=self.config_data.get(&#x27;gateway_…    1062
+    self.gateway_icon_detail_label = ttk.Label(preview_holder, textvariable=self.gatew…    1131
+    self.gateway_icon_detail_var = tk.StringVar(value=&#x27;&#x27;)    1130
+    self.gateway_icon_path_var = tk.StringVar(value=&#x27;&#x27;)    1100
+    self.gateway_icon_photo = None    525, 2019, 2061, 2067
+    self.gateway_icon_preview_label = ttk.Label(preview_holder, text=&#x27;Select a Gateway …    1127
+    self.gateway_icon_rows = {}    524
+    self.gateway_icon_search_var = tk.StringVar()    1088
+    self.gateway_icon_summary_var = tk.StringVar(value=&#x27;Gateway not loaded&#x27;)    1097
+    self.gateway_icon_target_var = tk.StringVar(value=&#x27;Select an application first&#x27;)    1141
+    self.gateway_icon_tree = build_treeview(tree_holder, TV_GATEWAY_ICONS, own…    1110
+    self.gateway_icons_tab = ttk.Frame(self.notebook)    619
+    self.gateway_json_mtime = None    526, 1953, 1960, 2828
+    self.gateway_json_var = tk.StringVar(value=self.config_data.get(&#x27;gateway_…    740
+    self.gateway_missing_only_var = tk.BooleanVar(value=False)    1082
+    self.gateway_narrow_var = tk.BooleanVar(value=bool(self.config_data.get(&#x27;ga…    1074
+    self.gateway_preview_holder = preview_holder    1108
+    self.gateway_preview_title = ttk.Label(preview_holder, text=&#x27;Selected applicat…    1123
+    self.gateway_split = ttk.Frame(outer)    1103
+    self.gateway_tab = ttk.Frame(self.notebook)    625
+    self.gateway_tree_holder = tree_holder    1107
+    self.host_context = host_context or {}    465
+    self.icon_dir_var = tk.StringVar(value=self.config_data.get(&#x27;icon_dir…    739
+    self.icons_tab = ttk.Frame(self.notebook)    618
+    self.notebook = ttk.Notebook(self)    615
+    self.preview_label = ttk.Label(preview, text=&#x27;Select an icon to previe…    706
+    self.preview_photo = None    519, 3193, 3205, 3210
+    self.process_canvas = tk.Canvas(diagram_frame, height=310, highlightthi…    1619
+    self.process_stat_vars = {&#x27;sets&#x27;: tk.StringVar(value=&#x27;0&#x27;), &#x27;complete&#x27;: tk.…    1598
+    self.process_tab = ttk.Frame(self.notebook)    621
+    self.records = []    520, 3157
+    self.search_var = tk.StringVar()    661
+    self.show_gateway = True if not self.embedded else bool(self.host_con…    466
+    self.show_ui_choices = True if not self.embedded else bool(self.host_con…    470
+    self.splash_file_text_size_var = tk.StringVar(value=str(self.config_data.get(&#x27;spla…    504
+    self.splash_font_var = tk.StringVar(value=str(self.config_data.get(&#x27;spla…    501
+    self.splash_gateway_path_var = tk.StringVar(value=&#x27;&#x27;)    845
+    self.splash_message_text_size_var = tk.StringVar(value=str(self.config_data.get(&#x27;spla…    507
+    self.splash_metadata_var = tk.StringVar(value=&#x27;Select an application&#x27;)    881
+    self.splash_output_height_var = tk.StringVar(value=str(self.config_data.get(&#x27;spla…    769
+    self.splash_preview_detail_var = tk.StringVar(value=&#x27;&#x27;)    889
+    self.splash_preview_label = ttk.Label(preview, text=&#x27;Select a Gateway applica…    887
+    self.splash_preview_photo = None    529, 2266, 2662, 2669, 2699, 2711, 2718
+    self.splash_rows = {}    530
+    self.splash_search_var = tk.StringVar()    833
+    self.splash_selected_index = None    531, 2303
+    self.splash_show_filename_var = tk.BooleanVar(value=bool(self.config_data.get(&#x27;sp…    498
+    self.splash_style_frame = ttk.Frame(splash_box)    789
+    self.splash_summary_var = tk.StringVar(value=&#x27;Gateway not loaded&#x27;)    842
+    self.splash_tab = ttk.Frame(self.notebook)    623
+    self.splash_template_text = tk.Text(splash_box, height=8, wrap=&#x27;word&#x27;)    783
+    self.splash_template_vars = []    792, 997
+    self.splash_tree = build_treeview(tree_box, TV_GATEWAY_SPLASH, owner…    854
+    self.startup_splash_photo = None    537, 585, 601, 611
+    self.startup_splash_window = None    536, 598, 600, 605
+    self.status_var = tk.StringVar(value=&#x27;Ready&#x27;)    649
+    self.theme_combo = ttk.Combobox(appearance, textvariable=self.theme_…    1714
+    self.theme_var = tk.StringVar(value=self.config_data.get(&#x27;ui_theme…    496, 1676
+    self.tree = build_treeview(workspace, TV_ICON_SETS, owner=sel…    687
+    self.ui_choices_controller = None    1655, 1660, 1682
+    self.ui_state_summary_var = tk.StringVar()    1763
+    self.ui_tab = ttk.Frame(self.notebook)    624
+    self.window = master.winfo_toplevel()    474
+    self.window_height_var = self.ui_choices_controller.window_height_var    1679, 1741
+    self.window_width_var = self.ui_choices_controller.window_width_var    1678, 1740
+    __init__()
+        h
+        host_density
+        host_gateway
+        host_theme
+        w
+    _apply_fallback_theme()
+        bg
+        dark
+        fg
+        style
+    _apply_gateway_layout()
+        holder
+        index
+        narrow
+        split
+        widget
+    _apply_ui_choices_legacy()
+        applied
+        density
+        func
+        h
+        padding
+        style
+        theme
+        w
+    _assign_gateway_icon_image()
+        _index
+        app
+        backup_directory
+        destination
+        names
+        original_icon
+        replacements
+        result
+        selected
+        snapshots
+        source
+        source_resolved
+        splash_destination
+    _available_theme_names()
+        attr_name
+        current
+        func
+        func_name
+        names
+        values
+    _build_config_tab()
+        action_row
+        body
+        body_window
+        canvas
+        help_text
+        outer
+        splash_box
+        template
+        top
+        vscroll
+    _build_folder_tab()
+        child
+        dnd_holder
+        lower
+        outer
+        preview_box
+        toolbar
+        tree_box
+    _build_gateway_icons_tab()
+        child
+        dnd_holder
+        gateway_search
+        outer
+        preview_holder
+        toolbar
+        tree_holder
+    _build_gateway_tab()
+        args
+        controller
+    _build_icons_tab()
+        actions
+        command
+        ent
+        label
+        outer
+        preview
+        search_row
+        workspace
+    _build_legacy_ui_choices_tab()
+        appearance
+        body
+        controls
+        label
+        mode_text
+        module
+        module_lines
+        modules_box
+        state_box
+        themes
+        window_box
+    _build_process_tab()
+        box
+        caller
+        cards
+        col
+        details
+        diagram_frame
+        generated
+        help_text
+        key
+        outer
+        stats
+        title
+    _build_splash_tab()
+        lower
+        metadata
+        outer
+        preview
+        splash_search
+        toolbar
+        tree_box
+    _build_ui_choices_tab()
+        attach_func
+    _close_startup_splash()
+        splash
+    _configure_combobox_readability()
+        dark
+        disabled_fg
+        fg
+        field_bg
+        option_pairs
+        pattern
+        select_bg
+        select_fg
+        style
+        style_name
+        theme
+        value
+    _create_folder_assets()
+        base
+        ico_buffer
+        ico_path
+        message
+        meta
+        opened
+        png_buffer
+        py
+        source
+        splash
+        splash_path
+        target_height
+        target_width
+    _current_splash_style_values()
+        base
+        field
+        index
+        value
+        values
+        vars_for_line
+    _draw_process_diagram()
+        _
+        box_h
+        box_w
+        c
+        canvas_bg
+        centers
+        dark
+        decision_fill
+        extra
+        fallback_fill
+        gap
+        height
+        i
+        line
+        margin
+        out_w
+        out_x1
+        out_y
+        output_fill
+        request_fill
+        success_fill
+        text
+        top_y
+        used
+        width
+        x
+        x1
+        x2
+        card()
+            x1
+            x2
+    _draw_splash_text_overlay()
+        _
+        base_style
+        block
+        block_height
+        blocks
+        box
+        boxes
+        center_x
+        current_y
+        draw
+        font
+        font_size
+        gap_after
+        height
+        heights
+        image
+        index
+        line
+        line_height
+        line_styles
+        line_y
+        max_width
+        offset
+        pad_x
+        pad_y
+        rendered_text
+        source_line
+        source_lines
+        spacer_height
+        spacing
+        style
+        template
+        template_text
+        text_lines
+        text_width
+        total_height
+        width
+        wrap_width
+        x
+        y
+    _draw_text_block()
+        box
+        boxes
+        current_y
+        height
+        heights
+        line
+        total_height
+        width
+        widths
+        x
+        y
+    _folder_field_map()
+        name
+        source_date
+        version
+    _folder_show_preview()
+        detail
+        image
+        opened
+        splash_path
+    _format_splash_metadata_time()
+        stamp
+    _gateway_app_name()
+        name
+        raw_path
+    _gateway_application_path()
+        app_path
+        raw_app
+        start_dir
+        start_dir_text
+    _gateway_drop_paths()
+        raw
+        values
+    _gateway_icon_destination()
+        app_path
+        raw_app
+    _gateway_icon_file_name()
+        clean
+        name
+    _gateway_icon_status()
+        resolved
+    _gateway_modified_splash_destination()
+        app_path
+    _gateway_splash_destination()
+        app_path
+    _gateway_stamp()
+        stat
+    _load_splash_font()
+        candidate
+        size
+    _make_icon_for_gateway_app()
+        candidate
+        destination
+        generator
+        glyph
+        name
+        request_source
+        result
+        source_path
+        splash_destination
+        splash_result
+    _open_in_file_manager()
+        target
+    _pillow_glyph_icon()
+        bounds
+        draw
+        font
+        glyph
+        height
+        image
+        name
+        width
+    _pillow_icon_from_image()
+        centering
+        crop_choice
+        image
+        opened
+    _pillow_splash_from_image()
+        image
+        opened
+        target_height
+        target_width
+    _rebuild_splash_style_rows()
+        child
+        default_style
+        index
+        line_box
+        preview_text
+        source_line
+        source_lines
+        style_values
+        template
+        vars_for_line
+    _record_status()
+        expected_pngs
+        has_ico
+        png_sizes
+    _render_modified_splash_image()
+        field_map
+        image
+        opened
+        source
+        target_height
+        target_width
+    _render_splash_template_text()
+        rendered
+        template_text
+        replace_match()
+            key
+    _resolve_gateway_icon()
+        app_dir
+        app_path
+        candidate
+        candidates
+        icon_path
+        key
+        raw_icon
+        seen
+    _restore_gateway_assets()
+        backup
+        path
+    _restore_tab()
+        i
+        wanted
+    _sample_splash_background()
+        draw
+        image
+    _save_gateway_icon_data()
+        current_stamp
+        output
+        path
+        payload
+        temporary
+    _select_name()
+        iid
+    _show_splash_preview()
+        image
+        preview
+    _show_startup_splash()
+        height
+        image
+        opened
+        screen_height
+        screen_width
+        splash
+        splash_path
+        width
+        x
+        y
+    _snapshot_gateway_assets()
+        backup
+        index
+        path
+        snapshots
+    _splash_color_editor()
+        holder
+        var
+    _splash_font_candidates()
+        candidates
+        item
+        mapped
+        name
+    _splash_text_content()
+        app_name
+        app_path
+        desc
+        file_name
+        project
+        purpose_note
+        source_date
+        version
+        version_or_source
+        window_title
+    _splash_version_source()
+        source_time
+        version_text
+    _startup_splash_path()
+        app_path
+        edited
+        original
+    _store_window_choice_vars()
+        controller
+    _sync_splash_config_from_widgets()
+        output_height
+    _sync_splash_template_from_widgets()
+        base
+        field
+        index
+        source_lines
+        template
+        template_text
+        value
+        vars_for_line
+    _template_text_lines()
+        output
+        raw_line
+        wrapped
+    _theme_is_dark()
+        b
+        bg
+        g
+        luminance
+        name
+        palette_func
+        r
+    _update_process_dashboard()
+        statuses
+    _update_ui_state_summary()
+        controller
+    _validate_gateway_icon_source()
+        opened
+        source_path
+    _wrap_splash_text()
+        text_value
+    apply_ui_choices()
+        controller
+    browse_folder()
+        chosen
+        start
+    capture_current_size()
+        h
+        w
+    choose_folder_image()
+        py
+        source
+    choose_gateway_icon_image()
+        selected
+        source
+    choose_gateway_json()
+        path
+    choose_icon_dir()
+        path
+    choose_splash_template_color()
+        _rgb
+        chosen
+        var
+    copy_selected_path()
+        rec
+    delete_selected()
+        failures
+        path
+        rec
+    folder_drop_refused()
+        text
+    folder_image_dropped()
+        paths
+        source
+    folder_tree_selected()
+        meta
+        py
+    gateway_icon_drop_refused()
+        text
+    gateway_icon_image_dropped()
+        paths
+        source
+    gateway_icon_selected()
+        _index
+        app
+        app_path
+        app_target
+        image
+        name
+        raw_icon
+        resolved
+        selected
+        source
+        status
+    gateway_json_path()
+        candidate
+        config_locations
+        config_path
+        configured
+        controller_instance
+        controller_path
+        discovered
+        loaded
+        module_file
+        raw_path
+    generate_all_missing_gateway_icons()
+        _index
+        app
+        failures
+        generated
+        missing
+        result
+    generate_from_source()
+        initial
+        name
+        result
+        src
+    generate_glyph_dialog()
+        bg
+        bg_initial
+        clean
+        default_glyph
+        fg
+        fg_initial
+        glyph
+        name
+        recipe
+        result
+    generate_recipe_set()
+        made
+        recipes
+        results
+    generate_selected_gateway_icon()
+        _index
+        app
+        backup_directory
+        destination
+        names
+        original_icon
+        replacements
+        result
+        selected
+        snapshots
+        splash_destination
+    get_selected_gateway_app()
+        selected
+    open_gateway_json()
+        path
+    open_icon_folder()
+        folder
+    open_selected_file()
+        rec
+    populate_gateway_icon_tree()
+        app
+        app_path
+        counts
+        icon_display
+        iid
+        index
+        item
+        missing_only
+        name
+        project
+        query
+        raw_icon
+        resolved
+        searchable
+        selected
+        selected_index
+        status
+        total
+    populate_splash_tree()
+        app
+        iid
+        index
+        item
+        modified
+        modified_count
+        modified_exists
+        name
+        original
+        original_count
+        original_exists
+        purpose
+        query
+        searchable
+        selected
+        selected_index
+        version_source
+        window_title
+    populate_tree()
+        item
+        pngs
+        q
+        rec
+        status
+        updated
+    preview_sample_splash()
+        detail
+        field_map
+    preview_selected_gateway_splash()
+        app
+        image
+        modified
+        original
+        preview
+    refresh_folder_files()
+        files
+        folder
+        iid
+        index
+        item
+        keep
+        meta
+        py
+        text
+    refresh_gateway_icons()
+        apps
+        data
+        error_text
+        path
+        selected
+        selected_index
+        source
+    refresh_icons()
+        clear_cache
+        configured_dir
+        current
+        selected_name
+    regenerate_selected()
+        rec
+        result
+        src
+    reset_splash_template()
+        template
+    save_config_from_ui()
+        clear_cache
+        icon_dir
+        icon_dir_text
+    save_selected_gateway_splash()
+        app
+        completed
+        destination
+        failed
+        first_index
+        image
+        index
+        selected_rows
+    save_ui_choices()
+        controller
+    scan_records()
+        base
+        groups
+        icon_dir
+        maybe_base
+        maybe_size
+        out
+        p
+        rec
+        size
+        stem
+    selected_folder_py()
+        selected
+    selected_gateway_icon_app()
+        index
+        selected
+    selected_record()
+        key
+        sel
+    selected_splash_app()
+        app
+        focus_iid
+        focus_index
+        index
+        selected
+    selected_splash_apps()
+        iid
+        index
+        result
+        selected_items
+    show_selected_preview()
+        img
+        path
+        rec
+    splash_tree_selected()
+        app
+        count_text
+        index
+        modified
+        original
+        selected
+        selected_rows
+</pre></main><div id="bottom-nav" hidden></div><script></script></body></html>

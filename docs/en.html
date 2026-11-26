@@ -1,0 +1,1499 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Icon Manager</title>
+<link rel="icon" href="images/favicon-icon.png">
+<style>
+/* Shared portfolio header and footer */
+:root{color-scheme:light dark;--bg:#f4f7fa;--ink:#17212f;--muted:#566779;--card:#fff;--line:#d6dfe8;--a1:#146c77;--on:#fff;--soft:#e6f2f4;--shadow:0 3px 10px #1e3a5a1a;--hh:64px}
+@media (prefers-color-scheme:dark){:root{--bg:#0e141c;--ink:#e8eef6;--muted:#9fb0c4;--card:#18212d;--line:#2a374a;--a1:#7cc8d0;--on:#0b1b1f;--soft:#1c2c38;--shadow:0 3px 12px #0009}}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--hh) + 56px)}
+body{margin:0;font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);overflow-wrap:break-word}
+a{color:var(--a1)}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #df8f40;outline-offset:2px}
+
+/* top bar: brand, funding badge, language (wide screens), hamburger (narrow screens) */
+.topbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--card) 96%,transparent);border-bottom:1px solid var(--line);backdrop-filter:blur(14px);box-shadow:0 4px 22px #28444c10}
+.top-inner{max-width:1280px;margin:auto;padding:8px 14px;display:flex;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:11px;flex:1;min-width:0;font-weight:850;color:var(--ink);text-decoration:none;line-height:1.15;letter-spacing:-.02em}
+.brand span{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.brand small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:650;font-size:11px;letter-spacing:0;color:var(--muted);margin-top:3px}
+.brand-logo{display:block;width:40px;height:40px;object-fit:contain;border-radius:10px;border:1px solid var(--line);box-shadow:0 4px 13px #17394615;flex:none;background:#fff}
+.funding-alert{display:flex;align-items:center;gap:8px;text-decoration:none;flex:none}
+.funding-flash{background:#c81729;color:#fff;border:1px solid #9c1023;box-shadow:0 0 0 2px #ffffffa1;letter-spacing:.07em;border-radius:7px;padding:6px 9px;font:900 11px/1.1 system-ui,sans-serif;animation:fund-flash 1.6s ease-in-out infinite}
+.funding-status{display:none;color:#b3202d;font:740 11px/1.25 system-ui,sans-serif;max-width:190px}
+@media (prefers-color-scheme:dark){.funding-status{color:#ff9aa6}}
+@keyframes fund-flash{0%,100%{background:#bb1126;box-shadow:0 0 0 2px #ffffffa1}50%{background:#ff304b;box-shadow:0 0 0 3px #ffb0bb}}
+.lang{display:none;align-items:center;gap:6px;font-size:13px}
+.lang select,.dr-lang select{font:inherit;padding:7px 9px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px}
+.burger{flex:none;width:44px;height:44px;border:1px solid var(--line);border-radius:12px;background:var(--card);cursor:pointer;display:grid;place-content:center;gap:5px;padding:0}
+.burger span{display:block;width:20px;height:2px;border-radius:2px;background:var(--ink);transition:transform .2s,opacity .2s}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* step tracker: sits under the top bar on narrow screens while the tour is on screen */
+.tourbar{position:absolute;left:0;right:0;top:100%;background:var(--card);border-bottom:1px solid var(--line);box-shadow:0 6px 14px #0000001a}
+.tb-row{display:flex;align-items:center;gap:8px;padding:5px 10px;max-width:1280px;margin:auto}
+.tb-row button{flex:none;width:38px;height:34px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font:700 18px/1 system-ui,sans-serif;cursor:pointer}
+.tb-row button:disabled{opacity:.35;cursor:default}
+.tb-txt{flex:1;min-width:0;line-height:1.25;font-size:13px}
+.tb-txt b{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--a1)}
+.tb-txt span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:650}
+.tb-prog{height:3px;background:var(--line)}.tb-prog i{display:block;height:100%;width:0;background:var(--a1);transition:width .25s}
+
+/* hamburger drawer */
+.scrim{position:fixed;inset:0;z-index:60;background:#0008;opacity:0;pointer-events:none;transition:opacity .25s}
+.scrim.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;z-index:70;top:0;right:0;bottom:0;width:min(88vw,360px);background:var(--card);border-left:1px solid var(--line);box-shadow:-10px 0 30px #0004;display:flex;flex-direction:column;transform:translateX(104%);visibility:hidden;transition:transform .25s,visibility 0s .25s}
+.drawer.open{transform:none;visibility:visible;transition:transform .25s}
+.dr-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--line)}
+.dr-head strong{font-size:16px}
+.dr-head button{width:40px;height:40px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:700 16px/1 system-ui,sans-serif;cursor:pointer}
+.dr-body{flex:1;overflow:auto;padding:12px 14px 24px;overscroll-behavior:contain}
+.dr-body h2,.side h2{font:800 11px/1.2 system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:16px 0 6px}
+.dr-lang{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:650}.dr-lang select{font-size:16px;width:100%;padding:10px}
+.dr-fund{display:flex;align-items:center;gap:10px;margin:14px 0 2px;padding:10px;border:1px solid #c8162933;border-radius:10px;text-decoration:none;color:#b3202d;font:740 12px/1.3 system-ui,sans-serif}
+@media (prefers-color-scheme:dark){.dr-fund{color:#ff9aa6}}
+.dr-body>.btn{margin-top:18px}
+
+/* page index (sidebar on wide screens, drawer on narrow screens) */
+.toc{display:flex;flex-direction:column;gap:2px}
+.toc a{display:flex;align-items:baseline;gap:8px;padding:7px 9px;border-radius:8px;border-left:3px solid transparent;text-decoration:none;color:var(--ink);font-size:13.5px;line-height:1.35}
+.toc a.lv2{margin-left:10px;color:var(--muted)}
+.toc a:hover{background:var(--soft)}
+.toc a.on{background:var(--soft);border-left-color:var(--a1);color:var(--ink);font-weight:700}
+.toc .n{flex:none;min-width:20px;height:20px;border-radius:10px;background:var(--a1);color:var(--on);font:800 11px/20px system-ui,sans-serif;text-align:center}
+.side{display:none}
+
+/* page layout */
+.layout{max-width:1280px;margin:auto;padding:14px 14px 24px;display:block}
+.hero,.panel{display:flow-root;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 14px;box-shadow:var(--shadow)}
+.hero{border-top:4px solid var(--a1)}
+.hero h1{font-size:1.5rem;line-height:1.2;margin:0 0 4px;letter-spacing:-.02em}.pill{display:inline-block;font-size:12px;color:var(--muted);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:1px 10px}
+.hero h2,.panel>h2{font-size:1.1rem;margin:12px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--line)}
+.panel>h2{margin-top:0}
+.hero p,.panel p{margin:6px 0}.panel ul,.panel ol{margin:6px 0;padding-left:22px}.panel pre{overflow:auto;background:var(--bg);padding:8px;border-radius:8px}.panel table{max-width:100%;display:block;overflow:auto}
+.splash{float:right;width:30%;max-width:190px;margin:0 0 8px 14px}.splash img{width:100%;max-height:110px;object-fit:contain;border-radius:8px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0!important}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 15px;border:1px solid var(--a1);border-radius:999px;text-decoration:none;font-weight:700;font-size:13.5px;color:var(--a1);background:transparent}
+.btn.pri{background:var(--a1);color:var(--on)}
+.btn:hover{background:var(--soft)}.btn.pri:hover{filter:brightness(1.1);background:var(--a1)}
+
+/* guided tour: numbered steps, screenshot between the text blocks */
+.tour-meta{margin:2px 0 14px!important;font-size:12.5px;color:var(--muted)}
+.langtext{display:flow-root}
+.langtext img{max-width:100%;height:auto}
+.lead{margin:0 0 16px}
+.step{display:grid;grid-template-columns:36px minmax(0,1fr);column-gap:14px;position:relative;scroll-margin-top:calc(var(--hh) + 56px)}
+.step-n{position:relative;z-index:1;width:36px;height:36px;border-radius:50%;background:var(--a1);color:var(--on);font:800 15px/36px system-ui,sans-serif;text-align:center;margin-top:1px;transition:box-shadow .2s}
+.step::before{content:"";position:absolute;left:17px;top:40px;bottom:-4px;width:2px;background:var(--line)}
+.step:last-child::before{display:none}
+.step.cur .step-n{box-shadow:0 0 0 5px color-mix(in srgb,var(--a1) 28%,transparent)}
+.step-body{min-width:0;padding-bottom:26px}
+.step-body>h2,.step-body>h3,.step-body>h4{margin:5px 0 6px;font-size:1.15rem;line-height:1.3;border:0;padding:0}
+.step-body>p:first-of-type{margin-top:4px}
+.shot{margin:12px 0 8px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg);box-shadow:var(--shadow);max-width:880px}
+.shot .bar{display:flex;align-items:center;gap:5px;padding:7px 10px;background:color-mix(in srgb,var(--ink) 7%,var(--card));font-size:12px;color:var(--muted)}
+.shot .bar i{display:block;width:9px;height:9px;border-radius:50%;background:var(--line);border:1px solid color-mix(in srgb,var(--muted) 40%,transparent)}
+.shot .bar span{margin-left:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.langtext .shot img,.shot img{display:block;width:100%;height:auto;max-height:78vh;object-fit:contain;background:#fff;cursor:zoom-in}
+.shot figcaption{padding:6px 10px;font-size:12px;line-height:1.4;color:var(--muted)}
+.next{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:7px 13px;border:1px solid var(--line);border-radius:999px;font-size:13px;font-weight:650;text-decoration:none;max-width:100%}
+.next:hover{background:var(--soft)}.next span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* gallery, posters, files */
+.gallery,.posters{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.gallery figure,.posters a{margin:0;border:1px solid var(--line);border-radius:8px;padding:5px;min-width:0;background:var(--bg)}
+.gallery img,.posters img{display:block;width:100%;height:100px;object-fit:contain;cursor:zoom-in}.posters img{height:150px}
+figcaption{font-size:11px;line-height:1.35;color:var(--muted)}
+#features-body:empty{display:none}
+#repository-files ul{columns:2 250px;column-gap:28px;list-style:none;padding-left:0}#repository-files li{break-inside:avoid;padding:2px 0}
+#repository-files a{overflow-wrap:anywhere;font-family:ui-monospace,Consolas,monospace;font-size:13px}
+
+@media (min-width:700px){.funding-status{display:block}}
+@media (min-width:1000px){
+  .burger,.tourbar{display:none!important}.lang{display:flex}.side{display:block}
+  .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:22px;padding-top:18px}
+  .side{position:sticky;top:calc(var(--hh) + 14px);align-self:start;max-height:calc(100vh - var(--hh) - 28px);overflow:auto;padding:2px 4px 14px 0}
+  .side h2:first-child{margin-top:0}
+  .hero,.panel{padding:20px 26px}
+  .hero h1{font-size:1.8rem}
+}
+@media (max-width:560px){
+  .layout{padding:10px 10px 18px}.hero,.panel{padding:13px 13px;border-radius:12px}
+  .splash{float:none;width:100%;max-width:none;margin:0 0 10px}.splash img{max-height:130px}
+  .step{grid-template-columns:28px minmax(0,1fr);column-gap:10px}
+  .step-n{width:28px;height:28px;font-size:13px;line-height:28px}.step::before{left:13px;top:32px}
+  .brand small{display:none}.brand-logo{width:36px;height:36px}
+}
+@media (max-width:360px){.funding-flash{padding:5px 6px;font-size:10px}}
+/* bottom: funding and links */
+.footer{background:#16434d;color:#fff5e8;padding:46px 0 34px;border-top:6px solid #efb75f;margin-top:10px}
+.footer .wrap{padding-top:0;padding-bottom:0}
+.footer-top{display:grid;grid-template-columns:1fr 1.2fr;gap:44px;align-items:start}
+.footer .kicker{font-size:12px;letter-spacing:.17em;text-transform:uppercase;font-weight:850;margin:0 0 7px;color:#e9bb7d}
+.footer h2{font:650 clamp(26px,3.2vw,40px)/1.14 Georgia,serif;letter-spacing:-.03em;color:#fff6e7;margin:0 0 13px}
+.footer p{color:#d4e4e1;max-width:500px;font-size:15px}
+.footer-brand-logo{display:block;width:78px;height:78px;object-fit:contain;border-radius:15px;border:1px solid #8cb6b2;margin-bottom:18px;background:#fff}
+.footer .funding-note{margin-top:20px;padding:16px 18px;border-left:4px solid #efb75f;background:#ffffff12;border-radius:0 9px 9px 0;color:#f3e5cc;max-width:520px}
+.footer .funding-note strong{color:#fff8e7}
+.support-art{display:flex;align-items:center;gap:12px;max-width:450px;font-size:13px;color:#e2ead9;margin-top:16px}
+.support-art img{width:65px;flex:0 0 65px;height:65px;border-radius:9px;object-fit:cover}
+.support-art span{line-height:1.55}
+.footer-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.footer-links a{display:block;border:1px solid #668d90;padding:14px;border-radius:10px;text-decoration:none;background:#ffffff0c;color:#ebf7f3;font-weight:720;font-size:13px;overflow-wrap:anywhere}
+.footer-links a:hover{background:#ffffff1e}
+.footer-links a span{display:block;font-size:11px;color:#b3ccca;font-weight:500;margin-top:3px}
+.footer-links a.support-link{border-color:#e5b874;background:#ecb75a15}.footer-links a.support-link:hover{background:#ecb75a30}
+.footer-bottom{border-top:1px solid #5b8183;margin-top:34px;padding-top:20px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:12px;color:#c1d4d0}
+.footer-bottom a{color:#ffdc9b}
+
+@media (max-width:760px){.footer-top{grid-template-columns:1fr;gap:30px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.funding-flash{animation:none}.drawer,.scrim,.burger span,.tb-prog i{transition:none}}
+@media print{.funding-flash{animation:none}.topbar{position:static}.burger,.drawer,.scrim,.tourbar,.side{display:none!important}.layout{display:block}}
+.footer .wrap{max-width:1280px;margin:auto;padding:0 16px}.footer{text-align:left;padding:20px 0 16px}.footer-top{gap:20px}.footer h2{font-size:24px}.footer p{font-size:13px}.footer-brand-logo{width:44px;height:44px;margin-bottom:8px}.footer-links a{padding:7px}.footer-bottom{margin-top:14px;padding-top:10px}
+/* poster overlay: 95% of the screen, zoomable, easy to leave */
+dialog#viewer{width:95vw;height:95vh;max-width:95vw;max-height:95vh;margin:auto;padding:0;border:0;border-radius:12px;background:#0a1418;color:#fff;overflow:hidden}
+dialog#viewer::backdrop{background:#000b}
+dialog#viewer[open]{display:flex;flex-direction:column}
+.v-bar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#000a;flex:none}
+.v-bar strong{flex:1;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.v-bar button{cursor:pointer;color:#fff;font:700 14px/1 system-ui,sans-serif;background:#fff2;border:1px solid #fff7;border-radius:18px;padding:8px 13px}
+.v-bar button:hover{background:#fff4}.v-bar .close{background:#b91c1c;border-color:#fff9}
+.v-stage{flex:1;overflow:auto;display:flex;padding:10px}
+.v-stage a{display:block;margin:auto;flex:none;cursor:pointer}
+.v-stage img{display:block;max-width:calc(95vw - 20px);max-height:calc(95vh - 76px);width:auto;height:auto;object-fit:contain}
+.v-hint{flex:none;text-align:center;font-size:12px;color:#c3d4d8;padding:4px 8px 7px}
+
+
+</style>
+</head><body id="top">
+<header class="topbar" id="topbar"><div class="top-inner">
+  <a class="brand" href="https://bmulti.github.io/" aria-label="Return to portfolio">
+    <img class="brand-logo" src="images/logo-logo.png" alt="" width="40" height="40">
+    <span>Icon Manager<small id="header-description">Image</small></span>
+  </a>
+  <a class="funding-alert" href="#connect" aria-label="Funding request and support links"><strong class="funding-flash">FUNDING</strong><span class="funding-status">Nov 2026 sites and links will work with funding</span></a>
+  <div class="lang"><label for="doclang" data-i="lang">Language</label><select id="doclang"><option value="en" selected>EN</option><option value="ar">AR</option><option value="bn">BN</option><option value="ceb">CEB</option><option value="de">DE</option><option value="es">ES</option><option value="fr">FR</option><option value="hi">HI</option><option value="id">ID</option><option value="ja">JA</option><option value="ko">KO</option><option value="pt">PT</option><option value="ru">RU</option><option value="sw">SW</option><option value="tl">TL</option><option value="tr">TR</option><option value="ur">UR</option><option value="vi">VI</option><option value="zh">ZH</option></select></div>
+  <button type="button" class="burger" id="burger" aria-label="Menu" data-ia="menu" aria-expanded="false" aria-controls="drawer"><span></span><span></span><span></span></button>
+</div>
+<div class="tourbar" id="tourbar" hidden><div class="tb-row"><button type="button" id="tb-prev" aria-label="Previous" data-ia="prev">‹</button><div class="tb-txt"><b id="tb-step"></b><span id="tb-title"></span></div><button type="button" id="tb-next" aria-label="Next" data-ia="next">›</button></div><div class="tb-prog"><i id="tb-fill"></i></div></div>
+</header>
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Menu" data-ia="menu" aria-hidden="true">
+  <div class="dr-head"><strong data-i="menu">Menu</strong><button type="button" id="dr-close" aria-label="Close" data-ia="close">✕</button></div>
+  <div class="dr-body">
+    <div class="dr-lang"><label for="doclang2" data-i="lang">Language</label><span id="dr-sel"></span></div>
+    <a class="dr-fund" href="#connect"><strong class="funding-flash">FUNDING</strong><span>Nov 2026 sites and links will work with funding</span></a>
+    <h2 data-i="onpage">On this page</h2><div class="toc" id="toc-m"></div>
+    <div id="extra-m" hidden><h2 data-i="more">More pages</h2><div class="toc" id="extra-links-m"></div></div>
+    <a class="btn" href="https://bmulti.github.io/">Portfolio</a>
+  </div>
+</aside>
+<div class="layout">
+<nav class="side" id="page-index" aria-label="Page index"><h2 data-i="onpage">On this page</h2><div class="toc" id="toc"></div><div id="extra-pages" hidden><h2 data-i="more">More pages</h2><div class="toc" id="extra-links"></div></div></nav>
+<main id="application">
+  <section class="hero" id="description">
+    <a class="splash" href="https://bmulti.github.io/"><img src="images/splash-cc-icon-manager-spash.webp" alt="Application title image"></a>
+    <h1>Icon Manager</h1><span class="pill">Image · v34</span>
+    <h2>Description</h2><div id="description-text"><p>Splash editor plus startup display of this application splash image</p></div>
+    <p class="actions"><a class="btn pri" href="#about" data-i="start">Start the tour</a><a class="btn" href="https://github.com/bmulti/icon-manager">Repository</a><a class="btn" href="https://bmulti.github.io/">Portfolio</a></p>
+  </section>
+  
+  <section class="panel tour" id="about"><h2>About this application (19 languages)</h2>
+    <p class="tour-meta" id="tour-meta"></p>
+    <div id="langtexts"><div class="langtext" data-lang="en"><p style="white-space:pre-wrap">[intro]
+Icon Manager creates and maintains the icons and startup splash images used by
+your applications. It works on the shared icon library, on the applications
+listed in the Gateway, on the files in a folder, and on a folder of app
+subfolders. Icons are .ico files; splash images are PNG files with the
+application&#x27;s name, description and version drawn on them, with an optional WEBP
+copy for web use.
+
+Start on Icons to see the shared library, or choose a folder in Folder or
+Subfolders and drop in an image. Set the shared icon folder, the Gateway file
+and the splash text layout in Config, then press Save Config. Click any Notes
+heading to open its corresponding tab.
+
+[tab:icons]
+The table lists every icon set found in the shared icon folder. A set is an ICO
+file together with its PNG sizes. Status shows Complete (an ICO and the PNG sizes
+32, 48, 50, 64 and 128), Partial PNGs, ICO only, or Missing ICO (PNG files exist
+but there is no ICO). Updated shows the newest file in the set.
+
+Search icons filters by set name or path. Clear removes the filter. Refresh
+reloads the folder, and Open Folder opens it. Select a set to see a preview, its
+status and its files in Selected icon. Double-click a set, or press Open File, to
+open it.
+
+Generate from Source makes a set from an application (exe, dll, lnk) or an image
+(ico, png, jpg, jpeg, bmp, webp) that you choose. Generate Glyph makes a simple
+set from a name, one or two letters and two colours. Recipe Set generates the
+standard recipe icons after you confirm. Regenerate Selected rebuilds the
+selected set from a new source. Copy Path copies the set&#x27;s path. Delete Selected
+removes every shared file for the selected set after you confirm; this cannot be
+undone.
+
+Generate from Source and Regenerate Selected replace the set if it already
+exists. They also save an ICO beside the application when that option is ticked
+in Config. If the shared icon service cannot be loaded, these buttons show a
+message instead.
+
+[tab:gateway-icons]
+This tab checks the icons of the applications in the Gateway file chosen in
+Config. The path of that file is shown above the table. Refresh Gateway reloads
+it.
+
+Icon Status shows Found when the icon can be located, Not Found when the Gateway
+names an icon that cannot be located, and Missing when no icon is recorded. The
+summary at the right counts each. Missing only hides applications whose icon is
+Found. Search matches the application, project, status, icon and path. Narrow
+layout puts the preview below the table instead of beside it.
+
+Generate Selected from App makes an icon for the selected application. Generate
+All Missing does this for every application that is not Found, after you
+confirm; applications without a usable source get a simple letter icon. Choose
+PNG, JPG or ICO, or dropping one file on the target at the bottom, assigns that
+image to the selected application. Icon crop chooses whether a wide image is
+cropped from the Center or the Right side.
+
+Each of these writes the ICO beside the application, writes its _spash.png, and
+records the icon in the Gateway file. If the files already exist you are asked
+before they are replaced, and if the Gateway file cannot be saved they are put
+back as they were. If the Gateway file was changed elsewhere it is reloaded and
+you must repeat the action. Web links, and applications whose file cannot be
+found, cannot be given an icon here.
+
+[tab:folder]
+Choose a folder with Browse Folder. The table lists the files directly inside it,
+not subfolders. For Python files, Named, Description and Version are read from
+the project, named, version and description lines near the top of the file;
+nothing is run. The .ico and _splash.png columns show Yes or No for Python files
+only.
+
+Select a file to see its details and its current splash picture. If it has no
+splash yet, the preview shows how one would look on a sample background.
+
+Drop a PNG or JPG on the target at the bottom, or press Choose PNG or JPG, to
+create three files beside the selected Python file: &lt;name&gt;.ico, &lt;name&gt;_splash.png
+and &lt;name&gt;_splash.webp. Existing files with those names are replaced. The
+splash text comes from the template in Config. Drop exactly one image at a time;
+links and web downloads are refused.
+
+Make all PNG into WEBP copies every PNG in the folder and all folders beneath it
+to a WEBP of the same name, replacing any that exist. It runs in the background
+and the status line shows progress. Icon crop works as on Gateway Icons.
+
+Right-click a file for Explore, Open folder in Explorer, Make a Copy, Paste File
+to Folder, Copy File Path, Copy image to clipboard (Windows only) and Delete
+(asks first). A copy is named &quot;- Copy&quot;, and pasting never replaces an existing
+file.
+
+[tab:subfolders]
+Use this tab when each application lives in its own subfolder, as
+&lt;folder&gt;\&lt;folder&gt;.py. Choose the parent with Browse Root and press Populate. The
+table lists every subfolder with whether its .py, .ico and _splash.png exist,
+and the summary counts how many are missing an .ico or splash. Missing only
+hides folders that already have both.
+
+Select a folder, then drop a PNG or JPG on the target, or press Choose PNG or
+JPG, to write &lt;folder&gt;.ico, &lt;folder&gt;_splash.png and &lt;folder&gt;_splash.webp in that
+subfolder, replacing existing files. The folder&#x27;s name is used as the file name
+on the splash. When Missing only is ticked, the selection moves on to the next
+folder that still needs files.
+
+Make all PNG into WEBP and Icon crop work as on the Folder tab. Right-click a
+row to explore the folder or any of its files.
+
+[tab:process]
+This page shows how icons are found and made, and the health of the shared icon
+folder. The four counts show the icon sets, the complete sets, the sets missing
+an ICO, and the partial sets.
+
+The flow runs from a request, to reusing an existing icon, to converting a
+matching image, to extracting an icon from an exe, dll or lnk, and finally to a
+simple letter icon. Each step is tried only if the one before found nothing.
+
+New sets contain ICO sizes 16, 24, 32, 48, 64, 128 and 256, and PNG sizes 32,
+48, 50, 64 and 128. Other applications can ask for an icon with request_icon.
+Nothing on this page is edited.
+
+[tab:config]
+Set the shared icon folder and the Gateway file. The icon folder is created if
+it does not exist. Tick the option to also save an ICO beside the requesting
+application when generating from a source. Press Save Config; the status line
+confirms it. Your choices are kept in cpc_icon_manager.json and restored the next
+time Icon Manager opens. Edit JSON saves and then opens that file. The page
+scrolls in a smaller window.
+
+Splash Overlay Template controls the text drawn on every splash image. Final
+splash height is the height in pixels of the finished image (400 by default).
+The text box holds one line per row of text; use the listed fields such as
+{{window_title}}, {{purpose_note}}, {{file_name}}, {{version}}, {{source_date}},
+{{version_or_source}}, {{app_name}}, {{project}} and {{desc}}, and they are
+filled from each application. A blank line leaves a gap.
+
+Each line has its own style row: font, size, text colour, and optional
+background and shadow with their colours. Colours are written as #RRGGBB, or
+chosen with the ... button. Rows follow the lines of text, and a line style
+changes when you leave the text box.
+
+[tab:splash]
+This tab turns the original _spash.png of each Gateway application into a
+finished _splash.png with the template text added. The original is never
+changed. The table shows, for each application, its window title, version or
+source date, purpose note, and whether the original and the finished file exist.
+Search filters the list; Refresh Gateway reloads it.
+
+Select an application to see its Gateway record and a preview. Select several to
+create them together. Preview Selected redraws the preview using the current
+template. Create Selected writes the _splash.png beside each selected
+application, replacing any earlier one. Sample shows the template on example
+values and a sample background. An application whose original _spash.png or
+application file is missing cannot be previewed or created.
+
+When Icon Manager starts on its own, it shows the application&#x27;s own
+_splash.png, or the _spash.png if there is no finished one, while it loads.
+
+[tab:ui-choices]
+Choose a colour theme, spacing and window size. These settings control how the
+app looks. Icon folders, the Gateway file and splash text belong in Config. When
+Icon Manager is attached to another application, that application controls the
+window and its appearance, and this tab may be hidden.
+
+[tab:gateway]
+Use the shared launcher to find and open registered applications, files, folders
+and links. Gateway is separate from the icon work on the other tabs, and it
+appears only when Icon Manager shows it. If the launcher cannot be loaded, you
+can open the Gateway file from this tab.
+
+[footer]
+[Mr Bmulti](http://mrbmulti.com)
+[GitHub](https://githum/mrBmulti)</p></div><div class="langtext" data-lang="ar" hidden><p style="white-space:pre-wrap">[intro]
+ينشئ Icon Manager أيقونات التطبيقات وصور شاشة بدء التشغيل ويديرها. يعمل مع مكتبة الأيقونات المشتركة وتطبيقات Gateway والملفات داخل مجلد ومجلدات التطبيقات الفرعية. الأيقونات ملفات ICO، وصور البدء ملفات PNG مع نسخة WEBP اختيارية.
+افتح Icons لعرض المكتبة، أو أضف صورة في Folder أو Subfolders. اضبط مجلد الأيقونات وملف Gateway وتخطيط نص شاشة البدء في Config، ثم اضغط Save Config.
+
+[tab:icons]
+يعرض الجدول مجموعات الأيقونات في المكتبة المشتركة. تحتوي كل مجموعة على ICO وأحجام PNG. تعرض Status الحالات Complete أو Partial PNGs أو ICO only أو Missing ICO، ويعرض Updated أحدث ملف.
+تقوم Search icons بالتصفية حسب الاسم أو المسار. يمسح Clear عامل التصفية، ويحدّث Refresh القائمة، ويفتح Open Folder المجلد. اختر مجموعة لعرض المعاينة والحالة والملفات.
+ينشئ Generate from Source مجموعة من تطبيق أو صورة. ينشئ Generate Glyph مجموعة بسيطة من اسم وحرف أو حرفين ولونين. ينشئ Recipe Set أيقونات الوصفات القياسية بعد التأكيد. يعيد Regenerate Selected إنشاء المجموعة؛ وينسخ Copy Path المسار. يحذف Delete Selected جميع ملفات المجموعة المشتركة بعد التأكيد، ولا يمكن التراجع عن ذلك.
+يستبدل التوليد وإعادة التوليد المجموعة الموجودة. ويمكنهما حفظ ICO بجانب التطبيق إذا كان الخيار مفعلاً في Config.
+
+[tab:gateway-icons]
+يفحص هذا التبويب أيقونات التطبيقات في ملف Gateway المحدد في Config. يعيد Refresh Gateway تحميل القائمة.
+تعرض Icon Status الحالات Found أو Not Found أو Missing. يخفي Missing only التطبيقات التي عُثر على أيقونتها. يبحث Search في التطبيق والمشروع والحالة والأيقونة والمسار. يضع Narrow layout المعاينة أسفل الجدول.
+ينشئ Generate Selected from App أيقونة للتطبيق المحدد. وينشئ Generate All Missing أيقونات لكل التطبيقات التي ليست Found بعد التأكيد؛ وإذا لم يتوفر مصدر صالح، يُنشأ رمز حرف بسيط. يمكن أيضاً اختيار أو إسقاط صورة PNG أو JPG أو ICO. يحدد Icon crop قص الصورة العريضة من Center أو Right.
+تكتب العملية ICO بجانب التطبيق، وتنشئ _spash.png وتسجل الأيقونة في Gateway. يُطلب التأكيد قبل استبدال الملفات. إذا تعذر حفظ Gateway، تعاد الملفات إلى حالتها السابقة. إذا عُدّل Gateway في مكان آخر، أعد تحميله وكرر العملية. لا يمكن تعيين أيقونة لروابط الويب أو التطبيقات التي يتعذر العثور على ملفاتها.
+
+[tab:folder]
+اختر مجلداً باستخدام Browse Folder. يعرض الجدول الملفات الموجودة مباشرة داخله فقط. في ملفات Python، تُقرأ Named وDescription وVersion من أسطر المشروع القريبة من بداية الملف؛ ولا يتم تشغيل التعليمات البرمجية.
+اختر ملفاً لعرض تفاصيله وصورة شاشة البدء الحالية. إذا لم توجد صورة، تظهر معاينة نموذجية.
+أسقط PNG أو JPG على الهدف أو اضغط Choose PNG or JPG لإنشاء &lt;name&gt;.ico و&lt;name&gt;_splash.png و&lt;name&gt;_splash.webp بجانب ملف Python المحدد. تُستبدل الملفات الموجودة. يأتي النص من قالب Config. أسقط صورة واحدة فقط؛ تُرفض الروابط والتنزيلات من الويب.
+يحوّل Make all PNG into WEBP كل ملفات PNG في المجلد ومجلداته الفرعية إلى WEBP بالاسم نفسه، ويعمل في الخلفية. يعمل Icon crop كما في Gateway Icons.
+انقر بزر الفأرة الأيمن لاستكشاف الملف أو فتح المجلد أو النسخ أو اللصق أو نسخ المسار أو نسخ الصورة إلى الحافظة (Windows فقط) أو الحذف بعد التأكيد. تسمى النسخة &quot;- Copy&quot;، ولا يستبدل اللصق ملفاً موجوداً.
+
+[tab:subfolders]
+استخدم هذا التبويب عندما يكون كل تطبيق في مجلد فرعي خاص به، مثل &lt;folder&gt;\\&lt;folder&gt;.py. اختر المجلد الأصل عبر Browse Root واضغط Populate. يعرض الجدول وجود ملفات .py و.ico و_splash.png ويحصي العناصر الناقصة. يخفي Missing only المجلدات المكتملة.
+اختر مجلداً وأسقط PNG أو JPG لإنشاء &lt;folder&gt;.ico و&lt;folder&gt;_splash.png و&lt;folder&gt;_splash.webp داخله. تُستبدل الملفات الموجودة، ويُستخدم اسم المجلد اسماً لملف شاشة البدء. عند تفعيل Missing only ينتقل الاختيار إلى المجلد التالي الذي يحتاج إلى ملفات.
+يعمل Make all PNG into WEBP وIcon crop كما في Folder. انقر بزر الفأرة الأيمن لاستكشاف المجلد أو ملفاته.
+
+[tab:process]
+توضح هذه الصفحة كيفية العثور على الأيقونات وإنشائها وحالة مجلد الأيقونات المشترك. تعرض العدادات الأربعة عدد المجموعات والمجموعات المكتملة والمجموعات التي ينقصها ICO والمجموعات الجزئية.
+تبدأ العملية بإعادة استخدام أيقونة موجودة، ثم تحويل صورة مطابقة، ثم استخراج أيقونة من exe أو dll أو lnk، وأخيراً إنشاء أيقونة حرفية بسيطة. لا تُجرّب الخطوة التالية إلا إذا لم تنجح السابقة.
+تحتوي المجموعات الجديدة على أحجام ICO ‏16 و24 و32 و48 و64 و128 و256، وأحجام PNG ‏32 و48 و50 و64 و128. يمكن للتطبيقات الأخرى طلب أيقونة باستخدام request_icon. هذه الصفحة للعرض فقط.
+
+[tab:config]
+حدد مجلد الأيقونات المشترك وملف Gateway. يُنشأ المجلد إذا لم يكن موجوداً. فعّل الخيار لحفظ ICO أيضاً بجانب التطبيق عند الإنشاء من مصدر. يحفظ Save Config الإعدادات في cpc_icon_manager.json.
+يتحكم Splash Overlay Template في النص المرسوم على صور البدء. الارتفاع النهائي بالبكسل (400 افتراضياً). ضع سطراً واحداً في كل صف واستخدم الحقول مثل {{window_title}} و{{purpose_note}} و{{file_name}} و{{version}} و{{source_date}} و{{version_or_source}} و{{app_name}} و{{project}} و{{desc}}؛ وتُملأ من بيانات التطبيق. يترك السطر الفارغ مساحة.
+لكل سطر نمط مستقل: الخط والحجم ولون النص وخلفية وظل اختياريان. تكتب الألوان بصيغة #RRGGBB أو تختارها بزر ... . تتبع الصفوف أسطر النص، ويتغير النمط عند مغادرة مربع النص.
+
+[tab:splash]
+يحوّل هذا التبويب ملف _spash.png الأصلي لكل تطبيق Gateway إلى _splash.png نهائي مع نص القالب. لا يتغير الأصل. يعرض الجدول عنوان النافذة والإصدار أو تاريخ المصدر وملاحظة الغرض ووجود الملفين. تصفي Search القائمة ويعيد Refresh Gateway تحميلها.
+حدد تطبيقاً أو عدة تطبيقات. يعيد Preview Selected رسم المعاينة بالقالب الحالي. ينشئ Create Selected ملف _splash.png بجانب كل تطبيق محدد ويستبدل النسخة السابقة. يعرض Sample القالب بقيم وخلفية نموذجية. لا يمكن المعاينة أو الإنشاء إذا كان _spash.png الأصلي أو ملف التطبيق مفقوداً.
+عند تشغيل Icon Manager مستقلاً، يعرض صورة _splash.png الخاصة به، أو _spash.png إذا لم توجد صورة نهائية، أثناء التحميل.
+
+[tab:ui-choices]
+اختر سمة الألوان والمسافات وحجم النافذة. تتحكم هذه الإعدادات في المظهر. توجد مجلدات الأيقونات وملف Gateway ونص شاشة البدء في Config. إذا كان Icon Manager مضمناً في تطبيق آخر، يتحكم ذلك التطبيق في النافذة ومظهرها وقد يكون هذا التبويب مخفياً.
+
+[tab:gateway]
+استخدم المشغّل المشترك للعثور على التطبيقات والملفات والمجلدات والروابط المسجلة وفتحها. Gateway منفصل عن عمل الأيقونات في التبويبات الأخرى. إذا تعذر تحميل المشغّل، افتح ملف Gateway من هذا التبويب.
+
+[footer]
+[Mr Bmulti](http://mrbmulti.com)
+[GitHub](https://githum/mrBmulti)
+</p></div><div class="langtext" data-lang="bn" hidden><p style="white-space:pre-wrap">[intro]
+Icon Manager অ্যাপ্লিকেশনের আইকন ও শুরুর স্প্ল্যাশ ছবি তৈরি ও পরিচালনা করে। এটি শেয়ার করা আইকন লাইব্রেরি, Gateway-তে থাকা অ্যাপ, কোনো ফোল্ডারের ফাইল এবং অ্যাপের সাবফোল্ডার নিয়ে কাজ করে। আইকন হলো ICO ফাইল; স্প্ল্যাশ ছবি PNG, চাইলে WEBP কপিও তৈরি হয়।
+লাইব্রেরি দেখতে Icons খুলুন, অথবা Folder বা Subfolders-এ ছবি যোগ করুন। Config-এ শেয়ার করা আইকন ফোল্ডার, Gateway ফাইল ও স্প্ল্যাশ লেখার বিন্যাস ঠিক করে Save Config চাপুন।
+
+[tab:icons]
+টেবিলে শেয়ার করা লাইব্রেরির সব আইকন সেট দেখা যায়। প্রতিটি সেটে একটি ICO ও বিভিন্ন মাপের PNG থাকে। Status-এ Complete, Partial PNGs, ICO only বা Missing ICO দেখা যায়। Updated সর্বশেষ ফাইল দেখায়।
+Search icons নাম বা পথ দিয়ে ফিল্টার করে। Clear ফিল্টার সরায়, Refresh তালিকা নতুন করে পড়ে এবং Open Folder ফোল্ডার খোলে। সেট নির্বাচন করলে প্রিভিউ, অবস্থা ও ফাইল দেখা যায়।
+Generate from Source কোনো অ্যাপ বা ছবি থেকে সেট তৈরি করে। Generate Glyph নাম, এক বা দুটি অক্ষর ও দুটি রং দিয়ে সহজ সেট তৈরি করে। Recipe Set নিশ্চিত করার পর সাধারণ রেসিপি আইকন তৈরি করে। Regenerate Selected নির্বাচিত সেট নতুন করে তৈরি করে; Copy Path পথ কপি করে। Delete Selected নিশ্চিত করার পর সেটের সব শেয়ার করা ফাইল মুছে দেয়; এটি ফিরিয়ে আনা যায় না।
+নতুন করে তৈরি বা পুনরায় তৈরি করলে পুরোনো সেট প্রতিস্থাপিত হয়। Config-এ বিকল্পটি চালু থাকলে অ্যাপের পাশেও ICO সংরক্ষিত হয়।
+
+[tab:gateway-icons]
+এই ট্যাব Config-এ নির্বাচিত Gateway ফাইলের অ্যাপগুলোর আইকন পরীক্ষা করে। Refresh Gateway তালিকা নতুন করে লোড করে।
+Icon Status-এ Found, Not Found বা Missing দেখা যায়। Missing only Found আইকনযুক্ত অ্যাপ লুকায়। Search অ্যাপ, প্রকল্প, অবস্থা, আইকন ও পথ খোঁজে। Narrow layout প্রিভিউ টেবিলের নিচে রাখে।
+Generate Selected from App নির্বাচিত অ্যাপের আইকন তৈরি করে। Generate All Missing নিশ্চিত করার পর Found নয় এমন সব অ্যাপের জন্য আইকন তৈরি করে; ব্যবহারযোগ্য উৎস না থাকলে অক্ষরের আইকন তৈরি হয়। PNG, JPG বা ICO নির্বাচন বা টেনে এনে ছবিও নির্ধারণ করা যায়। Icon crop ঠিক করে চওড়া ছবি Center না Right দিক থেকে কাটবে।
+এই কাজ অ্যাপের পাশে ICO লেখে, _spash.png তৈরি করে এবং Gateway-তে আইকন নথিভুক্ত করে। পুরোনো ফাইল বদলানোর আগে অনুমতি চাওয়া হয়। Gateway সংরক্ষণ করা না গেলে ফাইল আগের অবস্থায় ফেরে। অন্য কোথাও Gateway বদলালে আবার লোড করে কাজটি পুনরাবৃত্তি করুন। ওয়েব লিংক এবং যেসব অ্যাপের ফাইল পাওয়া যায় না, তাদের এখানে আইকন দেওয়া যায় না।
+
+[tab:folder]
+Browse Folder দিয়ে ফোল্ডার বাছুন। টেবিলে শুধু সেই ফোল্ডারের সরাসরি থাকা ফাইল দেখায়, সাবফোল্ডার নয়। Python ফাইলে Named, Description ও Version ফাইলের শুরুর দিকের প্রকল্প-লাইন থেকে পড়া হয়; কোড চালানো হয় না।
+ফাইল নির্বাচন করলে তার বিবরণ ও বর্তমান স্প্ল্যাশ ছবি দেখা যায়। ছবি না থাকলে নমুনা প্রিভিউ দেখায়।
+নিচের লক্ষ্যে PNG বা JPG টেনে দিন, অথবা Choose PNG or JPG চাপুন। নির্বাচিত Python ফাইলের পাশে &lt;name&gt;.ico, &lt;name&gt;_splash.png ও &lt;name&gt;_splash.webp তৈরি হবে। একই নামের পুরোনো ফাইল প্রতিস্থাপিত হবে। লেখা Config-এর টেমপ্লেট থেকে আসে। একবারে একটি ছবি দিন; লিংক ও ওয়েব ডাউনলোড গ্রহণ করা হয় না।
+Make all PNG into WEBP ফোল্ডার ও তার সব সাবফোল্ডারের PNG-কে একই নামের WEBP-তে বদলায়। এটি পেছনে চলে। Icon crop, Gateway Icons-এর মতো কাজ করে।
+ফাইলে ডান-ক্লিক করে Explore, Open folder in Explorer, Make a Copy, Paste File to Folder, Copy File Path, Copy image to clipboard (শুধু Windows) বা নিশ্চিত করে Delete বেছে নিন। কপির নাম &quot;- Copy&quot;; পেস্ট করলে পুরোনো ফাইল প্রতিস্থাপিত হয় না।
+
+[tab:subfolders]
+প্রতিটি অ্যাপ নিজস্ব সাবফোল্ডারে থাকলে এই ট্যাব ব্যবহার করুন, যেমন &lt;folder&gt;\\&lt;folder&gt;.py। Browse Root দিয়ে মূল ফোল্ডার বেছে Populate চাপুন। টেবিলে .py, .ico ও _splash.png আছে কি না এবং কতগুলো অনুপস্থিত তা দেখায়। Missing only সম্পূর্ণ ফোল্ডার লুকায়।
+ফোল্ডার নির্বাচন করে PNG বা JPG দিন। সেখানে &lt;folder&gt;.ico, &lt;folder&gt;_splash.png ও &lt;folder&gt;_splash.webp তৈরি হবে। পুরোনো ফাইল প্রতিস্থাপিত হবে; স্প্ল্যাশ ফাইলের নাম হিসেবে ফোল্ডারের নাম ব্যবহৃত হয়। Missing only চালু থাকলে পরের অসম্পূর্ণ ফোল্ডার নির্বাচন হয়।
+Make all PNG into WEBP ও Icon crop, Folder ট্যাবের মতো। সারিতে ডান-ক্লিক করে ফোল্ডার বা ফাইল খুলুন।
+
+[tab:process]
+এই পৃষ্ঠা আইকন কীভাবে খুঁজে ও তৈরি হয় এবং শেয়ার করা আইকন ফোল্ডারের অবস্থা দেখায়। চারটি সংখ্যা মোট সেট, সম্পূর্ণ সেট, ICO-হীন সেট এবং আংশিক সেট দেখায়।
+প্রক্রিয়াটি আগে বিদ্যমান আইকন ব্যবহার করে, তারপর মিলে যাওয়া ছবি রূপান্তর করে, exe, dll বা lnk থেকে আইকন বের করে, শেষে অক্ষরের সহজ আইকন তৈরি করে। আগের ধাপে কিছু না পেলে তবেই পরের ধাপ চলে।
+নতুন সেটে ICO মাপ 16, 24, 32, 48, 64, 128, 256 এবং PNG মাপ 32, 48, 50, 64, 128 থাকে। অন্য অ্যাপ request_icon দিয়ে আইকন চাইতে পারে। এই পৃষ্ঠা সম্পাদনা করা যায় না।
+
+[tab:config]
+শেয়ার করা আইকন ফোল্ডার ও Gateway ফাইল নির্ধারণ করুন। ফোল্ডার না থাকলে তৈরি হবে। উৎস থেকে আইকন বানানোর সময় অনুরোধকারী অ্যাপের পাশে ICO সংরক্ষণের বিকল্প চালু করুন। Save Config সেটিং cpc_icon_manager.json-এ রাখে।
+Splash Overlay Template প্রতিটি স্প্ল্যাশ ছবির লেখা নিয়ন্ত্রণ করে। চূড়ান্ত উচ্চতা পিক্সেলে (ডিফল্ট 400)। প্রতি লাইনে একটি লেখা দিন এবং {{window_title}}, {{purpose_note}}, {{file_name}}, {{version}}, {{source_date}}, {{version_or_source}}, {{app_name}}, {{project}} ও {{desc}}-এর মতো ক্ষেত্র ব্যবহার করুন; অ্যাপের তথ্য দিয়ে এগুলো পূরণ হয়। ফাঁকা লাইন বিরতি রাখে।
+প্রতিটি লাইনের নিজস্ব স্টাইল: ফন্ট, আকার, লেখার রং এবং ঐচ্ছিক পটভূমি ও ছায়ার রং। রং #RRGGBB আকারে লিখুন বা ... বোতামে বেছে নিন। স্টাইলের সারি লেখার সারির সঙ্গে মেলে; টেক্সট বক্স ছাড়লে স্টাইল বদলায়।
+
+[tab:splash]
+এই ট্যাব Gateway অ্যাপের মূল _spash.png-তে টেমপ্লেটের লেখা যোগ করে চূড়ান্ত _splash.png তৈরি করে। মূল ফাইল বদলায় না। টেবিলে উইন্ডোর শিরোনাম, সংস্করণ বা উৎসের তারিখ, উদ্দেশ্য এবং মূল ও তৈরি ফাইল আছে কি না দেখায়। Search ফিল্টার করে; Refresh Gateway নতুন করে লোড করে।
+এক বা একাধিক অ্যাপ নির্বাচন করুন। Preview Selected বর্তমান টেমপ্লেট দিয়ে প্রিভিউ আঁকে; Create Selected প্রতিটি অ্যাপের পাশে _splash.png লেখে এবং আগেরটি প্রতিস্থাপন করে। Sample নমুনা মান ও পটভূমিতে টেমপ্লেট দেখায়। মূল _spash.png বা অ্যাপ ফাইল না থাকলে প্রিভিউ বা তৈরি করা যায় না।
+Icon Manager আলাদাভাবে চালু হলে লোড হওয়ার সময় নিজের _splash.png, অথবা সেটি না থাকলে _spash.png দেখায়।
+
+[tab:ui-choices]
+রঙের থিম, ফাঁকা জায়গা ও উইন্ডোর মাপ বেছে নিন। আইকন ফোল্ডার, Gateway ফাইল ও স্প্ল্যাশ লেখা Config-এ থাকে। Icon Manager অন্য অ্যাপের সঙ্গে যুক্ত থাকলে সেই অ্যাপ উইন্ডো ও চেহারা নিয়ন্ত্রণ করে; এই ট্যাব লুকানো থাকতে পারে।
+
+[tab:gateway]
+শেয়ার করা লঞ্চার দিয়ে নিবন্ধিত অ্যাপ, ফাইল, ফোল্ডার ও লিংক খুঁজে খুলুন। Gateway অন্য ট্যাবের আইকন কাজ থেকে আলাদা। লঞ্চার লোড না হলে এই ট্যাব থেকে Gateway ফাইল খুলুন।
+
+[footer]
+[Mr Bmulti](http://mrbmulti.com)
+[GitHub](https://githum/mrBmulti)
+</p></div><div class="langtext" data-lang="ceb" hidden><p style="white-space:pre-wrap">[intro]
+Ang Icon Manager naghimo ug nagmintinar sa mga icon ug hulagway sa pagsugod sa mga aplikasyon. Nagtrabaho kini sa gipaambit nga icon library, sa mga aplikasyon sa Gateway, sa mga file sulod sa folder, ug sa mga folder sa mga aplikasyon. Ang mga icon kay ICO files; ang mga hulagway sa pagsugod kay PNG, nga mahimong adunay kopyang WEBP.
+Ablihi ang Icons aron makita ang library, o pagdugang og hulagway sa Folder o Subfolders. Ibutang ang icon folder, Gateway file ug porma sa teksto sa Config, dayon pindota ang Save Config.
+
+[tab:icons]
+Ang lamesa naglista sa tanang icon set sa gipaambit nga library. Ang matag set adunay ICO ug mga gidak-on sa PNG. Ang Status nagpakita og Complete, Partial PNGs, ICO only o Missing ICO. Ang Updated nagpakita sa pinakabag-ong file.
+Ang Search icons mosala sumala sa ngalan o path. Ang Clear mopapas sa filter; ang Refresh mo-load pag-usab; ang Open Folder moabli sa folder. Pilia ang set aron makita ang preview, kahimtang ug mga file niini.
+Ang Generate from Source mohimo og set gikan sa aplikasyon o hulagway. Ang Generate Glyph mohimo og yano nga set gamit ang ngalan, usa o duha ka letra ug duha ka kolor. Ang Recipe Set mohimo sa standard recipe icons human sa pagkumpirma. Ang Regenerate Selected motukod pag-usab; ang Copy Path mokopya sa path. Ang Delete Selected mopapas sa tanang shared file sa set human sa pagkumpirma; dili na kini ma-undo.
+Ang Generate from Source ug Regenerate Selected mopuli sa daan nga set. Mahimo usab silang motipig og ICO tupad sa aplikasyon kon gipili kini sa Config.
+
+[tab:gateway-icons]
+Kini nga tab mosusi sa mga icon sa mga aplikasyon nga naa sa Gateway file nga gipili sa Config. Ang Refresh Gateway mo-load pag-usab sa lista.
+Ang Icon Status nagpakita og Found, Not Found o Missing. Ang Missing only motago sa mga aplikasyon nga Found ang icon. Ang Search mangita sa aplikasyon, proyekto, status, icon ug path. Ang Narrow layout ibutang ang preview ubos sa lamesa.
+Ang Generate Selected from App mohimo og icon para sa piniling aplikasyon. Ang Generate All Missing mohimo niini para sa tanan nga dili Found human sa pagkumpirma; kon walay magamit nga source, yano nga icon nga letra ang gamiton. Mahimo usab pagpili o paghulog og PNG, JPG o ICO aron itakda ang hulagway. Ang Icon crop mopili kon Center o Right nga bahin ang putlon sa lapad nga hulagway.
+Kini nga aksyon mosulat sa ICO tupad sa aplikasyon, mohimo og _spash.png ug motala sa icon sa Gateway. Mangayo kini og kumpirmasyon sa dili pa mopuli sa mga file. Kon dili masave ang Gateway, ibalik ang mga file sa ilang daang kahimtang. Kon nausab ang Gateway sa laing dapit, i-refresh ug usba ang aksyon. Dili mahatagan og icon dinhi ang web links ug aplikasyon nga wala makita ang file.
+
+[tab:folder]
+Pilia ang folder gamit ang Browse Folder. Ang lamesa magpakita lamang sa mga file nga direkta sulod niini. Sa Python files, basahon ang Named, Description ug Version gikan sa mga linya sa proyekto; dili ipadagan ang code.
+Pilia ang file aron makita ang detalye ug kasamtangang splash picture. Kon wala pa kini, ipakita ang sample preview.
+Ihulog ang PNG o JPG sa target, o pindota ang Choose PNG or JPG, aron makahimo tupad sa piniling Python file og &lt;name&gt;.ico, &lt;name&gt;_splash.png ug &lt;name&gt;_splash.webp. Ilisan ang daang mga file. Ang teksto gikan sa template sa Config. Usa ra ka hulagway matag higayon; dili dawaton ang links ug web downloads.
+Ang Make all PNG into WEBP mag-convert sa tanang PNG sa folder ug mga subfolder ngadto sa WEBP nga pareho og ngalan. Modagan kini sa background. Ang Icon crop pareho sa Gateway Icons.
+Right-click sa file aron i-explore, ablihan ang folder, mokopya, mopaste, mokopya sa path, mokopya sa hulagway ngadto sa clipboard (Windows lamang), o mopapas human mangayo og kumpirmasyon. Ang kopya nganlan og &quot;- Copy&quot;; ang paste dili mopuli sa kasamtangang file.
+
+[tab:subfolders]
+Gamita kini nga tab kon ang matag aplikasyon naa sa kaugalingong subfolder, sama sa &lt;folder&gt;\\&lt;folder&gt;.py. Pilia ang parent folder gamit ang Browse Root ug pindota ang Populate. Ilista sa lamesa kon anaa ang .py, .ico ug _splash.png, ug ihap ang kulang. Ang Missing only motago sa mga folder nga kompleto na.
+Pilia ang folder ug ihulog ang PNG o JPG aron makahimo og &lt;folder&gt;.ico, &lt;folder&gt;_splash.png ug &lt;folder&gt;_splash.webp. Ilisan ang daang file; gamiton ang ngalan sa folder isip ngalan sa splash file. Kon naka-on ang Missing only, mobalhin ang pagpili sa sunod nga folder nga kulang pa.
+Ang Make all PNG into WEBP ug Icon crop pareho sa Folder. Right-click aron ma-explore ang folder o mga file niini.
+
+[tab:process]
+Kini nga panid nagpasabot kon giunsa pagpangita ug paghimo ang mga icon, ug nagpakita sa kahimtang sa shared icon folder. Ang upat ka ihap nagpakita sa tanang set, kompleto nga set, set nga walay ICO ug partial nga set.
+Ang proseso mosulay sa pag-usab gamit ang daang icon, pag-convert sa angay nga hulagway, pagkuha og icon gikan sa exe, dll o lnk, ug sa katapusan paghimo og yano nga icon nga letra. Mosulay lamang sa sunod nga lakang kon walay nakit-an sa miaging lakang.
+Ang bag-ong set adunay ICO sizes 16, 24, 32, 48, 64, 128 ug 256, ug PNG sizes 32, 48, 50, 64 ug 128. Ang ubang aplikasyon makapangayo og icon gamit ang request_icon. Dili ma-edit dinhi.
+
+[tab:config]
+Ibutang ang shared icon folder ug Gateway file. Himoong awtomatiko ang icon folder kon wala pa kini. Pilia ang opsyon nga motipig usab og ICO tupad sa aplikasyon kon maghimo gikan sa source. Ang Save Config motipig sa mga setting sa cpc_icon_manager.json.
+Ang Splash Overlay Template maoy nagkontrol sa teksto sa splash image. Ang katapusang gitas-on kay pixels (400 ang default). Usa ka linya matag row; gamita ang mga field nga {{window_title}}, {{purpose_note}}, {{file_name}}, {{version}}, {{source_date}}, {{version_or_source}}, {{app_name}}, {{project}} ug {{desc}}. Pun-on kini gikan sa datos sa aplikasyon. Ang blangko nga linya magbilin og luna.
+Matag linya adunay kaugalingong estilo: font, size, kolor sa teksto, ug opsyonal nga background ug shadow. Ang kolor gamiton ang #RRGGBB o pilia gamit ang ... button. Ang mga row mosunod sa mga linya sa teksto; mausab ang estilo kon mogawas sa text box.
+
+[tab:splash]
+Kini nga tab mohimo sa orihinal nga _spash.png sa matag Gateway application nga mahimong _splash.png nga adunay teksto sa template. Dili usbon ang orihinal. Ipakita sa lamesa ang window title, version o source date, purpose note, ug kon anaa ang orihinal ug nahuman nga file. Ang Search mosala; ang Refresh Gateway mo-reload.
+Pilia ang usa o daghang aplikasyon. Ang Preview Selected mo-update sa preview; ang Create Selected mohimo og _splash.png tupad sa matag aplikasyon ug mopuli sa daan. Ang Sample magpakita sa template gamit ang sample values ug background. Dili mahimo ang preview o paghimo kon kulang ang orihinal nga _spash.png o application file.
+Kon magsugod nga nag-inusara, ipakita sa Icon Manager ang kaugalingong _splash.png, o ang _spash.png kon walay nahuman nga bersyon, samtang nag-load.
+
+[tab:ui-choices]
+Pilia ang color theme, spacing ug window size. Ang icon folders, Gateway file ug splash text anaa sa Config. Kon gilakip ang Icon Manager sa laing aplikasyon, kana nga aplikasyon maoy mokontrol sa window ug hitsura; mahimong dili makita kini nga tab.
+
+[tab:gateway]
+Gamita ang shared launcher aron pangitaon ug ablihan ang narehistro nga aplikasyon, file, folder ug link. Lahi ang Gateway sa icon work sa ubang tab. Kon dili ma-load ang launcher, ablihi ang Gateway file dinhi.
+
+[footer]
+[Mr Bmulti](http://mrbmulti.com)
+[GitHub](https://githum/mrBmulti)
+</p></div><div class="langtext" data-lang="de" hidden><p style="white-space:pre-wrap">[intro]
+Icon Manager erstellt und verwaltet Anwendungssymbole und Startbildschirme. Es arbeitet mit der gemeinsamen Symbolbibliothek, Gateway-Anwendungen, Dateien in einem Ordner und App-Unterordnern. Symbole sind ICO-Dateien; Startbilder sind PNG-Dateien mit optionaler WEBP-Kopie.
+Öffnen Sie Icons für die Bibliothek oder fügen Sie in Folder oder Subfolders ein Bild hinzu. Legen Sie in Config den Symbolordner, die Gateway-Datei und das Textlayout fest und klicken Sie auf Save Config.
+
+[tab:icons]
+Die Tabelle zeigt alle Symbolgruppen der gemeinsamen Bibliothek. Eine Gruppe enthält eine ICO-Datei und PNG-Dateien in mehreren Größen. Status zeigt Complete, Partial PNGs, ICO only oder Missing ICO; Updated zeigt die neueste Datei.
+Search icons filtert nach Name oder Pfad. Clear entfernt den Filter, Refresh lädt neu und Open Folder öffnet den Ordner. Wählen Sie eine Gruppe, um Vorschau, Status und Dateien zu sehen.
+Generate from Source erstellt eine Gruppe aus einer Anwendung oder einem Bild. Generate Glyph erstellt ein einfaches Symbol aus Name, ein oder zwei Buchstaben und zwei Farben. Recipe Set erstellt nach Bestätigung die Standard-Rezept-Symbole. Regenerate Selected erstellt die Gruppe neu; Copy Path kopiert den Pfad. Delete Selected löscht nach Bestätigung alle gemeinsamen Dateien der Gruppe; dies ist nicht rückgängig zu machen.
+Generieren und erneutes Generieren ersetzen eine vorhandene Gruppe. Bei aktivierter Option in Config wird zusätzlich eine ICO-Datei neben der Anwendung gespeichert.
+
+[tab:gateway-icons]
+Diese Registerkarte prüft die Symbole der Anwendungen in der unter Config ausgewählten Gateway-Datei. Refresh Gateway lädt die Liste neu.
+Icon Status zeigt Found, Not Found oder Missing. Missing only blendet Anwendungen mit Found-Symbol aus. Search durchsucht Anwendung, Projekt, Status, Symbol und Pfad. Narrow layout setzt die Vorschau unter die Tabelle.
+Generate Selected from App erstellt ein Symbol für die ausgewählte Anwendung. Generate All Missing erstellt nach Bestätigung Symbole für alle nicht gefundenen Einträge; ohne brauchbare Quelle wird ein Buchstabensymbol erstellt. PNG, JPG oder ICO können ausgewählt oder auf das Ziel gezogen werden. Icon crop legt fest, ob ein breites Bild von Center oder Right beschnitten wird.
+Der Vorgang schreibt die ICO-Datei neben die Anwendung, erstellt _spash.png und speichert das Symbol in Gateway. Vor dem Ersetzen vorhandener Dateien wird gefragt. Kann Gateway nicht gespeichert werden, werden die Dateien zurückgesetzt. Wurde Gateway anderweitig geändert, laden Sie es neu und wiederholen Sie den Vorgang. Weblinks und Anwendungen ohne auffindbare Datei können hier kein Symbol erhalten.
+
+[tab:folder]
+Wählen Sie mit Browse Folder einen Ordner. Die Tabelle zeigt nur direkt darin liegende Dateien, keine Unterordner. Bei Python-Dateien werden Named, Description und Version aus den Projektzeilen am Dateianfang gelesen; der Code wird nicht ausgeführt.
+Wählen Sie eine Datei, um Details und das aktuelle Startbild zu sehen. Fehlt es, wird eine Beispielvorschau angezeigt.
+Ziehen Sie PNG oder JPG auf das Ziel oder klicken Sie Choose PNG or JPG. Neben der ausgewählten Python-Datei entstehen &lt;name&gt;.ico, &lt;name&gt;_splash.png und &lt;name&gt;_splash.webp. Vorhandene gleichnamige Dateien werden ersetzt. Der Text stammt aus der Config-Vorlage. Nur ein Bild gleichzeitig; Links und Web-Downloads werden abgewiesen.
+Make all PNG into WEBP wandelt alle PNG-Dateien im Ordner und seinen Unterordnern in gleichnamige WEBP-Dateien um. Der Vorgang läuft im Hintergrund. Icon crop funktioniert wie unter Gateway Icons.
+Rechtsklick bietet Explore, Open folder in Explorer, Make a Copy, Paste File to Folder, Copy File Path, Copy image to clipboard (nur Windows) und Delete nach Bestätigung. Kopien heißen &quot;- Copy&quot;; beim Einfügen werden vorhandene Dateien nicht ersetzt.
+
+[tab:subfolders]
+Verwenden Sie diese Registerkarte, wenn jede Anwendung in einem eigenen Unterordner liegt, etwa &lt;folder&gt;\\&lt;folder&gt;.py. Wählen Sie mit Browse Root den übergeordneten Ordner und klicken Sie Populate. Die Tabelle zeigt, ob .py, .ico und _splash.png vorhanden sind, und zählt fehlende Dateien. Missing only blendet vollständige Ordner aus.
+Wählen Sie einen Ordner und ziehen Sie PNG oder JPG hinein, um &lt;folder&gt;.ico, &lt;folder&gt;_splash.png und &lt;folder&gt;_splash.webp zu erstellen. Vorhandene Dateien werden ersetzt; der Ordnername wird als Dateiname im Startbild verwendet. Bei Missing only springt die Auswahl zum nächsten unvollständigen Ordner.
+Make all PNG into WEBP und Icon crop funktionieren wie unter Folder. Rechtsklick öffnet den Ordner oder seine Dateien.
+
+[tab:process]
+Diese Seite erklärt, wie Symbole gefunden und erstellt werden, und zeigt den Zustand des gemeinsamen Symbolordners. Die vier Zähler zeigen alle Gruppen, vollständige Gruppen, Gruppen ohne ICO und teilweise vollständige Gruppen.
+Der Ablauf versucht nacheinander ein vorhandenes Symbol zu verwenden, ein passendes Bild umzuwandeln, ein Symbol aus exe, dll oder lnk zu extrahieren und zuletzt ein einfaches Buchstabensymbol zu erstellen. Der nächste Schritt erfolgt nur, wenn der vorherige nichts findet.
+Neue Gruppen enthalten ICO-Größen 16, 24, 32, 48, 64, 128 und 256 sowie PNG-Größen 32, 48, 50, 64 und 128. Andere Anwendungen können mit request_icon ein Symbol anfordern. Diese Seite ist schreibgeschützt.
+
+[tab:config]
+Legen Sie den gemeinsamen Symbolordner und die Gateway-Datei fest. Der Ordner wird bei Bedarf erstellt. Aktivieren Sie die Option, beim Erzeugen aus einer Quelle zusätzlich eine ICO-Datei neben der anfordernden Anwendung zu speichern. Save Config speichert die Einstellungen in cpc_icon_manager.json.
+Splash Overlay Template steuert den Text auf jedem Startbild. Die endgültige Höhe wird in Pixeln angegeben (Standard 400). Verwenden Sie eine Textzeile pro Zeile und Felder wie {{window_title}}, {{purpose_note}}, {{file_name}}, {{version}}, {{source_date}}, {{version_or_source}}, {{app_name}}, {{project}} und {{desc}}. Die Werte werden aus der jeweiligen Anwendung übernommen. Eine Leerzeile erzeugt Abstand.
+Jede Zeile hat einen eigenen Stil: Schriftart, Größe, Textfarbe sowie optional Hintergrund und Schatten. Farben werden als #RRGGBB eingegeben oder über ... gewählt. Die Stilzeilen entsprechen den Textzeilen; beim Verlassen des Textfelds wird der Stil aktualisiert.
+
+[tab:splash]
+Diese Registerkarte ergänzt die ursprüngliche _spash.png jeder Gateway-Anwendung um den Vorlagentext und erstellt eine fertige _splash.png. Das Original bleibt unverändert. Die Tabelle zeigt Fenstertitel, Version oder Quelldatum, Zweck und das Vorhandensein beider Dateien. Search filtert; Refresh Gateway lädt neu.
+Wählen Sie eine oder mehrere Anwendungen. Preview Selected aktualisiert die Vorschau; Create Selected erstellt neben jeder Anwendung eine _splash.png und ersetzt eine frühere Datei. Sample zeigt die Vorlage mit Beispielwerten und Hintergrund. Fehlt die ursprüngliche _spash.png oder die Anwendungsdatei, ist keine Vorschau oder Erstellung möglich.
+Beim eigenständigen Start zeigt Icon Manager während des Ladens sein eigenes _splash.png oder, falls nicht vorhanden, _spash.png.
+
+[tab:ui-choices]
+Wählen Sie Farbthema, Abstände und Fenstergröße. Symbolordner, Gateway-Datei und Startbildtext werden in Config festgelegt. Ist Icon Manager in eine andere Anwendung eingebunden, steuert diese Fenster und Darstellung; diese Registerkarte kann ausgeblendet sein.
+
+[tab:gateway]
+Verwenden Sie den gemeinsamen Starter, um registrierte Anwendungen, Dateien, Ordner und Links zu finden und zu öffnen. Gateway ist unabhängig von der Symbolverwaltung auf den anderen Registerkarten. Kann der Starter nicht geladen werden, öffnen Sie hier die Gateway-Datei.
+
+[footer]
+[Mr Bmulti](http://mrbmulti.com)
+[GitHub](https://githum/mrBmulti)
+</p></div><div class="langtext" data-lang="es" hidden><p style="white-space:pre-wrap">[intro]
+Icon Manager crea y mantiene los iconos y las imágenes de inicio de las aplicaciones. Gestiona la biblioteca compartida, las aplicaciones de Gateway, los archivos de una carpeta y las carpetas de aplicaciones. Los iconos son archivos ICO; las imágenes de inicio son PNG y pueden tener una copia WEBP.
+Abra Icons para ver la biblioteca, o use Folder o Subfolders para añadir una imagen. Configure la carpeta de iconos, el archivo Gateway y el diseño del texto en Config; después pulse Save Config.
+
+[tab:icons]
+La tabla muestra los conjuntos de iconos de la biblioteca compartida. Cada conjunto contiene un ICO y tamaños PNG. El estado indica Complete, Partial PNGs, ICO only o Missing ICO. Updated muestra el archivo más reciente.
+Search icons filtra por nombre o ruta. Use Clear, Refresh y Open Folder para limpiar, actualizar o abrir la carpeta. Seleccione un conjunto para ver su vista previa, estado y archivos.
+Generate from Source crea un conjunto desde una aplicación o imagen. Generate Glyph crea uno con un nombre, una o dos letras y dos colores. Recipe Set crea los iconos estándar de recetas tras confirmar. Regenerate Selected reconstruye el conjunto; Copy Path copia la ruta. Delete Selected elimina todos sus archivos compartidos tras confirmar y no se puede deshacer.
+La generación y regeneración sustituyen un conjunto existente. También pueden guardar un ICO junto a la aplicación si la opción está activada en Config.
+
+[tab:gateway-icons]
+Esta pestaña comprueba los iconos de las aplicaciones registradas en el archivo Gateway configurado. Refresh Gateway actualiza la lista.
+Icon Status indica Found, Not Found o Missing. Missing only oculta las aplicaciones cuyo icono se encontró. Search busca aplicación, proyecto, estado, icono y ruta. Narrow layout coloca la vista previa debajo de la tabla.
+Generate Selected from App crea un icono para la aplicación elegida. Generate All Missing lo crea para todas las que no estén Found, tras confirmar; si no hay una fuente válida, usa una letra. También puede asignar PNG, JPG o ICO mediante Choose o arrastrando un archivo. Icon crop determina si una imagen ancha se recorta desde Center o Right.
+La acción guarda el ICO junto a la aplicación, crea _spash.png y registra el icono en Gateway. Se pide confirmación antes de reemplazar archivos. Si Gateway no puede guardarse, los archivos se restauran. Si Gateway cambia externamente, vuelva a cargarlo y repita la acción. Los enlaces web y las aplicaciones cuyo archivo no existe no admiten iconos aquí.
+
+[tab:folder]
+Browse Folder selecciona una carpeta. La tabla muestra solo los archivos directamente dentro de ella. En archivos Python se leen Named, Description y Version de las líneas del proyecto; el código no se ejecuta.
+Seleccione un archivo para ver sus detalles y la imagen de inicio. Si no existe, se muestra una vista previa de muestra.
+Arrastre un PNG o JPG al destino o pulse Choose PNG or JPG para crear junto al archivo Python: &lt;name&gt;.ico, &lt;name&gt;_splash.png y &lt;name&gt;_splash.webp. Los archivos existentes se reemplazan. La plantilla de Config proporciona el texto. Arrastre una sola imagen; no se aceptan enlaces ni descargas web.
+Make all PNG into WEBP convierte los PNG de la carpeta y sus subcarpetas en WEBP con el mismo nombre. Se ejecuta en segundo plano. Icon crop funciona como en Gateway Icons.
+Con el botón derecho puede explorar, abrir la carpeta, copiar, pegar, copiar la ruta, copiar una imagen al portapapeles (solo Windows) o eliminar tras confirmar. Las copias se llaman &quot;- Copy&quot;; pegar nunca reemplaza un archivo existente.
+
+[tab:subfolders]
+Use esta pestaña cuando cada aplicación esté en su propia subcarpeta, como &lt;folder&gt;\\&lt;folder&gt;.py. Elija la carpeta principal con Browse Root y pulse Populate. La tabla muestra si existen los archivos .py, .ico y _splash.png, y cuenta los iconos o imágenes que faltan. Missing only oculta las carpetas que ya tienen ambos.
+Seleccione una carpeta y añada PNG o JPG para crear &lt;folder&gt;.ico, &lt;folder&gt;_splash.png y &lt;folder&gt;_splash.webp. Los archivos existentes se reemplazan; el nombre de la carpeta se usa en la imagen. Con Missing only, la selección pasa a la siguiente carpeta incompleta.
+Make all PNG into WEBP e Icon crop funcionan como en Folder. El botón derecho permite explorar la carpeta o sus archivos.
+
+[tab:process]
+Esta página explica cómo se encuentran y crean los iconos y muestra el estado de la carpeta compartida. Los cuatro contadores muestran conjuntos, conjuntos completos, conjuntos sin ICO y conjuntos parciales.
+El proceso intenta, en orden, reutilizar un icono existente, convertir una imagen coincidente, extraer un icono de exe, dll o lnk y, por último, crear un icono de letra. Cada paso se intenta solo si el anterior no encuentra nada.
+Los nuevos conjuntos incluyen tamaños ICO 16, 24, 32, 48, 64, 128 y 256, y PNG 32, 48, 50, 64 y 128. Otras aplicaciones pueden solicitar iconos mediante request_icon. Esta página no permite editar.
+
+[tab:config]
+Configure la carpeta compartida de iconos y el archivo Gateway. La carpeta se crea si no existe. Active la opción para guardar también un ICO junto a la aplicación solicitante al generar desde una fuente. Save Config guarda las opciones en cpc_icon_manager.json.
+Splash Overlay Template define el texto de las imágenes de inicio. La altura final es en píxeles (400 por defecto). Use una línea por fila y los campos {{window_title}}, {{purpose_note}}, {{file_name}}, {{version}}, {{source_date}}, {{version_or_source}}, {{app_name}}, {{project}} y {{desc}}; se rellenan con datos de cada aplicación. Una línea vacía deja espacio.
+Cada línea tiene estilo propio: fuente, tamaño, color del texto y fondo o sombra opcionales. Los colores usan #RRGGBB o el botón ... . Las filas corresponden a las líneas; el estilo se actualiza al salir del cuadro de texto.
+
+[tab:splash]
+Esta pestaña convierte el _spash.png original de cada aplicación Gateway en un _splash.png final con el texto de la plantilla. El original no cambia. La tabla muestra título, versión o fecha de origen, propósito y existencia de ambos archivos. Search filtra y Refresh Gateway actualiza.
+Seleccione una o varias aplicaciones. Preview Selected actualiza la vista previa; Create Selected escribe _splash.png junto a cada aplicación y reemplaza el anterior. Sample muestra la plantilla con datos y fondo de muestra. No se puede crear ni previsualizar si falta el original _spash.png o el archivo de aplicación.
+Al iniciar por separado, Icon Manager muestra su propio _splash.png o, si no existe, _spash.png mientras carga.
+
+[tab:ui-choices]
+Elija tema de color, espaciado y tamaño de ventana. Las carpetas de iconos, el archivo Gateway y el texto de inicio se configuran en Config. Si Icon Manager está integrado en otra aplicación, esta controla la ventana y su apariencia; esta pestaña puede estar oculta.
+
+[tab:gateway]
+Use el iniciador compartido para encontrar y abrir aplicaciones, archivos, carpetas y enlaces registrados. Gateway es independiente de las demás pestañas. Si no se puede cargar el iniciador, abra el archivo Gateway desde aquí.
+
+[footer]
+[Mr Bmulti](http://mrbmulti.com)
+[GitHub](https://githum/mrBmulti)
+</p></div><div class="langtext" data-lang="fr" hidden><p style="white-space:pre-wrap">[intro]
+Icon Manager crée et gère les icônes et les images de démarrage des applications. Il utilise la bibliothèque d’icônes partagée, les applications de Gateway, les fichiers d’un dossier et les sous-dossiers d’applications. Les icônes sont au format ICO; les images de démarrage sont des PNG, avec une copie WEBP facultative.
+Ouvrez Icons pour consulter la bibliothèque, ou ajoutez une image dans Folder ou Subfolders. Configurez le dossier d’icônes, le fichier Gateway et la disposition du texte dans Config, puis cliquez sur Save Config.
+
+[tab:icons]
+Le tableau répertorie les ensembles de la bibliothèque partagée. Chaque ensemble comprend un ICO et plusieurs tailles PNG. Status indique Complete, Partial PNGs, ICO only ou Missing ICO. Updated affiche le fichier le plus récent.
+Search icons filtre par nom ou chemin. Clear efface le filtre; Refresh actualise le dossier; Open Folder l’ouvre. Sélectionnez un ensemble pour afficher son aperçu, son état et ses fichiers.
+Generate from Source crée un ensemble à partir d’une application ou d’une image. Generate Glyph en crée un avec un nom, une ou deux lettres et deux couleurs. Recipe Set crée les icônes de recettes après confirmation. Regenerate Selected reconstruit l’ensemble; Copy Path copie son chemin. Delete Selected supprime tous ses fichiers partagés après confirmation; cette opération est irréversible.
+La génération et la régénération remplacent un ensemble existant. Elles peuvent aussi enregistrer un ICO à côté de l’application si l’option est activée dans Config.
+
+[tab:gateway-icons]
+Cet onglet vérifie les icônes des applications du fichier Gateway défini dans Config. Refresh Gateway recharge la liste.
+Icon Status affiche Found, Not Found ou Missing. Missing only masque les applications dont l’icône est Found. Search recherche dans l’application, le projet, l’état, l’icône et le chemin. Narrow layout place l’aperçu sous le tableau.
+Generate Selected from App crée une icône pour l’application sélectionnée. Generate All Missing le fait pour toutes celles qui ne sont pas Found, après confirmation; sans source exploitable, une icône avec une lettre est créée. Vous pouvez aussi attribuer une image PNG, JPG ou ICO en la choisissant ou en la déposant. Icon crop détermine si une image large est recadrée depuis Center ou Right.
+L’opération écrit l’ICO à côté de l’application, crée _spash.png et inscrit l’icône dans Gateway. Une confirmation est demandée avant tout remplacement. Si Gateway ne peut pas être enregistré, les fichiers sont restaurés. Si le fichier Gateway a été modifié ailleurs, rechargez-le et recommencez. Les liens Web et les applications dont le fichier est introuvable ne peuvent pas recevoir d’icône ici.
+
+[tab:folder]
+Browse Folder permet de choisir un dossier. Le tableau affiche uniquement les fichiers directement contenus dans ce dossier. Pour les fichiers Python, Named, Description et Version sont lus dans les lignes du projet; le code n’est pas exécuté.
+Sélectionnez un fichier pour voir ses détails et son image de démarrage. Si elle n’existe pas, un aperçu d’exemple est affiché.
+Déposez un PNG ou JPG sur la cible, ou cliquez sur Choose PNG or JPG, pour créer près du fichier Python : &lt;name&gt;.ico, &lt;name&gt;_splash.png et &lt;name&gt;_splash.webp. Les fichiers existants sont remplacés. Le texte vient du modèle Config. Déposez une seule image; les liens et téléchargements Web sont refusés.
+Make all PNG into WEBP convertit tous les PNG du dossier et de ses sous-dossiers en WEBP du même nom. Le traitement s’effectue en arrière-plan. Icon crop fonctionne comme dans Gateway Icons.
+Le clic droit permet d’explorer, d’ouvrir le dossier, de copier, de coller, de copier le chemin, de copier l’image dans le presse-papiers (Windows uniquement) ou de supprimer après confirmation. Une copie porte le nom « - Copy »; le collage ne remplace jamais un fichier existant.
+
+[tab:subfolders]
+Utilisez cet onglet lorsque chaque application se trouve dans son propre sous-dossier, sous la forme &lt;folder&gt;\\&lt;folder&gt;.py. Choisissez le dossier parent avec Browse Root et cliquez sur Populate. Le tableau indique la présence des fichiers .py, .ico et _splash.png et compte les éléments manquants. Missing only masque les dossiers déjà complets.
+Sélectionnez un dossier et déposez un PNG ou JPG pour créer &lt;folder&gt;.ico, &lt;folder&gt;_splash.png et &lt;folder&gt;_splash.webp. Les fichiers existants sont remplacés; le nom du dossier sert de nom de fichier sur l’image. Avec Missing only, la sélection passe au dossier incomplet suivant.
+Make all PNG into WEBP et Icon crop fonctionnent comme dans Folder. Le clic droit permet d’explorer le dossier ou ses fichiers.
+
+[tab:process]
+Cette page explique la recherche et la création des icônes et indique l’état du dossier partagé. Les quatre compteurs affichent le nombre d’ensembles, d’ensembles complets, d’ensembles sans ICO et d’ensembles partiels.
+Le processus essaie successivement de réutiliser une icône existante, de convertir une image correspondante, d’extraire une icône d’un exe, dll ou lnk, puis de créer une icône avec une lettre. Chaque étape n’est lancée que si la précédente échoue.
+Les nouveaux ensembles contiennent les tailles ICO 16, 24, 32, 48, 64, 128 et 256, et PNG 32, 48, 50, 64 et 128. Les autres applications peuvent demander une icône avec request_icon. Cette page est en lecture seule.
+
+[tab:config]
+Définissez le dossier partagé des icônes et le fichier Gateway. Le dossier est créé s’il n’existe pas. Activez l’option pour enregistrer aussi un ICO près de l’application lors d’une génération depuis une source. Save Config enregistre les choix dans cpc_icon_manager.json.
+Splash Overlay Template définit le texte des images de démarrage. La hauteur finale est exprimée en pixels (400 par défaut). Saisissez une ligne par rangée et utilisez les champs {{window_title}}, {{purpose_note}}, {{file_name}}, {{version}}, {{source_date}}, {{version_or_source}}, {{app_name}}, {{project}} et {{desc}}; ils sont remplis avec les données de chaque application. Une ligne vide crée un espace.
+Chaque ligne possède son style : police, taille, couleur du texte et arrière-plan ou ombre facultatifs. Les couleurs utilisent #RRGGBB ou le bouton ... . Les rangées suivent les lignes du texte; le style est actualisé lorsque vous quittez la zone de texte.
+
+[tab:splash]
+Cet onglet transforme le _spash.png original de chaque application Gateway en _splash.png final avec le texte du modèle. L’original reste intact. Le tableau affiche le titre, la version ou date source, la description et la présence des fichiers. Search filtre; Refresh Gateway actualise.
+Sélectionnez une ou plusieurs applications. Preview Selected actualise l’aperçu; Create Selected crée _splash.png à côté de chaque application et remplace l’ancien. Sample montre le modèle avec des valeurs et un arrière-plan d’exemple. La création et l’aperçu sont impossibles si le _spash.png original ou le fichier de l’application manque.
+Au démarrage autonome, Icon Manager affiche son propre _splash.png ou, à défaut, _spash.png pendant le chargement.
+
+[tab:ui-choices]
+Choisissez le thème de couleur, l’espacement et la taille de fenêtre. Les dossiers d’icônes, le fichier Gateway et le texte de démarrage se règlent dans Config. Si Icon Manager est intégré à une autre application, celle-ci contrôle la fenêtre et son apparence; cet onglet peut être masqué.
+
+[tab:gateway]
+Utilisez le lanceur partagé pour trouver et ouvrir les applications, fichiers, dossiers et liens enregistrés. Gateway est indépendant des autres onglets. Si le lanceur ne peut pas être chargé, ouvrez le fichier Gateway depuis cet onglet.
+
+[footer]
+[Mr Bmulti](http://mrbmulti.com)
+[GitHub](https://githum/mrBmulti)
+</p></div><div class="langtext" data-lang="hi" hidden><p style="white-space:pre-wrap">[intro]
+Icon Manager आपके अनुप्रयोगों के आइकन और स्टार्टअप स्प्लैश चित्र बनाता और संभालता है। यह साझा आइकन लाइब्रेरी, Gateway में सूचीबद्ध अनुप्रयोगों, किसी फ़ोल्डर की फ़ाइलों और अनुप्रयोगों के सबफ़ोल्डरों पर काम करता है। आइकन ICO फ़ाइलें हैं; स्प्लैश चित्र PNG होते हैं और वैकल्पिक WEBP प्रति भी बनाई जा सकती है।
+लाइब्रेरी देखने के लिए Icons खोलें, या Folder अथवा Subfolders में चित्र जोड़ें। Config में साझा आइकन फ़ोल्डर, Gateway फ़ाइल और स्प्लैश पाठ का लेआउट तय करके Save Config दबाएँ।
+
+[tab:icons]
+तालिका साझा लाइब्रेरी में मिले सभी आइकन सेट दिखाती है। हर सेट में ICO और अलग-अलग आकार के PNG होते हैं। Status में Complete, Partial PNGs, ICO only या Missing ICO दिखता है। Updated सबसे नई फ़ाइल बताता है।
+Search icons नाम या पथ के आधार पर फ़िल्टर करता है। Clear फ़िल्टर हटाता है, Refresh सूची फिर से पढ़ता है और Open Folder फ़ोल्डर खोलता है। सेट चुनने पर उसका पूर्वावलोकन, स्थिति और फ़ाइलें दिखती हैं।
+Generate from Source किसी अनुप्रयोग या चित्र से सेट बनाता है। Generate Glyph नाम, एक या दो अक्षर और दो रंगों से सरल सेट बनाता है। Recipe Set पुष्टि के बाद मानक रेसिपी आइकन बनाता है। Regenerate Selected चुने हुए सेट को फिर बनाता है; Copy Path पथ कॉपी करता है। Delete Selected पुष्टि के बाद सेट की सभी साझा फ़ाइलें हटाता है; यह वापस नहीं किया जा सकता।
+Generate from Source और Regenerate Selected मौजूदा सेट को बदल देते हैं। Config में विकल्प चालू हो तो अनुप्रयोग के पास ICO भी सहेजा जाता है।
+
+[tab:gateway-icons]
+यह टैब Config में चुनी गई Gateway फ़ाइल के अनुप्रयोगों के आइकन जाँचता है। Refresh Gateway सूची फिर से लोड करता है।
+Icon Status में Found, Not Found या Missing दिखता है। Missing only उन अनुप्रयोगों को छिपाता है जिनका आइकन Found है। Search अनुप्रयोग, प्रोजेक्ट, स्थिति, आइकन और पथ में खोजता है। Narrow layout पूर्वावलोकन को तालिका के नीचे रखता है।
+Generate Selected from App चुने हुए अनुप्रयोग का आइकन बनाता है। Generate All Missing पुष्टि के बाद सभी गैर-Found अनुप्रयोगों के लिए ऐसा करता है; उपयोगी स्रोत न होने पर अक्षर वाला सरल आइकन बनता है। PNG, JPG या ICO चुनकर अथवा खींचकर भी चित्र दिया जा सकता है। Icon crop तय करता है कि चौड़े चित्र को Center या Right से काटना है।
+यह प्रक्रिया अनुप्रयोग के पास ICO लिखती है, _spash.png बनाती है और Gateway में आइकन दर्ज करती है। मौजूदा फ़ाइल बदलने से पहले पुष्टि माँगी जाती है। Gateway सहेजा न जा सके तो फ़ाइलें पहले जैसी कर दी जाती हैं। Gateway कहीं और बदला गया हो तो उसे फिर लोड करके कार्रवाई दोहराएँ। वेब लिंक और जिन अनुप्रयोगों की फ़ाइल नहीं मिलती, उन्हें यहाँ आइकन नहीं दिया जा सकता।
+
+[tab:folder]
+Browse Folder से फ़ोल्डर चुनें। तालिका केवल उसी फ़ोल्डर की सीधे मौजूद फ़ाइलें दिखाती है, सबफ़ोल्डर नहीं। Python फ़ाइलों में Named, Description और Version परियोजना की शुरुआती पंक्तियों से पढ़े जाते हैं; कोड चलाया नहीं जाता।
+फ़ाइल चुनकर उसका विवरण और मौजूदा स्प्लैश चित्र देखें। चित्र न होने पर नमूना पूर्वावलोकन दिखता है।
+नीचे के लक्ष्य पर PNG या JPG डालें, या Choose PNG or JPG दबाएँ। चुनी हुई Python फ़ाइल के पास &lt;name&gt;.ico, &lt;name&gt;_splash.png और &lt;name&gt;_splash.webp बनेंगे। समान नाम की मौजूदा फ़ाइलें बदल दी जाएँगी। पाठ Config के टेम्पलेट से आता है। एक बार में केवल एक चित्र डालें; लिंक और वेब डाउनलोड स्वीकार नहीं होते।
+Make all PNG into WEBP फ़ोल्डर और उसके सभी सबफ़ोल्डरों के PNG को उसी नाम के WEBP में बदलता है। यह पृष्ठभूमि में चलता है। Icon crop, Gateway Icons जैसा काम करता है।
+फ़ाइल पर दायाँ क्लिक करके Explore, Open folder in Explorer, Make a Copy, Paste File to Folder, Copy File Path, Copy image to clipboard (केवल Windows) या पुष्टि के बाद Delete चुनें। प्रति का नाम &quot;- Copy&quot; होता है; पेस्ट करने से मौजूदा फ़ाइल नहीं बदलती।
+
+[tab:subfolders]
+इस टैब का उपयोग तब करें जब हर अनुप्रयोग अपने सबफ़ोल्डर में हो, जैसे &lt;folder&gt;\\&lt;folder&gt;.py। Browse Root से मूल फ़ोल्डर चुनें और Populate दबाएँ। तालिका बताती है कि .py, .ico और _splash.png मौजूद हैं या नहीं तथा कमी वाले फ़ोल्डरों की गिनती दिखाती है। Missing only पहले से पूरी फ़ाइलों वाले फ़ोल्डर छिपाता है।
+फ़ोल्डर चुनें और PNG या JPG डालें, या Choose PNG or JPG दबाएँ। उस सबफ़ोल्डर में &lt;folder&gt;.ico, &lt;folder&gt;_splash.png और &lt;folder&gt;_splash.webp लिखे जाएँगे। पुरानी फ़ाइलें बदलेंगी; स्प्लैश फ़ाइल के नाम के लिए फ़ोल्डर का नाम उपयोग होगा। Missing only चालू होने पर चयन अगले अधूरे फ़ोल्डर पर जाता है।
+Make all PNG into WEBP और Icon crop, Folder टैब जैसे काम करते हैं। पंक्ति पर दायाँ क्लिक करके फ़ोल्डर या फ़ाइलें खोलें।
+
+[tab:process]
+यह पृष्ठ बताता है कि आइकन कैसे खोजे और बनाए जाते हैं तथा साझा आइकन फ़ोल्डर की स्थिति दिखाता है। चार गिनतियाँ कुल सेट, पूरे सेट, ICO-विहीन सेट और आंशिक सेट बताती हैं।
+प्रक्रिया पहले मौजूदा आइकन का उपयोग करती है, फिर मेल खाते चित्र को बदलती है, exe, dll या lnk से आइकन निकालती है और अंत में अक्षर वाला आइकन बनाती है। अगला चरण तभी चलता है जब पिछला कुछ न पाए।
+नए सेट में ICO आकार 16, 24, 32, 48, 64, 128, 256 और PNG आकार 32, 48, 50, 64, 128 होते हैं। अन्य अनुप्रयोग request_icon से आइकन माँग सकते हैं। इस पृष्ठ पर संपादन नहीं होता।
+
+[tab:config]
+साझा आइकन फ़ोल्डर और Gateway फ़ाइल चुनें। फ़ोल्डर न होने पर बनाया जाएगा। स्रोत से आइकन बनाते समय अनुरोध करने वाले अनुप्रयोग के पास ICO सहेजने का विकल्प चुनें। Save Config सेटिंग्स को cpc_icon_manager.json में रखता है।
+Splash Overlay Template हर स्प्लैश चित्र पर लिखे जाने वाले पाठ को नियंत्रित करता है। अंतिम ऊँचाई पिक्सेल में होती है (डिफ़ॉल्ट 400)। प्रत्येक पंक्ति में एक टेक्स्ट लाइन रखें। {{window_title}}, {{purpose_note}}, {{file_name}}, {{version}}, {{source_date}}, {{version_or_source}}, {{app_name}}, {{project}} और {{desc}} जैसे फ़ील्ड अनुप्रयोग से भरे जाते हैं। खाली पंक्ति खाली जगह छोड़ती है।
+हर पंक्ति की शैली अलग है: फ़ॉन्ट, आकार, पाठ रंग तथा वैकल्पिक पृष्ठभूमि और छाया रंग। रंग #RRGGBB रूप में लिखें या ... बटन से चुनें। शैली की पंक्तियाँ पाठ पंक्तियों के अनुरूप हैं; टेक्स्ट बॉक्स से बाहर जाने पर शैली बदलती है।
+
+[tab:splash]
+यह टैब Gateway अनुप्रयोग की मूल _spash.png पर टेम्पलेट पाठ जोड़कर अंतिम _splash.png बनाता है। मूल फ़ाइल नहीं बदलती। तालिका में विंडो शीर्षक, संस्करण या स्रोत तिथि, उद्देश्य और दोनों फ़ाइलों की उपलब्धता दिखती है। Search फ़िल्टर करता है; Refresh Gateway सूची फिर लोड करता है।
+एक या अधिक अनुप्रयोग चुनें। Preview Selected पूर्वावलोकन बनाता है; Create Selected हर अनुप्रयोग के पास _splash.png लिखता है और पुरानी फ़ाइल बदलता है। Sample उदाहरण मानों और पृष्ठभूमि पर टेम्पलेट दिखाता है। मूल _spash.png या अनुप्रयोग फ़ाइल न हो तो पूर्वावलोकन या निर्माण संभव नहीं।
+Icon Manager अकेले शुरू होने पर लोड होते समय अपना _splash.png दिखाता है; वह न हो तो _spash.png दिखाता है।
+
+[tab:ui-choices]
+रंग थीम, अंतराल और विंडो आकार चुनें। ये सेटिंग दिखावट बदलती हैं। आइकन फ़ोल्डर, Gateway फ़ाइल और स्प्लैश पाठ Config में हैं। यदि Icon Manager किसी अन्य अनुप्रयोग से जुड़ा है, तो वही विंडो और रूप नियंत्रित करता है; यह टैब छिपा हो सकता है।
+
+[tab:gateway]
+साझा लॉन्चर से पंजीकृत अनुप्रयोग, फ़ाइलें, फ़ोल्डर और लिंक खोजें और खोलें। Gateway अन्य टैब के आइकन कार्य से अलग है। लॉन्चर लोड न हो तो यहाँ से Gateway फ़ाइल खोलें।
+
+[footer]
+[Mr Bmulti](http://mrbmulti.com)
+[GitHub](https://githum/mrBmulti)
+</p></div><div class="langtext" data-lang="id" hidden><p style="white-space:pre-wrap">[intro]
+Icon Manager membuat dan mengelola ikon serta gambar layar awal aplikasi. Fitur ini bekerja dengan pustaka ikon bersama, aplikasi di Gateway, file dalam folder, dan subfolder aplikasi. Ikon berupa file ICO; gambar layar awal berupa PNG dengan salinan WEBP opsional.
+Buka Icons untuk melihat pustaka, atau tambahkan gambar melalui Folder atau Subfolders. Atur folder ikon bersama, file Gateway, dan tata letak teks layar awal di Config, lalu tekan Save Config.
+
+[tab:icons]
+Tabel menampilkan semua set ikon dalam pustaka bersama. Set berisi file ICO dan beberapa ukuran PNG. Status menunjukkan Complete, Partial PNGs, ICO only, atau Missing ICO. Updated menunjukkan file terbaru.
+Search icons menyaring berdasarkan nama atau jalur. Clear menghapus filter, Refresh memuat ulang, dan Open Folder membuka folder. Pilih set untuk melihat pratinjau, status, dan file.
+Generate from Source membuat set dari aplikasi atau gambar. Generate Glyph membuat set sederhana dari nama, satu atau dua huruf, dan dua warna. Recipe Set membuat ikon resep standar setelah konfirmasi. Regenerate Selected membuat ulang set; Copy Path menyalin jalur. Delete Selected menghapus semua file bersama milik set setelah konfirmasi; tindakan ini tidak dapat dibatalkan.
+Pembuatan dan pembuatan ulang menggantikan set yang sudah ada. ICO juga disimpan di samping aplikasi jika opsi tersebut aktif di Config.
+
+[tab:gateway-icons]
+Tab ini memeriksa ikon aplikasi dalam file Gateway yang dipilih di Config. Refresh Gateway memuat ulang daftar.
+Icon Status menampilkan Found, Not Found, atau Missing. Missing only menyembunyikan aplikasi yang ikonnya Found. Search mencari aplikasi, proyek, status, ikon, dan jalur. Narrow layout menempatkan pratinjau di bawah tabel.
+Generate Selected from App membuat ikon untuk aplikasi terpilih. Generate All Missing membuat ikon untuk semua aplikasi yang bukan Found setelah konfirmasi; jika sumber tidak tersedia, ikon huruf sederhana digunakan. Pilih atau seret PNG, JPG, atau ICO untuk menetapkan gambar. Icon crop menentukan pemotongan gambar lebar dari Center atau Right.
+Tindakan ini menulis ICO di samping aplikasi, membuat _spash.png, dan mencatat ikon di Gateway. Konfirmasi diminta sebelum file diganti. Jika Gateway gagal disimpan, file dikembalikan seperti semula. Jika Gateway diubah di tempat lain, muat ulang lalu ulangi tindakan. Tautan web dan aplikasi yang filenya tidak ditemukan tidak dapat diberi ikon di sini.
+
+[tab:folder]
+Pilih folder dengan Browse Folder. Tabel hanya menampilkan file yang langsung berada di dalam folder, bukan subfolder. Untuk file Python, Named, Description, dan Version dibaca dari baris proyek di bagian atas; kode tidak dijalankan.
+Pilih file untuk melihat detail dan gambar layar awalnya. Jika belum ada, pratinjau contoh akan ditampilkan.
+Seret PNG atau JPG ke target, atau tekan Choose PNG or JPG, untuk membuat &lt;name&gt;.ico, &lt;name&gt;_splash.png, dan &lt;name&gt;_splash.webp di samping file Python terpilih. File lama dengan nama yang sama akan diganti. Teks berasal dari template Config. Seret satu gambar saja; tautan dan unduhan web ditolak.
+Make all PNG into WEBP mengubah semua PNG di folder dan subfolder menjadi WEBP dengan nama yang sama. Proses berjalan di latar belakang. Icon crop bekerja seperti pada Gateway Icons.
+Klik kanan file untuk menjelajah, membuka folder, menyalin, menempelkan, menyalin jalur, menyalin gambar ke clipboard (khusus Windows), atau menghapus setelah konfirmasi. Salinan bernama &quot;- Copy&quot;; penempelan tidak mengganti file yang sudah ada.
+
+[tab:subfolders]
+Gunakan tab ini jika setiap aplikasi berada di subfoldernya sendiri, seperti &lt;folder&gt;\\&lt;folder&gt;.py. Pilih folder induk dengan Browse Root lalu tekan Populate. Tabel menunjukkan keberadaan .py, .ico, dan _splash.png serta jumlah yang belum ada. Missing only menyembunyikan folder yang sudah memiliki keduanya.
+Pilih folder dan seret PNG atau JPG untuk membuat &lt;folder&gt;.ico, &lt;folder&gt;_splash.png, dan &lt;folder&gt;_splash.webp di subfolder itu. File yang ada akan diganti; nama folder digunakan sebagai nama file layar awal. Jika Missing only aktif, pilihan berpindah ke folder berikutnya yang masih membutuhkan file.
+Make all PNG into WEBP dan Icon crop bekerja seperti pada Folder. Klik kanan baris untuk menjelajahi folder atau filenya.
+
+[tab:process]
+Halaman ini menjelaskan cara ikon ditemukan dan dibuat serta kondisi folder ikon bersama. Empat hitungan menunjukkan jumlah set, set lengkap, set tanpa ICO, dan set sebagian.
+Alur mencoba memakai ikon yang sudah ada, mengonversi gambar yang cocok, mengambil ikon dari exe, dll, atau lnk, lalu membuat ikon huruf sederhana. Langkah berikutnya hanya dicoba jika langkah sebelumnya tidak menemukan hasil.
+Set baru berisi ukuran ICO 16, 24, 32, 48, 64, 128, dan 256 serta ukuran PNG 32, 48, 50, 64, dan 128. Aplikasi lain dapat meminta ikon melalui request_icon. Halaman ini tidak dapat diedit.
+
+[tab:config]
+Atur folder ikon bersama dan file Gateway. Folder dibuat jika belum ada. Aktifkan opsi untuk menyimpan ICO di samping aplikasi peminta saat membuat dari sumber. Save Config menyimpan pilihan ke cpc_icon_manager.json.
+Splash Overlay Template mengatur teks pada setiap gambar layar awal. Tinggi akhir dalam piksel (default 400). Gunakan satu baris untuk setiap baris teks dan field seperti {{window_title}}, {{purpose_note}}, {{file_name}}, {{version}}, {{source_date}}, {{version_or_source}}, {{app_name}}, {{project}}, dan {{desc}}; nilainya diambil dari aplikasi. Baris kosong memberi jarak.
+Setiap baris memiliki gaya sendiri: font, ukuran, warna teks, serta latar dan bayangan opsional. Warna ditulis sebagai #RRGGBB atau dipilih dengan tombol ... . Baris gaya mengikuti baris teks; gaya berubah saat keluar dari kotak teks.
+
+[tab:splash]
+Tab ini mengubah _spash.png asli setiap aplikasi Gateway menjadi _splash.png akhir dengan teks template. File asli tidak diubah. Tabel menampilkan judul jendela, versi atau tanggal sumber, catatan tujuan, serta keberadaan file asli dan hasil. Search menyaring daftar; Refresh Gateway memuat ulang.
+Pilih satu atau beberapa aplikasi. Preview Selected menggambar ulang pratinjau; Create Selected menulis _splash.png di samping setiap aplikasi dan mengganti file lama. Sample menampilkan template dengan nilai dan latar contoh. Pratinjau atau pembuatan tidak dapat dilakukan jika _spash.png asli atau file aplikasi tidak ada.
+Saat Icon Manager dijalankan sendiri, aplikasi menampilkan _splash.png miliknya atau _spash.png jika versi akhir belum ada selama proses pemuatan.
+
+[tab:ui-choices]
+Pilih tema warna, jarak, dan ukuran jendela. Pengaturan ini mengontrol tampilan. Folder ikon, file Gateway, dan teks layar awal diatur di Config. Jika Icon Manager dipasang pada aplikasi lain, aplikasi tersebut mengontrol jendela dan tampilannya; tab ini mungkin disembunyikan.
+
+[tab:gateway]
+Gunakan peluncur bersama untuk menemukan dan membuka aplikasi, file, folder, dan tautan terdaftar. Gateway terpisah dari pekerjaan ikon pada tab lain. Jika peluncur tidak dapat dimuat, buka file Gateway dari tab ini.
+
+[footer]
+[Mr Bmulti](http://mrbmulti.com)
+[GitHub](https://githum/mrBmulti)
+</p></div><div class="langtext" data-lang="ja" hidden><p style="white-space:pre-wrap">[intro]
+Icon Manager は、アプリケーションのアイコンと起動画面画像を作成・管理します。共有アイコンライブラリ、Gateway のアプリケーション、フォルダー内のファイル、アプリケーションのサブフォルダーを扱います。アイコンは ICO、起動画面画像は PNG で、必要に応じて WEBP 版も作成できます。
+Icons でライブラリを表示するか、Folder または Subfolders で画像を追加します。Config で共有アイコンフォルダー、Gateway ファイル、起動画面の文字配置を設定し、Save Config を押します。
+
+[tab:icons]
+表には共有ライブラリ内のアイコンセットが表示されます。各セットは ICO と複数サイズの PNG で構成されます。Status は Complete、Partial PNGs、ICO only、Missing ICO を示し、Updated は最新ファイルを示します。
+Search icons は名前またはパスで絞り込みます。Clear は解除、Refresh は再読み込み、Open Folder はフォルダーを開きます。セットを選択するとプレビュー、状態、ファイルを確認できます。
+Generate from Source はアプリケーションまたは画像からセットを作成します。Generate Glyph は名前、1～2文字、2色から簡易セットを作ります。Recipe Set は確認後に標準レシピアイコンを作成します。Regenerate Selected は選択セットを再生成し、Copy Path はパスをコピーします。Delete Selected は確認後に共有ファイルをすべて削除します。元に戻せません。
+生成と再生成は既存セットを置き換えます。Config の設定が有効なら、アプリケーションの隣にも ICO を保存します。
+
+[tab:gateway-icons]
+このタブでは Config で指定した Gateway ファイル内のアプリケーションアイコンを確認します。Refresh Gateway は一覧を再読み込みします。
+Icon Status は Found、Not Found、Missing を表示します。Missing only は Found のアプリケーションを隠します。Search はアプリケーション、プロジェクト、状態、アイコン、パスを検索します。Narrow layout はプレビューを表の下に配置します。
+Generate Selected from App は選択したアプリケーションのアイコンを作成します。Generate All Missing は確認後、Found 以外のすべてを作成します。使用可能な元データがなければ文字アイコンを作ります。PNG、JPG、ICO を選択またはドラッグして割り当てることもできます。Icon crop は横長画像を Center または Right から切り抜きます。
+処理はアプリケーションの隣に ICO と _spash.png を書き込み、Gateway にアイコンを記録します。既存ファイルの置換前に確認します。Gateway を保存できない場合、ファイルを元に戻します。Gateway が別の場所で変更された場合は再読み込みして操作をやり直します。Web リンクやファイルが見つからないアプリケーションには設定できません。
+
+[tab:folder]
+Browse Folder でフォルダーを選択します。表には直下のファイルだけが表示され、サブフォルダーは含みません。Python ファイルでは Named、Description、Version を先頭付近のプロジェクト行から読み取ります。コードは実行しません。
+ファイルを選択すると詳細と現在の起動画面画像が表示されます。画像がない場合はサンプル背景でプレビューします。
+PNG または JPG を下部の対象へドラッグするか Choose PNG or JPG を押すと、選択した Python ファイルの隣に &lt;name&gt;.ico、&lt;name&gt;_splash.png、&lt;name&gt;_splash.webp を作成します。同名の既存ファイルは置き換えられます。文字は Config のテンプレートから取得します。一度に画像は1つだけです。リンクやWebダウンロードは拒否されます。
+Make all PNG into WEBP はフォルダーと全サブフォルダー内の PNG を同名の WEBP に変換します。バックグラウンドで実行されます。Icon crop は Gateway Icons と同じです。
+ファイルを右クリックすると、Explore、Open folder in Explorer、Make a Copy、Paste File to Folder、Copy File Path、Copy image to clipboard（Windows のみ）、Delete（確認あり）を使用できます。コピー名は &quot;- Copy&quot; で、貼り付け時に既存ファイルは置き換えません。
+
+[tab:subfolders]
+各アプリケーションが &lt;folder&gt;\\&lt;folder&gt;.py のように専用サブフォルダーにある場合に使用します。Browse Root で親フォルダーを選び Populate を押します。表には .py、.ico、_splash.png の有無と不足数が表示されます。Missing only は両方そろったフォルダーを隠します。
+フォルダーを選択して PNG または JPG を追加すると、サブフォルダー内に &lt;folder&gt;.ico、&lt;folder&gt;_splash.png、&lt;folder&gt;_splash.webp を作成します。既存ファイルは置き換えられます。起動画面のファイル名にはフォルダー名を使います。Missing only が有効なら、次に不足しているフォルダーへ選択が移ります。
+Make all PNG into WEBP と Icon crop は Folder と同じです。行を右クリックしてフォルダーやファイルを開けます。
+
+[tab:process]
+このページではアイコンの検索・作成方法と共有フォルダーの状態を示します。4つの数値はセット総数、完全なセット、ICO がないセット、一部不足のセットです。
+既存アイコンの再利用、該当画像の変換、exe・dll・lnk からの抽出、最後に文字アイコンの作成を順に試します。前の手順で見つからない場合だけ次へ進みます。
+新しいセットには ICO サイズ 16、24、32、48、64、128、256 と PNG サイズ 32、48、50、64、128 が含まれます。他のアプリケーションは request_icon でアイコンを要求できます。このページは編集できません。
+
+[tab:config]
+共有アイコンフォルダーと Gateway ファイルを設定します。フォルダーがなければ作成されます。ソースから生成するとき、要求元アプリケーションの隣にも ICO を保存する設定を有効にできます。Save Config は cpc_icon_manager.json に保存します。
+Splash Overlay Template は起動画面に描く文字を設定します。完成画像の高さはピクセル単位（初期値400）です。1行に1つのテキスト行を入力し、{{window_title}}、{{purpose_note}}、{{file_name}}、{{version}}、{{source_date}}、{{version_or_source}}、{{app_name}}、{{project}}、{{desc}} などのフィールドを使います。値はアプリケーションから取得されます。空行は間隔になります。
+各行にはフォント、サイズ、文字色、任意の背景色と影色を設定できます。色は #RRGGBB 形式か ... ボタンで指定します。スタイル行はテキスト行に対応し、テキスト欄を離れると更新されます。
+
+[tab:splash]
+このタブは Gateway アプリケーションの元の _spash.png にテンプレート文字を加えて、完成版 _splash.png を作成します。元ファイルは変更されません。表にはウィンドウタイトル、バージョンまたはソース日付、目的、元画像と完成画像の有無が表示されます。Search で絞り込み、Refresh Gateway で更新します。
+アプリケーションを1つ以上選択します。Preview Selected は現在のテンプレートでプレビューを描き直します。Create Selected は各アプリケーションの隣に _splash.png を作成し、以前のファイルを置き換えます。Sample は例の値と背景でテンプレートを表示します。元の _spash.png またはアプリケーションファイルがない場合はプレビューも作成もできません。
+Icon Manager を単独で起動すると、読み込み中に自身の _splash.png を表示し、完成版がなければ _spash.png を表示します。
+
+[tab:ui-choices]
+配色テーマ、間隔、ウィンドウサイズを選択します。アイコンフォルダー、Gateway ファイル、起動画面テキストは Config で設定します。別のアプリケーションに組み込まれている場合、ウィンドウと外観はそのアプリケーションが管理するため、このタブは非表示になることがあります。
+
+[tab:gateway]
+共有ランチャーで登録済みのアプリケーション、ファイル、フォルダー、リンクを検索して開きます。Gateway は他のタブのアイコン作業とは別です。ランチャーを読み込めない場合は、このタブから Gateway ファイルを開けます。
+
+[footer]
+[Mr Bmulti](http://mrbmulti.com)
+[GitHub](https://githum/mrBmulti)
+</p></div><div class="langtext" data-lang="ko" hidden><p style="white-space:pre-wrap">[intro]
+Icon Manager는 애플리케이션 아이콘과 시작 화면 이미지를 만들고 관리합니다. 공유 아이콘 라이브러리, Gateway에 등록된 애플리케이션, 폴더 안의 파일 및 앱 하위 폴더를 처리합니다. 아이콘은 ICO 파일이며 시작 이미지는 PNG입니다. 선택적으로 WEBP 사본도 만들 수 있습니다.
+Icons에서 라이브러리를 보거나 Folder 또는 Subfolders에서 이미지를 추가합니다. Config에서 공유 아이콘 폴더, Gateway 파일 및 시작 화면 텍스트 배치를 설정한 뒤 Save Config를 누릅니다.
+
+[tab:icons]
+표에는 공유 라이브러리에서 찾은 아이콘 세트가 표시됩니다. 각 세트는 ICO와 여러 크기의 PNG로 구성됩니다. Status는 Complete, Partial PNGs, ICO only 또는 Missing ICO를 표시하고 Updated는 가장 최근 파일을 표시합니다.
+Search icons는 이름이나 경로로 필터링합니다. Clear는 필터를 지우고 Refresh는 다시 불러오며 Open Folder는 폴더를 엽니다. 세트를 선택하면 미리보기, 상태 및 파일을 볼 수 있습니다.
+Generate from Source는 애플리케이션이나 이미지에서 세트를 만듭니다. Generate Glyph는 이름, 한두 글자와 두 가지 색으로 간단한 세트를 만듭니다. Recipe Set은 확인 후 표준 레시피 아이콘을 만듭니다. Regenerate Selected는 선택한 세트를 다시 만들고 Copy Path는 경로를 복사합니다. Delete Selected는 확인 후 세트의 공유 파일을 모두 삭제하며 되돌릴 수 없습니다.
+생성 및 재생성은 기존 세트를 대체합니다. Config에서 옵션을 켜면 애플리케이션 옆에도 ICO를 저장합니다.
+
+[tab:gateway-icons]
+이 탭은 Config에서 지정한 Gateway 파일의 애플리케이션 아이콘을 확인합니다. Refresh Gateway는 목록을 다시 불러옵니다.
+Icon Status는 Found, Not Found 또는 Missing을 표시합니다. Missing only는 아이콘이 Found인 앱을 숨깁니다. Search는 애플리케이션, 프로젝트, 상태, 아이콘 및 경로를 검색합니다. Narrow layout은 미리보기를 표 아래에 배치합니다.
+Generate Selected from App은 선택한 앱의 아이콘을 만듭니다. Generate All Missing은 확인 후 Found가 아닌 모든 앱의 아이콘을 만듭니다. 사용할 수 있는 원본이 없으면 간단한 글자 아이콘을 만듭니다. PNG, JPG 또는 ICO를 선택하거나 끌어다 놓아 이미지를 지정할 수도 있습니다. Icon crop은 넓은 이미지를 Center 또는 Right 기준으로 자를지 정합니다.
+작업은 앱 옆에 ICO를 쓰고 _spash.png를 만들며 Gateway에 아이콘을 기록합니다. 기존 파일을 바꾸기 전에 확인을 요청합니다. Gateway를 저장할 수 없으면 파일을 이전 상태로 복원합니다. Gateway가 다른 곳에서 변경되었다면 다시 불러온 뒤 작업을 반복해야 합니다. 웹 링크와 파일을 찾을 수 없는 앱에는 여기서 아이콘을 지정할 수 없습니다.
+
+[tab:folder]
+Browse Folder로 폴더를 선택합니다. 표에는 하위 폴더가 아닌 해당 폴더 바로 안의 파일만 표시됩니다. Python 파일의 Named, Description 및 Version은 파일 상단 근처의 프로젝트 줄에서 읽으며 코드는 실행하지 않습니다.
+파일을 선택하면 세부 정보와 현재 시작 이미지를 볼 수 있습니다. 이미지가 없으면 예시 미리보기가 표시됩니다.
+PNG 또는 JPG를 아래 대상 영역에 끌어 놓거나 Choose PNG or JPG를 눌러 선택한 Python 파일 옆에 &lt;name&gt;.ico, &lt;name&gt;_splash.png 및 &lt;name&gt;_splash.webp를 만듭니다. 같은 이름의 기존 파일은 대체됩니다. 텍스트는 Config 템플릿에서 가져옵니다. 한 번에 이미지 하나만 놓을 수 있으며 링크와 웹 다운로드는 거부됩니다.
+Make all PNG into WEBP는 폴더와 모든 하위 폴더의 PNG를 같은 이름의 WEBP로 변환합니다. 백그라운드에서 실행됩니다. Icon crop은 Gateway Icons와 동일하게 작동합니다.
+파일을 마우스 오른쪽 버튼으로 클릭하면 Explore, Open folder in Explorer, Make a Copy, Paste File to Folder, Copy File Path, Copy image to clipboard(Windows만) 및 확인 후 Delete를 사용할 수 있습니다. 복사본 이름은 &quot;- Copy&quot;이며 붙여넣기는 기존 파일을 덮어쓰지 않습니다.
+
+[tab:subfolders]
+각 애플리케이션이 &lt;folder&gt;\\&lt;folder&gt;.py처럼 자체 하위 폴더에 있을 때 사용합니다. Browse Root로 상위 폴더를 선택하고 Populate를 누릅니다. 표에는 .py, .ico 및 _splash.png의 존재 여부와 누락 개수가 표시됩니다. Missing only는 두 파일이 모두 있는 폴더를 숨깁니다.
+폴더를 선택하고 PNG 또는 JPG를 놓으면 하위 폴더에 &lt;folder&gt;.ico, &lt;folder&gt;_splash.png 및 &lt;folder&gt;_splash.webp를 씁니다. 기존 파일은 대체되며 폴더 이름이 시작 이미지 파일명으로 사용됩니다. Missing only가 켜져 있으면 다음으로 파일이 필요한 폴더를 선택합니다.
+Make all PNG into WEBP와 Icon crop은 Folder 탭과 동일합니다. 행을 마우스 오른쪽 버튼으로 클릭하면 폴더나 파일을 열 수 있습니다.
+
+[tab:process]
+이 페이지는 아이콘을 찾고 만드는 방법과 공유 아이콘 폴더의 상태를 보여줍니다. 네 가지 수치는 전체 세트, 완전한 세트, ICO가 없는 세트 및 일부만 있는 세트를 나타냅니다.
+기존 아이콘 재사용, 일치하는 이미지 변환, exe·dll·lnk에서 아이콘 추출, 마지막으로 간단한 글자 아이콘 만들기를 순서대로 시도합니다. 앞 단계에서 찾지 못한 경우에만 다음 단계를 시도합니다.
+새 세트에는 ICO 크기 16, 24, 32, 48, 64, 128, 256과 PNG 크기 32, 48, 50, 64, 128이 포함됩니다. 다른 애플리케이션은 request_icon으로 아이콘을 요청할 수 있습니다. 이 페이지는 편집할 수 없습니다.
+
+[tab:config]
+공유 아이콘 폴더와 Gateway 파일을 설정합니다. 폴더가 없으면 생성됩니다. 원본에서 아이콘을 만들 때 요청한 애플리케이션 옆에도 ICO를 저장하는 옵션을 켤 수 있습니다. Save Config는 설정을 cpc_icon_manager.json에 저장합니다.
+Splash Overlay Template은 모든 시작 이미지에 표시할 텍스트를 제어합니다. 최종 높이는 픽셀 단위이며 기본값은 400입니다. 텍스트 상자에서 한 줄은 한 행이며 {{window_title}}, {{purpose_note}}, {{file_name}}, {{version}}, {{source_date}}, {{version_or_source}}, {{app_name}}, {{project}}, {{desc}} 등의 필드를 사용할 수 있습니다. 값은 애플리케이션 정보에서 채워집니다. 빈 줄은 간격을 만듭니다.
+각 줄에는 글꼴, 크기, 글자색, 선택적인 배경 및 그림자 색상이 따로 있습니다. 색상은 #RRGGBB 형식으로 입력하거나 ... 버튼으로 선택합니다. 스타일 행은 텍스트 행과 대응하며 텍스트 상자에서 벗어나면 스타일이 바뀝니다.
+
+[tab:splash]
+이 탭은 Gateway 애플리케이션의 원본 _spash.png에 템플릿 텍스트를 추가해 최종 _splash.png를 만듭니다. 원본은 변경되지 않습니다. 표에는 창 제목, 버전 또는 원본 날짜, 목적 설명 및 원본/완성 파일의 존재 여부가 표시됩니다. Search는 필터링하고 Refresh Gateway는 다시 불러옵니다.
+하나 이상의 앱을 선택합니다. Preview Selected는 현재 템플릿으로 미리보기를 다시 그립니다. Create Selected는 각 앱 옆에 _splash.png를 만들고 이전 파일을 대체합니다. Sample은 예시 값과 배경으로 템플릿을 보여줍니다. 원본 _spash.png 또는 앱 파일이 없으면 미리보기나 생성이 불가능합니다.
+Icon Manager를 단독으로 시작하면 로딩 중 자체 _splash.png를 표시하며, 완성본이 없으면 _spash.png를 표시합니다.
+
+[tab:ui-choices]
+색상 테마, 간격 및 창 크기를 선택합니다. 아이콘 폴더, Gateway 파일 및 시작 화면 텍스트는 Config에서 설정합니다. Icon Manager가 다른 앱에 연결되어 있으면 해당 앱이 창과 모양을 제어하므로 이 탭이 숨겨질 수 있습니다.
+
+[tab:gateway]
+공유 실행기를 사용해 등록된 애플리케이션, 파일, 폴더 및 링크를 찾아 엽니다. Gateway는 다른 탭의 아이콘 작업과 별개입니다. 실행기를 불러올 수 없으면 이 탭에서 Gateway 파일을 열 수 있습니다.
+
+[footer]
+[Mr Bmulti](http://mrbmulti.com)
+[GitHub](https://githum/mrBmulti)
+</p></div><div class="langtext" data-lang="pt" hidden><p style="white-space:pre-wrap">[intro]
+O Icon Manager cria e mantém os ícones e as imagens de abertura das aplicações. Trabalha com a biblioteca partilhada, aplicações do Gateway, ficheiros numa pasta e subpastas de aplicações. Os ícones são ficheiros ICO; as imagens de abertura são PNG, com uma cópia WEBP opcional.
+Abra Icons para ver a biblioteca ou adicione uma imagem em Folder ou Subfolders. Configure a pasta de ícones, o ficheiro Gateway e o esquema do texto em Config; depois prima Save Config.
+
+[tab:icons]
+A tabela apresenta os conjuntos da biblioteca partilhada. Cada conjunto inclui um ICO e vários tamanhos PNG. Status indica Complete, Partial PNGs, ICO only ou Missing ICO. Updated mostra o ficheiro mais recente.
+Search icons filtra por nome ou caminho. Clear limpa o filtro; Refresh atualiza a pasta; Open Folder abre-a. Selecione um conjunto para ver a pré-visualização, o estado e os ficheiros.
+Generate from Source cria um conjunto a partir de uma aplicação ou imagem. Generate Glyph cria um conjunto com nome, uma ou duas letras e duas cores. Recipe Set cria os ícones padrão de receitas após confirmação. Regenerate Selected reconstrói o conjunto; Copy Path copia o caminho. Delete Selected elimina todos os ficheiros partilhados do conjunto após confirmação; não é possível anular.
+A geração e a regeneração substituem um conjunto existente. Também podem guardar um ICO junto da aplicação se a opção estiver ativa em Config.
+
+[tab:gateway-icons]
+Este separador verifica os ícones das aplicações no ficheiro Gateway definido em Config. Refresh Gateway atualiza a lista.
+Icon Status apresenta Found, Not Found ou Missing. Missing only oculta aplicações cujo ícone foi encontrado. Search procura aplicação, projeto, estado, ícone e caminho. Narrow layout coloca a pré-visualização abaixo da tabela.
+Generate Selected from App cria um ícone para a aplicação selecionada. Generate All Missing faz isso para todas as que não estejam Found, após confirmação; sem uma origem utilizável, cria um ícone com uma letra. Também pode atribuir uma imagem PNG, JPG ou ICO, escolhendo-a ou arrastando-a. Icon crop define se uma imagem larga é cortada a partir de Center ou Right.
+A ação grava o ICO junto da aplicação, cria _spash.png e regista o ícone no Gateway. É pedida confirmação antes de substituir ficheiros. Se o Gateway não puder ser guardado, os ficheiros são repostos. Se o Gateway tiver sido alterado noutro local, atualize-o e repita. Ligações Web e aplicações sem ficheiro localizado não podem receber ícones aqui.
+
+[tab:folder]
+Use Browse Folder para escolher uma pasta. A tabela mostra apenas os ficheiros diretamente nela. Nos ficheiros Python, Named, Description e Version são lidos das linhas do projeto; o código não é executado.
+Selecione um ficheiro para ver os detalhes e a imagem de abertura. Se ainda não existir, é apresentada uma pré-visualização de exemplo.
+Arraste um PNG ou JPG para o destino, ou prima Choose PNG or JPG, para criar junto do ficheiro Python: &lt;name&gt;.ico, &lt;name&gt;_splash.png e &lt;name&gt;_splash.webp. Os ficheiros existentes são substituídos. O texto vem do modelo em Config. Arraste apenas uma imagem; ligações e transferências Web são recusadas.
+Make all PNG into WEBP converte os PNG da pasta e das subpastas em WEBP com o mesmo nome. Funciona em segundo plano. Icon crop funciona como em Gateway Icons.
+Clique com o botão direito para explorar, abrir a pasta, copiar, colar, copiar o caminho, copiar a imagem para a área de transferência (apenas Windows) ou eliminar após confirmação. Uma cópia recebe o nome &quot;- Copy&quot;; colar nunca substitui um ficheiro existente.
+
+[tab:subfolders]
+Use este separador quando cada aplicação estiver na sua própria subpasta, como &lt;folder&gt;\\&lt;folder&gt;.py. Escolha a pasta principal com Browse Root e prima Populate. A tabela indica se existem .py, .ico e _splash.png e conta os ficheiros em falta. Missing only oculta pastas que já têm ambos.
+Selecione uma pasta e adicione um PNG ou JPG para criar &lt;folder&gt;.ico, &lt;folder&gt;_splash.png e &lt;folder&gt;_splash.webp. Os ficheiros existentes são substituídos; o nome da pasta é usado na imagem. Com Missing only, a seleção avança para a pasta seguinte que ainda precisa de ficheiros.
+Make all PNG into WEBP e Icon crop funcionam como em Folder. O botão direito permite explorar a pasta ou os ficheiros.
+
+[tab:process]
+Esta página explica como os ícones são encontrados e criados e mostra o estado da pasta partilhada. Os quatro indicadores contam conjuntos, conjuntos completos, conjuntos sem ICO e conjuntos parciais.
+O processo tenta, por ordem, reutilizar um ícone existente, converter uma imagem correspondente, extrair um ícone de exe, dll ou lnk e, por fim, criar um ícone com uma letra. Cada etapa só é tentada se a anterior não encontrar nada.
+Os novos conjuntos incluem tamanhos ICO 16, 24, 32, 48, 64, 128 e 256, e PNG 32, 48, 50, 64 e 128. Outras aplicações podem pedir um ícone com request_icon. Esta página não permite edição.
+
+[tab:config]
+Defina a pasta partilhada de ícones e o ficheiro Gateway. A pasta é criada se não existir. Ative a opção para guardar também um ICO junto da aplicação quando gerar a partir de uma origem. Save Config guarda as opções em cpc_icon_manager.json.
+Splash Overlay Template controla o texto das imagens de abertura. A altura final é em píxeis (400 por predefinição). Use uma linha por fila de texto e os campos {{window_title}}, {{purpose_note}}, {{file_name}}, {{version}}, {{source_date}}, {{version_or_source}}, {{app_name}}, {{project}} e {{desc}}; são preenchidos com os dados de cada aplicação. Uma linha vazia cria um espaço.
+Cada linha tem o seu estilo: tipo de letra, tamanho, cor do texto e fundo ou sombra opcionais. As cores usam #RRGGBB ou o botão ... . As filas correspondem às linhas de texto; o estilo muda ao sair da caixa de texto.
+
+[tab:splash]
+Este separador transforma o _spash.png original de cada aplicação Gateway num _splash.png final com o texto do modelo. O original não é alterado. A tabela mostra título, versão ou data de origem, finalidade e existência dos ficheiros. Search filtra; Refresh Gateway atualiza.
+Selecione uma ou várias aplicações. Preview Selected atualiza a pré-visualização; Create Selected cria _splash.png junto de cada aplicação, substituindo o anterior. Sample mostra o modelo com valores e fundo de exemplo. Não é possível pré-visualizar ou criar se faltar o _spash.png original ou o ficheiro da aplicação.
+Quando inicia sozinho, o Icon Manager mostra o seu próprio _splash.png ou, se não existir, o _spash.png enquanto carrega.
+
+[tab:ui-choices]
+Escolha o tema de cores, o espaçamento e o tamanho da janela. As pastas de ícones, o ficheiro Gateway e o texto de abertura pertencem a Config. Se o Icon Manager estiver integrado noutra aplicação, essa aplicação controla a janela e a aparência; este separador pode ficar oculto.
+
+[tab:gateway]
+Use o iniciador partilhado para localizar e abrir aplicações, ficheiros, pastas e ligações registadas. Gateway é independente do trabalho com ícones nos outros separadores. Se o iniciador não puder ser carregado, abra o ficheiro Gateway neste separador.
+
+[footer]
+[Mr Bmulti](http://mrbmulti.com)
+[GitHub](https://githum/mrBmulti)
+</p></div><div class="langtext" data-lang="ru" hidden><p style="white-space:pre-wrap">[intro]
+Icon Manager создаёт и обслуживает значки приложений и изображения заставки. Он работает с общей библиотекой значков, приложениями из Gateway, файлами в папке и подпапками приложений. Значки имеют формат ICO; заставки — PNG, при необходимости создаётся копия WEBP.
+Откройте Icons для просмотра библиотеки или добавьте изображение через Folder или Subfolders. В Config задайте общую папку значков, файл Gateway и расположение текста заставки, затем нажмите Save Config.
+
+[tab:icons]
+Таблица показывает наборы значков общей библиотеки. Набор включает ICO и PNG разных размеров. Status показывает Complete, Partial PNGs, ICO only или Missing ICO; Updated — самый новый файл.
+Search icons фильтрует по имени или пути. Clear снимает фильтр, Refresh обновляет список, Open Folder открывает папку. Выберите набор, чтобы увидеть предварительный просмотр, состояние и файлы.
+Generate from Source создаёт набор из приложения или изображения. Generate Glyph создаёт простой значок из имени, одной или двух букв и двух цветов. Recipe Set создаёт стандартные значки рецептов после подтверждения. Regenerate Selected пересоздаёт выбранный набор; Copy Path копирует путь. Delete Selected после подтверждения удаляет все общие файлы набора; отменить действие нельзя.
+Создание и пересоздание заменяют существующий набор. При включённой настройке Config ICO также сохраняется рядом с приложением.
+
+[tab:gateway-icons]
+Вкладка проверяет значки приложений из файла Gateway, указанного в Config. Refresh Gateway перечитывает список.
+Icon Status показывает Found, Not Found или Missing. Missing only скрывает приложения со статусом Found. Search ищет по приложению, проекту, статусу, значку и пути. Narrow layout помещает предварительный просмотр под таблицей.
+Generate Selected from App создаёт значок выбранного приложения. Generate All Missing после подтверждения создаёт значки для всех записей без Found; если подходящего источника нет, создаётся простой буквенный значок. Можно выбрать или перетащить PNG, JPG или ICO. Icon crop задаёт обрезку широкого изображения от Center или Right.
+Операция записывает ICO рядом с приложением, создаёт _spash.png и регистрирует значок в Gateway. Перед заменой файлов требуется подтверждение. Если Gateway не удаётся сохранить, файлы восстанавливаются. Если Gateway изменён в другом месте, перечитайте его и повторите действие. Веб-ссылкам и приложениям без найденного файла значок здесь назначить нельзя.
+
+[tab:folder]
+Выберите папку через Browse Folder. Таблица показывает только файлы непосредственно в ней, без подпапок. Для Python-файлов Named, Description и Version считываются из строк проекта в начале файла; код не запускается.
+Выберите файл, чтобы увидеть сведения и текущую заставку. Если её нет, показывается пример предварительного просмотра.
+Перетащите PNG или JPG на нижнюю область либо нажмите Choose PNG or JPG. Рядом с выбранным Python-файлом будут созданы &lt;name&gt;.ico, &lt;name&gt;_splash.png и &lt;name&gt;_splash.webp. Одноимённые файлы заменяются. Текст берётся из шаблона Config. Добавляйте только одно изображение за раз; ссылки и веб-загрузки отклоняются.
+Make all PNG into WEBP преобразует PNG в папке и всех подпапках в WEBP с тем же именем. Процесс выполняется в фоне. Icon crop работает как в Gateway Icons.
+Щёлкните файл правой кнопкой, чтобы открыть Explore, Open folder in Explorer, Make a Copy, Paste File to Folder, Copy File Path, Copy image to clipboard (только Windows) или Delete после подтверждения. Копия называется &quot;- Copy&quot;; вставка не заменяет существующий файл.
+
+[tab:subfolders]
+Используйте вкладку, если каждое приложение находится в собственной подпапке, например &lt;folder&gt;\\&lt;folder&gt;.py. Выберите родительскую папку через Browse Root и нажмите Populate. Таблица показывает наличие .py, .ico и _splash.png и количество отсутствующих файлов. Missing only скрывает папки, где есть оба файла.
+Выберите папку и добавьте PNG или JPG, чтобы создать в ней &lt;folder&gt;.ico, &lt;folder&gt;_splash.png и &lt;folder&gt;_splash.webp. Существующие файлы заменяются; имя папки используется в имени заставки. При включённом Missing only выбор переходит к следующей папке, где не хватает файлов.
+Make all PNG into WEBP и Icon crop работают как на вкладке Folder. Правый щелчок открывает папку или её файлы.
+
+[tab:process]
+Страница объясняет поиск и создание значков и показывает состояние общей папки. Четыре счётчика показывают все наборы, полные наборы, наборы без ICO и частичные наборы.
+Порядок действий: использовать существующий значок, преобразовать подходящее изображение, извлечь значок из exe, dll или lnk, затем создать простой буквенный значок. Следующий шаг выполняется, только если предыдущий не дал результата.
+Новые наборы содержат ICO размеров 16, 24, 32, 48, 64, 128, 256 и PNG размеров 32, 48, 50, 64, 128. Другие приложения могут запрашивать значок через request_icon. Эта страница не редактируется.
+
+[tab:config]
+Укажите общую папку значков и файл Gateway. Папка создаётся, если её нет. Включите сохранение ICO рядом с приложением, запрашивающим значок при создании из источника. Save Config сохраняет параметры в cpc_icon_manager.json.
+Splash Overlay Template задаёт текст на заставках. Итоговая высота указывается в пикселях (по умолчанию 400). Вводите по одной строке текста на строку и используйте поля {{window_title}}, {{purpose_note}}, {{file_name}}, {{version}}, {{source_date}}, {{version_or_source}}, {{app_name}}, {{project}} и {{desc}}; они заполняются из данных приложения. Пустая строка создаёт интервал.
+Для каждой строки задаются шрифт, размер, цвет текста, а также необязательные фон и тень. Цвета задаются как #RRGGBB или выбираются кнопкой ... . Строки стилей соответствуют строкам текста; стиль обновляется при выходе из текстового поля.
+
+[tab:splash]
+Вкладка добавляет текст шаблона к исходному _spash.png каждого приложения Gateway и создаёт итоговый _splash.png. Исходник не меняется. Таблица показывает заголовок окна, версию или дату источника, назначение и наличие исходного и готового файлов. Search фильтрует; Refresh Gateway обновляет.
+Выберите одно или несколько приложений. Preview Selected обновляет предварительный просмотр; Create Selected записывает _splash.png рядом с каждым приложением, заменяя прежний файл. Sample показывает шаблон с примерными значениями и фоном. Если нет исходного _spash.png или файла приложения, просмотр и создание невозможны.
+При отдельном запуске Icon Manager во время загрузки показывает собственный _splash.png, а если его нет — _spash.png.
+
+[tab:ui-choices]
+Выберите цветовую тему, интервалы и размер окна. Папки значков, файл Gateway и текст заставки задаются в Config. Если Icon Manager встроен в другое приложение, оно управляет окном и внешним видом; эта вкладка может быть скрыта.
+
+[tab:gateway]
+Используйте общий запускатель для поиска и открытия зарегистрированных приложений, файлов, папок и ссылок. Gateway не связан с работой со значками на других вкладках. Если запускатель не загружается, откройте файл Gateway здесь.
+
+[footer]
+[Mr Bmulti](http://mrbmulti.com)
+[GitHub](https://githum/mrBmulti)
+</p></div><div class="langtext" data-lang="sw" hidden><p style="white-space:pre-wrap">[intro]
+Icon Manager huunda na kusimamia aikoni na picha za mwanzo za programu. Hufanya kazi na maktaba ya pamoja ya aikoni, programu za Gateway, faili ndani ya folda na folda ndogo za programu. Aikoni ni faili za ICO; picha za mwanzo ni PNG na zinaweza kuwa na nakala ya WEBP.
+Fungua Icons kuona maktaba, au ongeza picha kupitia Folder au Subfolders. Weka folda ya aikoni, faili ya Gateway na mpangilio wa maandishi katika Config, kisha bonyeza Save Config.
+
+[tab:icons]
+Jedwali linaonyesha seti zote za aikoni katika maktaba ya pamoja. Kila seti ina ICO na PNG za ukubwa tofauti. Status huonyesha Complete, Partial PNGs, ICO only au Missing ICO; Updated huonyesha faili ya karibuni.
+Search icons huchuja kwa jina au njia. Clear huondoa kichujio, Refresh hupakia upya na Open Folder hufungua folda. Chagua seti kuona mwonekano wa awali, hali na faili zake.
+Generate from Source hutengeneza seti kutoka kwa programu au picha. Generate Glyph hutengeneza seti rahisi kwa jina, herufi moja au mbili na rangi mbili. Recipe Set hutengeneza aikoni za kawaida za mapishi baada ya uthibitisho. Regenerate Selected hutengeneza upya seti; Copy Path hunakili njia. Delete Selected hufuta faili zote za pamoja za seti baada ya uthibitisho; haiwezi kutenduliwa.
+Kutengeneza au kutengeneza upya hubadilisha seti iliyopo. Ikiwa chaguo limewashwa katika Config, ICO pia huhifadhiwa karibu na programu.
+
+[tab:gateway-icons]
+Kichupo hiki hukagua aikoni za programu katika faili ya Gateway iliyochaguliwa kwenye Config. Refresh Gateway hupakia orodha upya.
+Icon Status huonyesha Found, Not Found au Missing. Missing only huficha programu ambazo aikoni zake ni Found. Search hutafuta programu, mradi, hali, aikoni na njia. Narrow layout huweka mwonekano wa awali chini ya jedwali.
+Generate Selected from App hutengeneza aikoni ya programu iliyochaguliwa. Generate All Missing hutengeneza aikoni kwa programu zote zisizo Found baada ya uthibitisho; chanzo kisichofaa kikikosekana, hutengeneza aikoni rahisi ya herufi. Unaweza pia kuchagua au kuburuta PNG, JPG au ICO. Icon crop huamua picha pana ikatwe kutoka Center au Right.
+Kitendo huandika ICO karibu na programu, hutengeneza _spash.png na kurekodi aikoni katika Gateway. Uthibitisho huombwa kabla ya kubadilisha faili. Gateway isipoweza kuhifadhiwa, faili hurudishwa katika hali yake ya awali. Gateway ikibadilishwa kwingine, ipakie upya na urudie. Viungo vya wavuti na programu ambazo faili zake hazipatikani haziwezi kupewa aikoni hapa.
+
+[tab:folder]
+Chagua folda kwa Browse Folder. Jedwali huonyesha faili zilizo moja kwa moja ndani yake pekee, si folda ndogo. Kwa faili za Python, Named, Description na Version husomwa kutoka mistari ya mradi karibu na mwanzo; msimbo hauendeshwi.
+Chagua faili kuona maelezo na picha yake ya sasa ya mwanzo. Ikiwa haipo, mwonekano wa mfano huonyeshwa.
+Buruta PNG au JPG kwenye sehemu ya chini, au bonyeza Choose PNG or JPG, ili kuunda &lt;name&gt;.ico, &lt;name&gt;_splash.png na &lt;name&gt;_splash.webp karibu na faili ya Python iliyochaguliwa. Faili zenye majina hayo hubadilishwa. Maandishi hutoka kwenye kiolezo cha Config. Weka picha moja tu kwa wakati; viungo na upakuaji wa wavuti hukataliwa.
+Make all PNG into WEBP hubadilisha PNG zote katika folda na folda zake ndogo kuwa WEBP zenye majina yale yale. Hufanya kazi chinichini. Icon crop hufanya kazi kama katika Gateway Icons.
+Bofya kulia faili ili kuchunguza, kufungua folda, kunakili, kubandika, kunakili njia, kunakili picha kwenye clipboard (Windows pekee) au kufuta baada ya uthibitisho. Nakala huitwa &quot;- Copy&quot;; kubandika hakubadilishi faili iliyopo.
+
+[tab:subfolders]
+Tumia kichupo hiki kila programu inapokuwa katika folda yake ndogo, kama &lt;folder&gt;\\&lt;folder&gt;.py. Chagua folda kuu kwa Browse Root na bonyeza Populate. Jedwali huonyesha kama .py, .ico na _splash.png zipo na huhesabu zinazokosekana. Missing only huficha folda ambazo tayari zina vyote.
+Chagua folda na uweke PNG au JPG ili kuandika &lt;folder&gt;.ico, &lt;folder&gt;_splash.png na &lt;folder&gt;_splash.webp ndani yake. Faili zilizopo hubadilishwa; jina la folda hutumiwa kama jina la faili ya picha ya mwanzo. Missing only ikiwashwa, uteuzi huhamia kwenye folda inayofuata yenye upungufu.
+Make all PNG into WEBP na Icon crop hufanya kazi kama katika Folder. Bofya kulia mstari ili kufungua folda au faili zake.
+
+[tab:process]
+Ukurasa huu unaeleza jinsi aikoni zinavyopatikana na kutengenezwa, na hali ya folda ya pamoja. Hesabu nne huonyesha seti zote, seti kamili, seti zisizo na ICO na seti za sehemu.
+Mchakato hujaribu kutumia aikoni iliyopo, kubadilisha picha inayolingana, kutoa aikoni kutoka exe, dll au lnk, na hatimaye kuunda aikoni rahisi ya herufi. Hatua inayofuata hujaribiwa tu ikiwa ya awali haikupata chochote.
+Seti mpya zina ukubwa wa ICO 16, 24, 32, 48, 64, 128, 256 na ukubwa wa PNG 32, 48, 50, 64, 128. Programu nyingine zinaweza kuomba aikoni kwa request_icon. Ukurasa huu haubadilishwi.
+
+[tab:config]
+Weka folda ya pamoja ya aikoni na faili ya Gateway. Folda huundwa ikiwa haipo. Washa chaguo la kuhifadhi ICO karibu na programu inayoomba wakati wa kutengeneza kutoka chanzo. Save Config huhifadhi mipangilio katika cpc_icon_manager.json.
+Splash Overlay Template hudhibiti maandishi kwenye picha za mwanzo. Urefu wa mwisho ni kwa pikseli (400 kwa chaguo-msingi). Weka mstari mmoja kwa kila safu na utumie sehemu kama {{window_title}}, {{purpose_note}}, {{file_name}}, {{version}}, {{source_date}}, {{version_or_source}}, {{app_name}}, {{project}} na {{desc}}; hujazwa kwa taarifa za programu. Mstari tupu huacha nafasi.
+Kila mstari una mtindo wake: fonti, ukubwa, rangi ya maandishi, na mandharinyuma au kivuli cha hiari. Rangi huandikwa kama #RRGGBB au huchaguliwa kwa kitufe cha ... . Safu za mitindo hufuata mistari ya maandishi; mtindo hubadilika unapotoka kwenye kisanduku cha maandishi.
+
+[tab:splash]
+Kichupo hiki huongeza maandishi ya kiolezo kwenye _spash.png ya awali ya kila programu ya Gateway na kutengeneza _splash.png ya mwisho. Asili haibadilishwi. Jedwali huonyesha kichwa cha dirisha, toleo au tarehe ya chanzo, madhumuni na kama faili za awali na za mwisho zipo. Search huchuja; Refresh Gateway hupakia upya.
+Chagua programu moja au zaidi. Preview Selected husasisha mwonekano wa awali; Create Selected huandika _splash.png karibu na kila programu na kubadilisha ya zamani. Sample huonyesha kiolezo kwa thamani na mandharinyuma ya mfano. Ikiwa _spash.png ya awali au faili ya programu haipo, haiwezi kuonyeshwa wala kutengenezwa.
+Icon Manager inapoanzishwa peke yake, huonyesha _splash.png yake au, ikiwa haipo, _spash.png wakati inapakia.
+
+[tab:ui-choices]
+Chagua mandhari ya rangi, nafasi na ukubwa wa dirisha. Folda za aikoni, faili ya Gateway na maandishi ya picha ya mwanzo huwekwa katika Config. Icon Manager ikiunganishwa na programu nyingine, programu hiyo hudhibiti dirisha na mwonekano; kichupo hiki kinaweza kufichwa.
+
+[tab:gateway]
+Tumia kizindua cha pamoja kutafuta na kufungua programu, faili, folda na viungo vilivyosajiliwa. Gateway ni tofauti na kazi za aikoni katika vichupo vingine. Kizindua kisipopakia, fungua faili ya Gateway kutoka hapa.
+
+[footer]
+[Mr Bmulti](http://mrbmulti.com)
+[GitHub](https://githum/mrBmulti)
+</p></div><div class="langtext" data-lang="tl" hidden><p style="white-space:pre-wrap">[intro]
+Gumagawa at namamahala ang Icon Manager ng mga icon at startup splash image ng mga application. Gumagana ito sa shared icon library, mga application sa Gateway, mga file sa isang folder, at mga subfolder ng application. ICO files ang mga icon; PNG ang mga splash image at maaari ring magkaroon ng WEBP na kopya.
+Buksan ang Icons upang makita ang library, o magdagdag ng larawan sa Folder o Subfolders. Itakda sa Config ang shared icon folder, Gateway file, at ayos ng splash text, pagkatapos ay pindutin ang Save Config.
+
+[tab:icons]
+Inililista ng talahanayan ang lahat ng icon set sa shared library. May ICO at iba’t ibang laki ng PNG ang bawat set. Ipinapakita ng Status ang Complete, Partial PNGs, ICO only, o Missing ICO. Ipinapakita ng Updated ang pinakabagong file.
+Sinasala ng Search icons ayon sa pangalan o path. Inaalis ng Clear ang filter, nire-refresh ng Refresh ang listahan, at binubuksan ng Open Folder ang folder. Pumili ng set upang makita ang preview, status, at mga file nito.
+Gumagawa ang Generate from Source ng set mula sa application o larawan. Gumagawa ang Generate Glyph ng simpleng set gamit ang pangalan, isa o dalawang letra, at dalawang kulay. Gumagawa ang Recipe Set ng karaniwang recipe icon pagkatapos kumpirmahin. Binubuo muli ng Regenerate Selected ang napiling set; kinokopya ng Copy Path ang path. Binubura ng Delete Selected ang lahat ng shared file ng set pagkatapos kumpirmahin; hindi ito maibabalik.
+Pinapalitan ng pagbuo at muling pagbuo ang kasalukuyang set. Kung naka-enable sa Config, nagse-save din ito ng ICO sa tabi ng application.
+
+[tab:gateway-icons]
+Sinusuri ng tab na ito ang mga icon ng mga application sa Gateway file na pinili sa Config. Nilo-load muli ng Refresh Gateway ang listahan.
+Ipinapakita ng Icon Status ang Found, Not Found, o Missing. Itinatago ng Missing only ang mga application na Found ang icon. Naghahanap ang Search sa application, project, status, icon, at path. Inilalagay ng Narrow layout ang preview sa ilalim ng talahanayan.
+Gumagawa ang Generate Selected from App ng icon para sa napiling application. Gumagawa ang Generate All Missing ng icon para sa lahat ng hindi Found pagkatapos kumpirmahin; kung walang magagamit na source, simpleng letrang icon ang gagawin. Maaari ring pumili o mag-drag ng PNG, JPG, o ICO upang magtalaga ng larawan. Tinutukoy ng Icon crop kung sa Center o Right puputulin ang malapad na larawan.
+Isinusulat ng aksyon ang ICO sa tabi ng application, ginagawa ang _spash.png, at itinatala ang icon sa Gateway. Hihingi ito ng kumpirmasyon bago palitan ang mga file. Kung hindi ma-save ang Gateway, ibinabalik ang mga file sa dating kalagayan. Kung binago ang Gateway sa ibang lugar, i-load itong muli at ulitin ang aksyon. Hindi maaaring lagyan dito ng icon ang mga web link at application na hindi makita ang file.
+
+[tab:folder]
+Pumili ng folder gamit ang Browse Folder. Mga file lamang na direktang nasa loob nito ang ipinapakita ng talahanayan, hindi ang mga subfolder. Para sa Python files, binabasa ang Named, Description, at Version mula sa mga project line malapit sa itaas ng file; hindi pinapatakbo ang code.
+Pumili ng file upang makita ang detalye at kasalukuyang splash picture. Kung wala pa ito, ipapakita ang sample preview.
+I-drag ang PNG o JPG sa target sa ibaba, o pindutin ang Choose PNG or JPG, upang gawin sa tabi ng napiling Python file ang &lt;name&gt;.ico, &lt;name&gt;_splash.png, at &lt;name&gt;_splash.webp. Papalitan ang mga umiiral na file na kapareho ang pangalan. Mula sa Config template ang teksto. Isang larawan lamang bawat drag; hindi tinatanggap ang links at web downloads.
+Ginagawang WEBP na kapareho ang pangalan ng Make all PNG into WEBP ang lahat ng PNG sa folder at mga subfolder nito. Tumatakbo ito sa background. Gaya ng Gateway Icons ang kilos ng Icon crop.
+I-right-click ang file para sa Explore, Open folder in Explorer, Make a Copy, Paste File to Folder, Copy File Path, Copy image to clipboard (Windows lamang), o Delete pagkatapos kumpirmahin. &quot;- Copy&quot; ang pangalan ng kopya; hindi pinapalitan ng paste ang umiiral na file.
+
+[tab:subfolders]
+Gamitin ang tab na ito kapag nasa sariling subfolder ang bawat application, gaya ng &lt;folder&gt;\\&lt;folder&gt;.py. Piliin ang parent folder gamit ang Browse Root at pindutin ang Populate. Ipinapakita ng talahanayan kung mayroon ang .py, .ico, at _splash.png at binibilang ang mga kulang. Itinatago ng Missing only ang mga folder na kumpleto na.
+Pumili ng folder at maglagay ng PNG o JPG upang isulat doon ang &lt;folder&gt;.ico, &lt;folder&gt;_splash.png, at &lt;folder&gt;_splash.webp. Papalitan ang mga umiiral na file; pangalan ng folder ang gagamiting filename sa splash. Kapag naka-on ang Missing only, lilipat ang pagpili sa susunod na folder na nangangailangan pa ng mga file.
+Gaya ng Folder tab ang Make all PNG into WEBP at Icon crop. I-right-click ang row upang buksan ang folder o alinman sa mga file nito.
+
+[tab:process]
+Ipinapaliwanag ng pahinang ito kung paano hinahanap at ginagawa ang mga icon at ipinapakita ang kalagayan ng shared icon folder. Ipinapakita ng apat na bilang ang lahat ng set, kumpletong set, set na walang ICO, at bahagyang set.
+Sunod-sunod na sinusubukan ng proseso na gamitin ang umiiral na icon, i-convert ang katugmang larawan, kunin ang icon mula sa exe, dll, o lnk, at sa huli ay gumawa ng simpleng letrang icon. Susubukan lamang ang susunod na hakbang kung walang nahanap sa nauna.
+May ICO sizes na 16, 24, 32, 48, 64, 128, at 256 at PNG sizes na 32, 48, 50, 64, at 128 ang mga bagong set. Maaaring humiling ng icon ang ibang application gamit ang request_icon. Hindi nae-edit ang pahinang ito.
+
+[tab:config]
+Itakda ang shared icon folder at Gateway file. Gagawin ang folder kung wala pa ito. I-enable ang opsyon upang mag-save rin ng ICO sa tabi ng requesting application kapag gumagawa mula sa source. Sine-save ng Save Config ang mga setting sa cpc_icon_manager.json.
+Kinokontrol ng Splash Overlay Template ang tekstong inilalagay sa bawat splash image. Pixel ang final splash height (400 ang default). Isang linya bawat row ng text; gamitin ang mga field gaya ng {{window_title}}, {{purpose_note}}, {{file_name}}, {{version}}, {{source_date}}, {{version_or_source}}, {{app_name}}, {{project}}, at {{desc}}. Pinupunan ang mga ito mula sa impormasyon ng application. Nag-iiwan ng pagitan ang blangkong linya.
+May sariling style row ang bawat linya: font, size, kulay ng teksto, at opsyonal na background at shadow colors. Isinusulat ang mga kulay bilang #RRGGBB o pinipili gamit ang ... button. Katapat ng mga text line ang style row; nagbabago ang style kapag umalis sa text box.
+
+[tab:splash]
+Idinadagdag ng tab na ito ang template text sa orihinal na _spash.png ng bawat Gateway application upang makagawa ng final na _splash.png. Hindi binabago ang orihinal. Ipinapakita ng talahanayan ang window title, version o source date, purpose note, at kung umiiral ang orihinal at final na file. Sinasala ng Search ang listahan; nire-refresh ito ng Refresh Gateway.
+Pumili ng isa o higit pang application. Muling iginuguhit ng Preview Selected ang preview gamit ang kasalukuyang template. Isinusulat ng Create Selected ang _splash.png sa tabi ng bawat napiling application at pinapalitan ang nauna. Ipinapakita ng Sample ang template gamit ang sample values at background. Hindi maaaring mag-preview o gumawa kung wala ang orihinal na _spash.png o application file.
+Kapag nag-iisa ang Icon Manager sa pagsisimula, ipinapakita nito ang sarili nitong _splash.png, o ang _spash.png kung wala pang final image, habang naglo-load.
+
+[tab:ui-choices]
+Pumili ng color theme, spacing, at window size. Nasa Config ang icon folders, Gateway file, at splash text. Kapag nakakabit ang Icon Manager sa ibang application, ang application na iyon ang kumokontrol sa window at itsura; maaaring nakatago ang tab na ito.
+
+[tab:gateway]
+Gamitin ang shared launcher upang hanapin at buksan ang mga rehistradong application, file, folder, at link. Hiwalay ang Gateway sa icon work ng ibang mga tab. Kung hindi ma-load ang launcher, buksan ang Gateway file mula sa tab na ito.
+
+[footer]
+[Mr Bmulti](http://mrbmulti.com)
+[GitHub](https://githum/mrBmulti)
+</p></div><div class="langtext" data-lang="tr" hidden><p style="white-space:pre-wrap">[intro]
+Icon Manager, uygulamalarınızın simgelerini ve başlangıç ekranı görsellerini oluşturur ve yönetir. Paylaşılan simge kitaplığı, Gateway içindeki uygulamalar, bir klasördeki dosyalar ve uygulama alt klasörleriyle çalışır. Simgeler ICO dosyalarıdır; başlangıç görselleri PNG&#x27;dir ve isteğe bağlı WEBP kopyası da oluşturulabilir.
+Kitaplığı görmek için Icons sekmesini açın veya Folder ya da Subfolders bölümüne bir görsel ekleyin. Config içinde paylaşılan simge klasörünü, Gateway dosyasını ve başlangıç metni düzenini ayarlayıp Save Config düğmesine basın.
+
+[tab:icons]
+Tablo, paylaşılan kitaplıktaki tüm simge kümelerini listeler. Her küme bir ICO ve farklı boyutlarda PNG dosyaları içerir. Status, Complete, Partial PNGs, ICO only veya Missing ICO değerlerini gösterir. Updated en yeni dosyayı gösterir.
+Search icons ada veya yola göre filtreler. Clear filtreyi kaldırır, Refresh listeyi yeniler, Open Folder klasörü açar. Önizleme, durum ve dosyaları görmek için bir küme seçin.
+Generate from Source bir uygulama veya görselden küme oluşturur. Generate Glyph ad, bir veya iki harf ve iki renkle basit bir küme oluşturur. Recipe Set onaydan sonra standart tarif simgelerini oluşturur. Regenerate Selected seçili kümeyi yeniden oluşturur; Copy Path yolu kopyalar. Delete Selected onaydan sonra kümenin tüm paylaşılan dosyalarını siler; bu işlem geri alınamaz.
+Oluşturma ve yeniden oluşturma mevcut kümeyi değiştirir. Config seçeneği açıksa uygulamanın yanına da ICO kaydedilir.
+
+[tab:gateway-icons]
+Bu sekme, Config içinde seçilen Gateway dosyasındaki uygulamaların simgelerini denetler. Refresh Gateway listeyi yeniden yükler.
+Icon Status, Found, Not Found veya Missing gösterir. Missing only, simgesi Found olan uygulamaları gizler. Search uygulama, proje, durum, simge ve yolda arama yapar. Narrow layout önizlemeyi tablonun altına taşır.
+Generate Selected from App seçili uygulama için simge oluşturur. Generate All Missing onaydan sonra Found olmayan tüm uygulamalar için simge oluşturur; kullanılabilir kaynak yoksa basit bir harf simgesi oluşturulur. PNG, JPG veya ICO seçerek ya da sürükleyerek de görsel atayabilirsiniz. Icon crop geniş görselin Center veya Right tarafından kırpılacağını belirler.
+İşlem uygulamanın yanına ICO yazar, _spash.png oluşturur ve simgeyi Gateway&#x27;e kaydeder. Var olan dosyalar değiştirilmeden önce onay istenir. Gateway kaydedilemezse dosyalar eski hâline döndürülür. Gateway başka yerde değiştirilmişse yeniden yükleyip işlemi tekrarlayın. Web bağlantılarına ve dosyası bulunamayan uygulamalara burada simge atanamaz.
+
+[tab:folder]
+Browse Folder ile bir klasör seçin. Tablo yalnızca klasörün doğrudan içindeki dosyaları listeler; alt klasörleri listelemez. Python dosyalarında Named, Description ve Version, dosyanın üst tarafındaki proje satırlarından okunur; kod çalıştırılmaz.
+Ayrıntıları ve mevcut başlangıç görselini görmek için bir dosya seçin. Görsel yoksa örnek önizleme gösterilir.
+Alttaki hedefe PNG veya JPG sürükleyin ya da Choose PNG or JPG düğmesine basın. Seçilen Python dosyasının yanına &lt;name&gt;.ico, &lt;name&gt;_splash.png ve &lt;name&gt;_splash.webp oluşturulur. Aynı adlı dosyalar değiştirilir. Metin Config şablonundan gelir. Her seferinde yalnızca bir görsel bırakın; bağlantılar ve web indirmeleri kabul edilmez.
+Make all PNG into WEBP, klasör ve alt klasörlerdeki tüm PNG dosyalarını aynı adlı WEBP dosyalarına dönüştürür. Arka planda çalışır. Icon crop, Gateway Icons ile aynı şekilde çalışır.
+Dosyaya sağ tıklayarak Explore, Open folder in Explorer, Make a Copy, Paste File to Folder, Copy File Path, Copy image to clipboard (yalnızca Windows) veya onaydan sonra Delete seçeneklerini kullanın. Kopya &quot;- Copy&quot; adını alır; yapıştırma var olan dosyanın üzerine yazmaz.
+
+[tab:subfolders]
+Her uygulama kendi alt klasöründeyse, örneğin &lt;folder&gt;\\&lt;folder&gt;.py, bu sekmeyi kullanın. Browse Root ile üst klasörü seçin ve Populate düğmesine basın. Tablo .py, .ico ve _splash.png dosyalarının varlığını ve eksik sayısını gösterir. Missing only her iki dosyası da olan klasörleri gizler.
+Bir klasör seçip PNG veya JPG bırakarak alt klasörde &lt;folder&gt;.ico, &lt;folder&gt;_splash.png ve &lt;folder&gt;_splash.webp oluşturun. Var olan dosyalar değiştirilir; başlangıç görselinin dosya adı olarak klasör adı kullanılır. Missing only açıksa seçim, hâlâ dosya gereken sonraki klasöre geçer.
+Make all PNG into WEBP ve Icon crop, Folder sekmesindeki gibi çalışır. Satıra sağ tıklayarak klasörü veya dosyalarını açın.
+
+[tab:process]
+Bu sayfa simgelerin nasıl bulunduğunu ve oluşturulduğunu ve paylaşılan simge klasörünün durumunu gösterir. Dört sayaç toplam kümeleri, eksiksiz kümeleri, ICO dosyası eksik kümeleri ve kısmi kümeleri gösterir.
+İşlem önce mevcut simgeyi kullanmayı, eşleşen görseli dönüştürmeyi, exe, dll veya lnk içinden simge çıkarmayı ve son olarak basit bir harf simgesi oluşturmayı dener. Sonraki adım yalnızca önceki adım sonuç bulamazsa denenir.
+Yeni kümeler ICO 16, 24, 32, 48, 64, 128 ve 256 boyutlarını; PNG 32, 48, 50, 64 ve 128 boyutlarını içerir. Diğer uygulamalar request_icon ile simge isteyebilir. Bu sayfa düzenlenemez.
+
+[tab:config]
+Paylaşılan simge klasörünü ve Gateway dosyasını ayarlayın. Klasör yoksa oluşturulur. Bir kaynaktan simge oluştururken istekte bulunan uygulamanın yanına da ICO kaydetme seçeneğini etkinleştirin. Save Config ayarları cpc_icon_manager.json dosyasına kaydeder.
+Splash Overlay Template, tüm başlangıç görsellerine yazılan metni kontrol eder. Son yükseklik piksel cinsindendir (varsayılan 400). Her metin satırı için bir satır kullanın ve {{window_title}}, {{purpose_note}}, {{file_name}}, {{version}}, {{source_date}}, {{version_or_source}}, {{app_name}}, {{project}} ve {{desc}} gibi alanları ekleyin; bunlar uygulama bilgilerinden doldurulur. Boş satır aralık bırakır.
+Her satırın ayrı stili vardır: yazı tipi, boyut, metin rengi ve isteğe bağlı arka plan ve gölge renkleri. Renkler #RRGGBB biçiminde yazılır veya ... düğmesiyle seçilir. Stil satırları metin satırlarını izler; metin kutusundan çıkınca stil güncellenir.
+
+[tab:splash]
+Bu sekme, her Gateway uygulamasının özgün _spash.png dosyasına şablon metnini ekleyerek tamamlanmış _splash.png oluşturur. Özgün dosya değiştirilmez. Tablo pencere başlığını, sürüm veya kaynak tarihini, amaç notunu ve iki dosyanın varlığını gösterir. Search filtreler; Refresh Gateway yeniden yükler.
+Bir veya daha fazla uygulama seçin. Preview Selected geçerli şablonla önizlemeyi yeniler. Create Selected her uygulamanın yanına _splash.png yazar ve önceki dosyanın yerine geçer. Sample şablonu örnek değerler ve arka planla gösterir. Özgün _spash.png veya uygulama dosyası yoksa önizleme ya da oluşturma yapılamaz.
+Icon Manager tek başına başlatıldığında yüklenirken kendi _splash.png dosyasını, bu yoksa _spash.png dosyasını gösterir.
+
+[tab:ui-choices]
+Renk temasını, boşlukları ve pencere boyutunu seçin. Simge klasörleri, Gateway dosyası ve başlangıç metni Config içindedir. Icon Manager başka bir uygulamaya bağlıysa pencereyi ve görünümü o uygulama yönetir; bu sekme gizlenebilir.
+
+[tab:gateway]
+Kayıtlı uygulamaları, dosyaları, klasörleri ve bağlantıları bulup açmak için paylaşılan başlatıcıyı kullanın. Gateway, diğer sekmelerdeki simge çalışmalarından ayrıdır. Başlatıcı yüklenemezse Gateway dosyasını bu sekmeden açabilirsiniz.
+
+[footer]
+[Mr Bmulti](http://mrbmulti.com)
+[GitHub](https://githum/mrBmulti)
+</p></div><div class="langtext" data-lang="ur" hidden><p style="white-space:pre-wrap">[intro]
+Icon Manager ایپلی کیشنز کے آئیکن اور آغاز کی تصاویر بناتا اور سنبھالتا ہے۔ یہ مشترکہ آئیکن لائبریری، Gateway میں درج ایپس، فولڈر کی فائلوں اور ایپ کے ذیلی فولڈرز پر کام کرتا ہے۔ آئیکن ICO فائلیں ہیں؛ آغاز کی تصاویر PNG ہوتی ہیں اور اختیاری WEBP نقل بھی بن سکتی ہے۔
+لائبریری دیکھنے کے لیے Icons کھولیں یا Folder یا Subfolders میں تصویر شامل کریں۔ Config میں مشترکہ آئیکن فولڈر، Gateway فائل اور تصویر کے متن کی ترتیب مقرر کرکے Save Config دبائیں۔
+
+[tab:icons]
+جدول مشترکہ لائبریری کے تمام آئیکن سیٹ دکھاتا ہے۔ ہر سیٹ میں ICO اور مختلف سائز کی PNG فائلیں ہوتی ہیں۔ Status میں Complete، Partial PNGs، ICO only یا Missing ICO دکھائی دیتا ہے؛ Updated تازہ ترین فائل بتاتا ہے۔
+Search icons نام یا راستے کے مطابق فلٹر کرتا ہے۔ Clear فلٹر ہٹاتا ہے، Refresh فہرست دوبارہ پڑھتا ہے اور Open Folder فولڈر کھولتا ہے۔ سیٹ منتخب کرنے پر پیش منظر، حالت اور فائلیں دکھائی دیتی ہیں۔
+Generate from Source ایپ یا تصویر سے سیٹ بناتا ہے۔ Generate Glyph نام، ایک یا دو حروف اور دو رنگوں سے سادہ سیٹ بناتا ہے۔ Recipe Set تصدیق کے بعد معیاری نسخہ آئیکن بناتا ہے۔ Regenerate Selected منتخب سیٹ دوبارہ بناتا ہے؛ Copy Path راستہ نقل کرتا ہے۔ Delete Selected تصدیق کے بعد سیٹ کی تمام مشترکہ فائلیں مٹاتا ہے؛ یہ عمل واپس نہیں ہو سکتا۔
+نیا بنانا یا دوبارہ بنانا موجودہ سیٹ کی جگہ لیتا ہے۔ Config میں اختیار فعال ہو تو ایپ کے ساتھ ICO بھی محفوظ ہوتا ہے۔
+
+[tab:gateway-icons]
+یہ ٹیب Config میں منتخب Gateway فائل کی ایپلی کیشنز کے آئیکن جانچتا ہے۔ Refresh Gateway فہرست دوبارہ لوڈ کرتا ہے۔
+Icon Status میں Found، Not Found یا Missing دکھتا ہے۔ Missing only ان ایپس کو چھپاتا ہے جن کا آئیکن Found ہے۔ Search ایپ، پروجیکٹ، حالت، آئیکن اور راستہ تلاش کرتا ہے۔ Narrow layout پیش منظر کو جدول کے نیچے رکھتا ہے۔
+Generate Selected from App منتخب ایپ کا آئیکن بناتا ہے۔ Generate All Missing تصدیق کے بعد تمام غیر Found ایپس کے آئیکن بناتا ہے؛ قابل استعمال ذریعہ نہ ہو تو حرف کا سادہ آئیکن بنتا ہے۔ PNG، JPG یا ICO منتخب یا گھسیٹ کر بھی تصویر مقرر کی جا سکتی ہے۔ Icon crop طے کرتا ہے کہ چوڑی تصویر Center یا Right سے کاٹی جائے۔
+یہ عمل ایپ کے ساتھ ICO لکھتا ہے، _spash.png بناتا ہے اور Gateway میں آئیکن درج کرتا ہے۔ موجودہ فائل بدلنے سے پہلے تصدیق مانگی جاتی ہے۔ Gateway محفوظ نہ ہو سکے تو فائلیں پہلے جیسی کر دی جاتی ہیں۔ Gateway کہیں اور بدلا گیا ہو تو دوبارہ لوڈ کرکے عمل دہرائیں۔ ویب روابط اور ایسی ایپس جن کی فائل نہ ملے، یہاں آئیکن نہیں لے سکتیں۔
+
+[tab:folder]
+Browse Folder سے فولڈر منتخب کریں۔ جدول صرف اس فولڈر کی براہ راست فائلیں دکھاتا ہے، ذیلی فولڈر نہیں۔ Python فائلوں میں Named، Description اور Version فائل کے شروع کی پروجیکٹ لائنوں سے پڑھے جاتے ہیں؛ کوڈ نہیں چلایا جاتا۔
+فائل منتخب کرکے اس کی تفصیل اور موجودہ آغاز کی تصویر دیکھیں۔ تصویر نہ ہو تو نمونہ پیش منظر دکھایا جاتا ہے۔
+PNG یا JPG نیچے کے ہدف پر گھسیٹیں یا Choose PNG or JPG دبائیں۔ منتخب Python فائل کے ساتھ &lt;name&gt;.ico، &lt;name&gt;_splash.png اور &lt;name&gt;_splash.webp بنیں گے۔ اسی نام کی پرانی فائلیں بدل دی جائیں گی۔ متن Config کے سانچے سے آتا ہے۔ ایک وقت میں صرف ایک تصویر ڈالیں؛ روابط اور ویب ڈاؤن لوڈ قبول نہیں۔
+Make all PNG into WEBP فولڈر اور تمام ذیلی فولڈروں کی PNG کو اسی نام کی WEBP میں بدلتا ہے۔ یہ پس منظر میں چلتا ہے۔ Icon crop، Gateway Icons کی طرح کام کرتا ہے۔
+فائل پر دایاں کلک کرکے Explore، Open folder in Explorer، Make a Copy، Paste File to Folder، Copy File Path، Copy image to clipboard (صرف Windows) یا تصدیق کے بعد Delete منتخب کریں۔ نقل کا نام &quot;- Copy&quot; ہوتا ہے؛ پیسٹ کرنے سے موجودہ فائل نہیں بدلتی۔
+
+[tab:subfolders]
+یہ ٹیب تب استعمال کریں جب ہر ایپ اپنے ذیلی فولڈر میں ہو، جیسے &lt;folder&gt;\\&lt;folder&gt;.py۔ Browse Root سے بنیادی فولڈر منتخب کرکے Populate دبائیں۔ جدول .py، .ico اور _splash.png کی موجودگی اور کمی کی تعداد دکھاتا ہے۔ Missing only مکمل فولڈروں کو چھپاتا ہے۔
+فولڈر منتخب کرکے PNG یا JPG ڈالیں تاکہ اس میں &lt;folder&gt;.ico، &lt;folder&gt;_splash.png اور &lt;folder&gt;_splash.webp بنیں۔ موجودہ فائلیں بدل دی جائیں گی؛ تصویر کے فائل نام کے لیے فولڈر کا نام استعمال ہوگا۔ Missing only فعال ہو تو انتخاب اگلے نامکمل فولڈر پر جاتا ہے۔
+Make all PNG into WEBP اور Icon crop، Folder ٹیب کی طرح کام کرتے ہیں۔ قطار پر دایاں کلک کرکے فولڈر یا اس کی فائلیں کھولیں۔
+
+[tab:process]
+یہ صفحہ بتاتا ہے کہ آئیکن کیسے تلاش اور بنائے جاتے ہیں اور مشترکہ فولڈر کی حالت دکھاتا ہے۔ چار اعداد کل سیٹ، مکمل سیٹ، ICO کے بغیر سیٹ اور جزوی سیٹ دکھاتے ہیں۔
+عمل پہلے موجود آئیکن استعمال کرتا ہے، پھر مماثل تصویر تبدیل کرتا ہے، exe، dll یا lnk سے آئیکن نکالتا ہے اور آخر میں حرف کا سادہ آئیکن بناتا ہے۔ اگلا مرحلہ صرف تب آزمایا جاتا ہے جب پچھلا کچھ نہ پائے۔
+نئے سیٹ میں ICO سائز 16، 24، 32، 48، 64، 128، 256 اور PNG سائز 32، 48، 50، 64، 128 شامل ہیں۔ دوسری ایپس request_icon کے ذریعے آئیکن مانگ سکتی ہیں۔ اس صفحے میں ترمیم نہیں ہوتی۔
+
+[tab:config]
+مشترکہ آئیکن فولڈر اور Gateway فائل مقرر کریں۔ فولڈر موجود نہ ہو تو بنایا جائے گا۔ ذریعہ سے آئیکن بناتے وقت درخواست کرنے والی ایپ کے ساتھ ICO محفوظ کرنے کا اختیار فعال کریں۔ Save Config ترتیبات cpc_icon_manager.json میں محفوظ کرتا ہے۔
+Splash Overlay Template ہر آغاز کی تصویر پر لکھا جانے والا متن مقرر کرتا ہے۔ آخری اونچائی پکسل میں ہے (طے شدہ 400)۔ ہر قطار میں ایک سطر رکھیں اور {{window_title}}، {{purpose_note}}، {{file_name}}، {{version}}، {{source_date}}، {{version_or_source}}، {{app_name}}، {{project}} اور {{desc}} جیسے فیلڈ استعمال کریں؛ یہ ایپ کی معلومات سے پُر ہوتے ہیں۔ خالی سطر جگہ چھوڑتی ہے۔
+ہر سطر کا الگ انداز ہے: فونٹ، سائز، متن کا رنگ، اور اختیاری پس منظر اور سایہ۔ رنگ #RRGGBB کی صورت میں لکھیں یا ... بٹن سے چنیں۔ انداز کی قطاریں متن کی قطاروں کے مطابق ہیں؛ متن والے خانے سے باہر آنے پر انداز بدلتا ہے۔
+
+[tab:splash]
+یہ ٹیب ہر Gateway ایپ کی اصل _spash.png میں سانچے کا متن شامل کرکے مکمل _splash.png بناتا ہے۔ اصل فائل تبدیل نہیں ہوتی۔ جدول ونڈو کا عنوان، ورژن یا ماخذ کی تاریخ، مقصد اور دونوں فائلوں کی موجودگی دکھاتا ہے۔ Search فہرست فلٹر کرتا ہے؛ Refresh Gateway اسے دوبارہ لوڈ کرتا ہے۔
+ایک یا زیادہ ایپس منتخب کریں۔ Preview Selected موجودہ سانچے سے پیش منظر بناتا ہے؛ Create Selected ہر ایپ کے ساتھ _splash.png لکھتا اور پرانی فائل بدلتا ہے۔ Sample نمونہ اقدار اور پس منظر پر سانچہ دکھاتا ہے۔ اصل _spash.png یا ایپ فائل نہ ہو تو پیش منظر یا تخلیق ممکن نہیں۔
+Icon Manager اکیلا شروع ہو تو لوڈنگ کے دوران اپنا _splash.png، یا اس کے نہ ہونے پر _spash.png دکھاتا ہے۔
+
+[tab:ui-choices]
+رنگوں کی تھیم، فاصلہ اور ونڈو کا سائز منتخب کریں۔ آئیکن فولڈر، Gateway فائل اور آغاز کا متن Config میں ہیں۔ اگر Icon Manager کسی دوسری ایپ کے ساتھ منسلک ہو تو وہ ایپ ونڈو اور شکل کنٹرول کرتی ہے؛ یہ ٹیب چھپا ہو سکتا ہے۔
+
+[tab:gateway]
+مشترکہ لانچر سے رجسٹرڈ ایپس، فائلیں، فولڈر اور روابط تلاش کرکے کھولیں۔ Gateway دوسرے ٹیبز کے آئیکن کام سے الگ ہے۔ لانچر لوڈ نہ ہو سکے تو اس ٹیب سے Gateway فائل کھولیں۔
+
+[footer]
+[Mr Bmulti](http://mrbmulti.com)
+[GitHub](https://githum/mrBmulti)
+</p></div><div class="langtext" data-lang="vi" hidden><p style="white-space:pre-wrap">[intro]
+Icon Manager tạo và quản lý biểu tượng cùng ảnh màn hình khởi động của ứng dụng. Công cụ làm việc với thư viện biểu tượng dùng chung, ứng dụng trong Gateway, tệp trong thư mục và thư mục con của ứng dụng. Biểu tượng là tệp ICO; ảnh khởi động là PNG và có thể có bản WEBP.
+Mở Icons để xem thư viện hoặc thêm ảnh trong Folder hay Subfolders. Trong Config, đặt thư mục biểu tượng, tệp Gateway và bố cục chữ trên ảnh khởi động, sau đó nhấn Save Config.
+
+[tab:icons]
+Bảng liệt kê các bộ biểu tượng trong thư viện dùng chung. Mỗi bộ gồm một ICO và các kích thước PNG. Status hiển thị Complete, Partial PNGs, ICO only hoặc Missing ICO; Updated hiển thị tệp mới nhất.
+Search icons lọc theo tên hoặc đường dẫn. Clear xóa bộ lọc, Refresh tải lại và Open Folder mở thư mục. Chọn một bộ để xem bản xem trước, trạng thái và các tệp.
+Generate from Source tạo bộ từ ứng dụng hoặc hình ảnh. Generate Glyph tạo bộ đơn giản từ tên, một hoặc hai chữ cái và hai màu. Recipe Set tạo biểu tượng công thức tiêu chuẩn sau khi xác nhận. Regenerate Selected tạo lại bộ đã chọn; Copy Path sao chép đường dẫn. Delete Selected xóa tất cả tệp dùng chung của bộ sau khi xác nhận; không thể hoàn tác.
+Việc tạo và tạo lại sẽ thay thế bộ hiện có. Nếu bật tùy chọn trong Config, ICO cũng được lưu cạnh ứng dụng.
+
+[tab:gateway-icons]
+Tab này kiểm tra biểu tượng của các ứng dụng trong tệp Gateway được chọn ở Config. Refresh Gateway tải lại danh sách.
+Icon Status hiển thị Found, Not Found hoặc Missing. Missing only ẩn ứng dụng có biểu tượng Found. Search tìm theo ứng dụng, dự án, trạng thái, biểu tượng và đường dẫn. Narrow layout đặt bản xem trước bên dưới bảng.
+Generate Selected from App tạo biểu tượng cho ứng dụng được chọn. Generate All Missing tạo biểu tượng cho mọi ứng dụng không ở trạng thái Found sau khi xác nhận; nếu không có nguồn phù hợp, biểu tượng chữ đơn giản sẽ được tạo. Có thể chọn hoặc kéo thả PNG, JPG hay ICO. Icon crop xác định ảnh rộng được cắt từ Center hay Right.
+Thao tác ghi ICO cạnh ứng dụng, tạo _spash.png và ghi nhận biểu tượng trong Gateway. Hệ thống hỏi trước khi thay thế tệp hiện có. Nếu không lưu được Gateway, các tệp được khôi phục. Nếu Gateway đã bị thay đổi ở nơi khác, hãy tải lại và thực hiện lại. Không thể gán biểu tượng tại đây cho liên kết web hoặc ứng dụng không tìm thấy tệp.
+
+[tab:folder]
+Chọn thư mục bằng Browse Folder. Bảng chỉ liệt kê tệp nằm trực tiếp trong thư mục, không gồm thư mục con. Với tệp Python, Named, Description và Version được đọc từ các dòng thông tin dự án gần đầu tệp; mã không được chạy.
+Chọn tệp để xem chi tiết và ảnh khởi động hiện tại. Nếu chưa có ảnh, bản xem trước mẫu sẽ được hiển thị.
+Kéo PNG hoặc JPG vào vùng đích bên dưới, hoặc nhấn Choose PNG or JPG, để tạo &lt;name&gt;.ico, &lt;name&gt;_splash.png và &lt;name&gt;_splash.webp cạnh tệp Python đã chọn. Tệp trùng tên hiện có sẽ bị thay thế. Văn bản lấy từ mẫu trong Config. Mỗi lần chỉ thả một ảnh; liên kết và tải xuống web bị từ chối.
+Make all PNG into WEBP chuyển mọi PNG trong thư mục và các thư mục con thành WEBP cùng tên. Quá trình chạy nền. Icon crop hoạt động như trong Gateway Icons.
+Nhấp chuột phải vào tệp để Explore, Open folder in Explorer, Make a Copy, Paste File to Folder, Copy File Path, Copy image to clipboard (chỉ Windows) hoặc Delete sau khi xác nhận. Bản sao có tên &quot;- Copy&quot;; thao tác dán không ghi đè tệp hiện có.
+
+[tab:subfolders]
+Dùng tab này khi mỗi ứng dụng nằm trong thư mục con riêng, chẳng hạn &lt;folder&gt;\\&lt;folder&gt;.py. Chọn thư mục cha bằng Browse Root rồi nhấn Populate. Bảng cho biết sự tồn tại của .py, .ico và _splash.png, đồng thời đếm các mục còn thiếu. Missing only ẩn thư mục đã có đủ cả hai.
+Chọn thư mục rồi thả PNG hoặc JPG để ghi &lt;folder&gt;.ico, &lt;folder&gt;_splash.png và &lt;folder&gt;_splash.webp vào thư mục con. Tệp hiện có sẽ bị thay thế; tên thư mục được dùng làm tên tệp ảnh khởi động. Khi bật Missing only, lựa chọn chuyển sang thư mục tiếp theo còn thiếu tệp.
+Make all PNG into WEBP và Icon crop hoạt động như trong Folder. Nhấp chuột phải vào hàng để mở thư mục hoặc tệp bên trong.
+
+[tab:process]
+Trang này giải thích cách tìm và tạo biểu tượng, đồng thời hiển thị tình trạng thư mục biểu tượng dùng chung. Bốn số đếm thể hiện tổng số bộ, bộ hoàn chỉnh, bộ thiếu ICO và bộ chưa đầy đủ.
+Quy trình lần lượt thử dùng lại biểu tượng có sẵn, chuyển đổi ảnh phù hợp, trích xuất biểu tượng từ exe, dll hoặc lnk, rồi tạo biểu tượng chữ đơn giản. Chỉ thử bước tiếp theo khi bước trước không tìm được kết quả.
+Bộ mới có kích thước ICO 16, 24, 32, 48, 64, 128, 256 và PNG 32, 48, 50, 64, 128. Ứng dụng khác có thể yêu cầu biểu tượng bằng request_icon. Trang này không chỉnh sửa được.
+
+[tab:config]
+Đặt thư mục biểu tượng dùng chung và tệp Gateway. Thư mục sẽ được tạo nếu chưa tồn tại. Bật tùy chọn để lưu thêm ICO cạnh ứng dụng yêu cầu khi tạo từ nguồn. Save Config lưu thiết lập vào cpc_icon_manager.json.
+Splash Overlay Template điều khiển văn bản trên ảnh khởi động. Chiều cao cuối tính bằng pixel (mặc định 400). Mỗi hàng văn bản dùng một dòng; có thể dùng các trường {{window_title}}, {{purpose_note}}, {{file_name}}, {{version}}, {{source_date}}, {{version_or_source}}, {{app_name}}, {{project}} và {{desc}}; các trường được điền từ dữ liệu ứng dụng. Dòng trống tạo khoảng cách.
+Mỗi dòng có kiểu riêng: phông chữ, cỡ chữ, màu chữ, nền và bóng tùy chọn. Màu dùng dạng #RRGGBB hoặc chọn bằng nút ... . Các hàng kiểu tương ứng với các dòng văn bản; kiểu được cập nhật khi rời khỏi hộp văn bản.
+
+[tab:splash]
+Tab này thêm chữ theo mẫu vào _spash.png gốc của từng ứng dụng Gateway để tạo _splash.png hoàn chỉnh. Tệp gốc không bị thay đổi. Bảng hiển thị tiêu đề cửa sổ, phiên bản hoặc ngày nguồn, ghi chú mục đích và tình trạng tồn tại của hai tệp. Search lọc danh sách; Refresh Gateway tải lại.
+Chọn một hoặc nhiều ứng dụng. Preview Selected cập nhật bản xem trước; Create Selected ghi _splash.png cạnh từng ứng dụng và thay thế bản cũ. Sample hiển thị mẫu với giá trị và nền minh họa. Không thể xem trước hoặc tạo nếu thiếu _spash.png gốc hoặc tệp ứng dụng.
+Khi Icon Manager tự khởi động, nó hiển thị _splash.png của chính ứng dụng hoặc _spash.png nếu chưa có bản hoàn chỉnh trong lúc tải.
+
+[tab:ui-choices]
+Chọn chủ đề màu, khoảng cách và kích thước cửa sổ. Thư mục biểu tượng, tệp Gateway và chữ trên ảnh khởi động được đặt trong Config. Nếu Icon Manager được gắn vào ứng dụng khác, ứng dụng đó điều khiển cửa sổ và giao diện; tab này có thể bị ẩn.
+
+[tab:gateway]
+Dùng trình khởi chạy chung để tìm và mở ứng dụng, tệp, thư mục và liên kết đã đăng ký. Gateway tách biệt với công việc biểu tượng ở các tab khác. Nếu trình khởi chạy không tải được, hãy mở tệp Gateway từ tab này.
+
+[footer]
+[Mr Bmulti](http://mrbmulti.com)
+[GitHub](https://githum/mrBmulti)
+</p></div><div class="langtext" data-lang="zh" hidden><p style="white-space:pre-wrap">[intro]
+Icon Manager 用于创建和维护应用程序图标及启动画面。它管理共享图标库、Gateway 中的应用程序、文件夹中的文件以及应用程序子文件夹。图标为 ICO 文件；启动图像为 PNG，也可生成 WEBP 副本。
+打开 Icons 查看共享库，或在 Folder、Subfolders 中添加图像。在 Config 中设置图标文件夹、Gateway 文件和启动画面文字布局，然后点击 Save Config。
+
+[tab:icons]
+表格列出共享图标库中的所有图标集。每组包含 ICO 和不同尺寸的 PNG。Status 显示 Complete、Partial PNGs、ICO only 或 Missing ICO；Updated 显示最新文件。
+Search icons 按名称或路径筛选。Clear 清除筛选，Refresh 刷新列表，Open Folder 打开文件夹。选择图标集可查看预览、状态和文件。
+Generate from Source 从应用程序或图像创建图标集。Generate Glyph 使用名称、一到两个字母和两种颜色创建简单图标。Recipe Set 在确认后生成标准食谱图标。Regenerate Selected 重新生成所选图标集；Copy Path 复制路径。Delete Selected 在确认后删除该图标集的所有共享文件，此操作无法撤销。
+生成和重新生成会替换已有图标集。若 Config 中启用相关选项，也会在应用程序旁保存 ICO 文件。
+
+[tab:gateway-icons]
+此页检查 Config 中指定的 Gateway 文件内应用程序的图标。Refresh Gateway 重新载入列表。
+Icon Status 显示 Found、Not Found 或 Missing。Missing only 隐藏图标已找到的应用程序。Search 可搜索应用程序、项目、状态、图标和路径。Narrow layout 将预览放在表格下方。
+Generate Selected from App 为所选应用程序创建图标。Generate All Missing 在确认后为所有未找到图标的应用程序创建图标；没有可用来源时会创建字母图标。也可选择或拖放 PNG、JPG、ICO 文件来指定图像。Icon crop 设置宽图像从 Center 或 Right 裁剪。
+操作会在应用程序旁写入 ICO 和 _spash.png，并在 Gateway 中记录图标。替换文件前会询问确认。如果 Gateway 无法保存，文件会恢复原状。如果 Gateway 在其他位置被修改，需刷新后重试。网页链接及找不到文件的应用程序不能在此设置图标。
+
+[tab:folder]
+使用 Browse Folder 选择文件夹。表格只显示该文件夹直接包含的文件，不包括子文件夹。对于 Python 文件，Named、Description 和 Version 从项目顶部附近的说明行读取；不会运行代码。
+选择文件可查看详情和当前启动图像。若尚无启动图像，则显示示例预览。
+将 PNG 或 JPG 拖到下方目标区域，或点击 Choose PNG or JPG，在所选 Python 文件旁创建 &lt;name&gt;.ico、&lt;name&gt;_splash.png 和 &lt;name&gt;_splash.webp。已有同名文件会被替换。文字来自 Config 模板。每次只拖放一张图像；不接受链接或网络下载。
+Make all PNG into WEBP 将文件夹及其子文件夹中的 PNG 转为同名 WEBP，并在后台运行。Icon crop 的操作与 Gateway Icons 相同。
+右键文件可浏览、打开文件夹、复制、粘贴、复制路径、复制图像到剪贴板（仅 Windows）或确认后删除。副本名称为 &quot;- Copy&quot;；粘贴不会覆盖现有文件。
+
+[tab:subfolders]
+当每个应用程序位于独立子文件夹（如 &lt;folder&gt;\\&lt;folder&gt;.py）时使用此页。通过 Browse Root 选择父文件夹并点击 Populate。表格显示 .py、.ico 和 _splash.png 是否存在，并统计缺少图标或启动图像的文件夹。Missing only 隐藏已具备两者的文件夹。
+选择文件夹并拖放 PNG 或 JPG，或点击 Choose PNG or JPG，在子文件夹中写入 &lt;folder&gt;.ico、&lt;folder&gt;_splash.png 和 &lt;folder&gt;_splash.webp。已有文件会被替换；文件夹名称用作启动图像文件名。启用 Missing only 时，选择会移动到下一个仍缺少文件的文件夹。
+Make all PNG into WEBP 和 Icon crop 与 Folder 页相同。右键行可打开文件夹或其中的文件。
+
+[tab:process]
+此页说明图标的查找和创建流程，并显示共享图标文件夹的状态。四项计数分别为图标集总数、完整图标集、缺少 ICO 的图标集和不完整图标集。
+流程依次尝试重用现有图标、转换匹配图像、从 exe、dll 或 lnk 提取图标，最后创建字母图标。只有前一步未找到结果时才尝试下一步。
+新图标集包含 ICO 尺寸 16、24、32、48、64、128、256，以及 PNG 尺寸 32、48、50、64、128。其他应用程序可通过 request_icon 请求图标。此页不可编辑。
+
+[tab:config]
+设置共享图标文件夹和 Gateway 文件。文件夹不存在时会自动创建。启用选项后，从来源生成图标时也会在请求应用程序旁保存 ICO。Save Config 将设置保存到 cpc_icon_manager.json。
+Splash Overlay Template 控制启动图像上的文字。最终图像高度以像素为单位，默认 400。文本框每行对应一行文字，可使用 {{window_title}}、{{purpose_note}}、{{file_name}}、{{version}}、{{source_date}}、{{version_or_source}}、{{app_name}}、{{project}} 和 {{desc}} 等字段；程序会从应用程序信息中填入。空行会留下间隔。
+每行有独立样式：字体、大小、文字颜色，以及可选的背景和阴影颜色。颜色使用 #RRGGBB，也可点击 ... 选择。样式行与文本行对应；离开文本框后样式会更新。
+
+[tab:splash]
+此页将 Gateway 应用程序的原始 _spash.png 加上模板文字，生成最终 _splash.png。原始文件不会更改。表格显示窗口标题、版本或来源日期、用途说明，以及原始和成品文件是否存在。Search 筛选列表；Refresh Gateway 重新载入。
+选择一个或多个应用程序。Preview Selected 根据当前模板更新预览；Create Selected 在每个应用程序旁创建 _splash.png，并替换旧文件。Sample 使用示例值和背景显示模板。若缺少原始 _spash.png 或应用程序文件，则无法预览或创建。
+Icon Manager 单独启动时，会在加载期间显示自己的 _splash.png；若没有成品，则显示 _spash.png。
+
+[tab:ui-choices]
+选择颜色主题、间距和窗口大小。这些设置控制外观。图标文件夹、Gateway 文件和启动文字在 Config 中设置。如果 Icon Manager 嵌入其他应用程序，窗口及外观由该应用程序控制，此页可能隐藏。
+
+[tab:gateway]
+使用共享启动器查找并打开已注册的应用程序、文件、文件夹和链接。Gateway 与其他标签页中的图标操作分开。如果启动器无法加载，可在此打开 Gateway 文件。
+
+[footer]
+[Mr Bmulti](http://mrbmulti.com)
+[GitHub](https://githum/mrBmulti)
+</p></div></div>
+  </section>
+  
+  <section class="panel" id="features"><h2>Features</h2><div id="features-body"><p>Features not supplied.</p></div></section>
+  
+  <section class="panel" id="primary-poster"><h2>Primary poster</h2><div class="posters"><a href="images/poster-cpc-icon-manager-poster-02.webp"><img src="images/poster-cpc-icon-manager-poster-02.webp" alt="Primary poster" loading="lazy"></a></div></section>
+  <section class="panel" id="posters"><h2>Posters (1)</h2><div class="posters"><a href="images/poster-cpc-icon-manager-poster-02.webp"><img src="images/poster-cpc-icon-manager-poster-02.webp" alt="cpc_icon_manager_poster_02.webp" loading="lazy"></a></div></section>
+  <section class="panel" id="repository-files"><h2>Repository files</h2><section class="panel"><h2>Additional HTML pages (3)</h2><ul><li><a href="files/cpc_icon_manager-brochure.htm">cpc_icon_manager-brochure.htm</a> (325,331 bytes)</li><li><a href="files/depth_lifter_learning_page.html">depth_lifter_learning_page.html</a> (4,346,458 bytes)</li><li><a href="files/learn.htm">learn.htm</a> (6,741,155 bytes)</li></ul></section><section class="panel"><h2>Report indexes (1)</h2><ul><li><a href="files/depth_lifter_reports/index.html">depth_lifter_reports</a> (17 files)</li></ul></section></section>
+</main>
+</div>
+<footer class="footer" id="connect"><div class="wrap"><div class="footer-top"><div>
+<img class="footer-brand-logo" src="images/logo-logo.png" alt="" width="78" height="78">
+<p class="kicker">Keep exploring</p><h2>There is always another door.</h2>
+<p>Mr Bmulti is the creative and educational work of Christopher Patrick Cotton, bringing songs, learning resources, science, software, art, and questions together.</p>
+<p>Most importantly: keep the curiosity, and keep asking for evidence.</p>
+<p class="funding-note"><strong>Funding is very welcome, as I am a tourist on this planet.</strong> With funding to bring in some assistance, there will be 1,000 songs, more than 20 books, a peer-to-peer sharing app for media, and many more public applications and fun learning resources.</p>
+<div class="support-art"><img alt="Colourful illustrated record artwork about supporting music and creativity" loading="lazy" src="data:image/webp;base64,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"><span>Every contribution helps more songs, books and learning tools reach new people.</span></div>
+</div>
+<nav class="footer-links" aria-label="Projects, contact and funding">
+<a href="https://mrbmulti.com" rel="noopener noreferrer" target="_blank">Stories Songs Explorer<span>mrbmulti.com ↗</span></a>
+<a href="https://bmulti.github.io/portfolio/" rel="noopener noreferrer" target="_blank">Python AI Framework and Sample Applications<span>bmulti.github.io/portfolio ↗</span></a>
+<a href="https://oncotton.github.io/index/" rel="noopener noreferrer" target="_blank">Golang and JavaScript Shares<span>oncotton.github.io/index ↗</span></a>
+<a href="https://mrbmullti.github.io/index/" rel="noopener noreferrer" target="_blank">Gateway and few Wild ideas<span>mrbmullti.github.io/index ↗</span></a>
+<a href="https://x.com/Trumpocene" rel="noopener noreferrer" target="_blank">@Trumpocene<span>On X ↗</span></a>
+<a href="mailto:bmulti@gmail.com">Send an email<span>bmulti@gmail.com ↗</span></a>
+<a class="support-link" href="https://buymeacoffee.com/bmutli" rel="noopener noreferrer" target="_blank">Buy Me a Coffee<span>Support the learning projects ↗</span></a>
+<a class="support-link" href="https://www.paypal.com/ncp/payment/YTNE39LWA4WMN" rel="noopener noreferrer" target="_blank">PayPal<span>Contribute to future resources ↗</span></a>
+</nav></div>
+<div class="footer-bottom"><span>© <span id="footer-year"></span> Christopher Patrick Cotton · Mr Bmulti · A little museum of ideas</span><a href="#top">Back to the top ↑</a></div></div></footer>
+<dialog id="viewer" aria-label="Poster viewer">
+  <div class="v-bar"><strong id="v-title">Poster</strong>
+    <button type="button" id="v-out" aria-label="Zoom out">−</button><button type="button" id="v-fit">Fit</button><button type="button" id="v-in" aria-label="Zoom in">+</button>
+    <button type="button" class="close" id="v-close">Close ✕</button></div>
+  <div class="v-stage" id="v-stage"><a id="v-link" href="#" title="Open the repository index"><img id="v-img" alt="" src="data:,"></a></div>
+  <div class="v-hint">Click the poster to open its repository index · Esc or click outside to close · + − or Control and mouse wheel to zoom</div>
+</dialog>
+<script>
+
+var footerYear=document.getElementById("footer-year");
+if(footerYear&&!/^\d{4}$/.test(footerYear.textContent.trim()))footerYear.textContent=new Date().getFullYear();
+
+(function(){
+var $=function(s,r){return (r||document).querySelector(s);},$$=function(s,r){return Array.from((r||document).querySelectorAll(s));};
+/* interface words follow the selected language; the documentation text itself comes from the language files */
+var T={
+"en":{menu:"Menu",close:"Close",lang:"Language",step:"Step {n} of {t}",steps:"{t} steps",min:"{m} min read",zoom:"Tap a screenshot to enlarge",next:"Next",prev:"Previous",onpage:"On this page",more:"More pages",start:"Start the tour"},
+"ceb":{menu:"Menu",close:"Isira",lang:"Pinulongan",step:"Lakang {n} sa {t}",steps:"{t} ka lakang",min:"{m} min nga basahon",zoom:"Pindota ang screenshot aron mapadako",next:"Sunod",prev:"Nauna",onpage:"Niining panid",more:"Dugang mga panid",start:"Sugdi ang tour"},
+"de":{menu:"Menü",close:"Schließen",lang:"Sprache",step:"Schritt {n} von {t}",steps:"{t} Schritte",min:"{m} Min. Lesezeit",zoom:"Screenshot antippen zum Vergrößern",next:"Weiter",prev:"Zurück",onpage:"Auf dieser Seite",more:"Weitere Seiten",start:"Tour starten"},
+"es":{menu:"Menú",close:"Cerrar",lang:"Idioma",step:"Paso {n} de {t}",steps:"{t} pasos",min:"{m} min de lectura",zoom:"Toca una captura para ampliarla",next:"Siguiente",prev:"Anterior",onpage:"En esta página",more:"Más páginas",start:"Empezar el recorrido"},
+"fr":{menu:"Menu",close:"Fermer",lang:"Langue",step:"Étape {n} sur {t}",steps:"{t} étapes",min:"{m} min de lecture",zoom:"Touchez une capture pour l’agrandir",next:"Suivant",prev:"Précédent",onpage:"Sur cette page",more:"Autres pages",start:"Commencer la visite"},
+"id":{menu:"Menu",close:"Tutup",lang:"Bahasa",step:"Langkah {n} dari {t}",steps:"{t} langkah",min:"{m} mnt baca",zoom:"Ketuk tangkapan layar untuk memperbesar",next:"Berikutnya",prev:"Sebelumnya",onpage:"Di halaman ini",more:"Halaman lain",start:"Mulai tur"},
+"it":{menu:"Menu",close:"Chiudi",lang:"Lingua",step:"Passo {n} di {t}",steps:"{t} passi",min:"{m} min di lettura",zoom:"Tocca uno screenshot per ingrandirlo",next:"Avanti",prev:"Indietro",onpage:"In questa pagina",more:"Altre pagine",start:"Inizia il tour"},
+"ja":{menu:"メニュー",close:"閉じる",lang:"言語",step:"ステップ {n} / {t}",steps:"{t} ステップ",min:"読了目安 {m} 分",zoom:"スクリーンショットをタップすると拡大します",next:"次へ",prev:"前へ",onpage:"このページの内容",more:"その他のページ",start:"ツアーを始める"},
+"ko":{menu:"메뉴",close:"닫기",lang:"언어",step:"{t}단계 중 {n}단계",steps:"{t}단계",min:"읽는 시간 {m}분",zoom:"스크린샷을 누르면 확대됩니다",next:"다음",prev:"이전",onpage:"이 페이지 목차",more:"다른 페이지",start:"둘러보기 시작"},
+"ms":{menu:"Menu",close:"Tutup",lang:"Bahasa",step:"Langkah {n} daripada {t}",steps:"{t} langkah",min:"{m} min bacaan",zoom:"Ketik tangkapan skrin untuk membesarkan",next:"Seterusnya",prev:"Sebelumnya",onpage:"Pada halaman ini",more:"Halaman lain",start:"Mulakan lawatan"},
+"nl":{menu:"Menu",close:"Sluiten",lang:"Taal",step:"Stap {n} van {t}",steps:"{t} stappen",min:"{m} min leestijd",zoom:"Tik op een schermafbeelding om te vergroten",next:"Volgende",prev:"Vorige",onpage:"Op deze pagina",more:"Andere pagina’s",start:"Start de rondleiding"},
+"pt":{menu:"Menu",close:"Fechar",lang:"Idioma",step:"Passo {n} de {t}",steps:"{t} passos",min:"{m} min de leitura",zoom:"Toque numa captura para ampliar",next:"Seguinte",prev:"Anterior",onpage:"Nesta página",more:"Outras páginas",start:"Iniciar o percurso"},
+"ru":{menu:"Меню",close:"Закрыть",lang:"Язык",step:"Шаг {n} из {t}",steps:"Шагов: {t}",min:"{m} мин чтения",zoom:"Нажмите на скриншот, чтобы увеличить",next:"Далее",prev:"Назад",onpage:"На этой странице",more:"Другие страницы",start:"Начать обзор"},
+"zh":{menu:"菜单",close:"关闭",lang:"语言",step:"第 {n} 步，共 {t} 步",steps:"共 {t} 步",min:"阅读约 {m} 分钟",zoom:"点击截图可放大",next:"下一步",prev:"上一步",onpage:"本页内容",more:"更多页面",start:"开始导览"}
+};
+T["es-mx"]=T.es;
+var sel=document.getElementById("doclang"),sel2=null,storageKey="mrbmulti.documentation.language";
+function code(){var v=String((sel&&sel.value)||document.documentElement.lang||"en").toLowerCase().replace("_","-");return T[v]?v:(T[v.split("-")[0]]?v.split("-")[0]:"en");}
+function t(k,o){var s=(T[code()]||T.en)[k]||T.en[k]||"";if(o)for(var x in o)s=s.replace("{"+x+"}",o[x]);return s;}
+function i18n(){$$("[data-i]").forEach(function(e){e.textContent=t(e.dataset.i);});$$("[data-ia]").forEach(function(e){e.setAttribute("aria-label",t(e.dataset.ia));});}
+function normal(value){return String(value||"").normalize("NFKC").toLowerCase().replace(/\b(tab|screenshot|screen)\b/g,"").replace(/[^\p{L}\p{N}]+/gu," ").trim();}
+
+/* screenshots come from the gallery list, which stays at the end of the page */
+var shots=$$("#screenshots .gallery figure").map(function(f){var im=f.querySelector("img"),st=f.querySelector("strong"),cp=f.querySelector("figcaption");var title=st?st.textContent.trim():(im?im.alt:"");
+  return {src:im?im.getAttribute("src"):"",alt:im?im.alt:title,title:title,cap:cp?cp.textContent.replace(title,"").trim():"",key:normal(title)};});
+function find(name,used){if(!name)return -1;var i;
+  for(i=0;i<shots.length;i++)if(!used[i]&&shots[i].key===name)return i;
+  for(i=0;i<shots.length;i++){var k=shots[i].key;if(!used[i]&&k.length>=4&&name.length>=4&&(name.indexOf(k)>-1||k.indexOf(name)>-1))return i;}
+  return -1;}
+function findAll(name,used){var r=[],i;if(!name)return r;
+  for(i=0;i<shots.length;i++)if(!used[i]&&shots[i].key===name)r.push(i);
+  for(i=0;i<shots.length;i++){var k=shots[i].key;if(r.indexOf(i)<0&&!used[i]&&k.length>=4&&name.length>=4&&(name.indexOf(k)>-1||k.indexOf(name)>-1))r.push(i);}
+  return r;}
+function makeShot(s){var f=document.createElement("figure");f.className="shot";
+  var bar=document.createElement("div");bar.className="bar";bar.innerHTML="<i></i><i></i><i></i>";var sp=document.createElement("span");sp.textContent=s.title;bar.appendChild(sp);
+  var im=document.createElement("img");im.src=s.src;im.alt=s.alt;im.loading="lazy";f.appendChild(bar);f.appendChild(im);
+  if(s.cap){var c=document.createElement("figcaption");c.textContent=s.cap;f.appendChild(c);}return f;}
+
+/* plain text blocks (description, features): screenshot directly after the matching heading */
+function placeInto(root){if(!root||root.dataset.placed)return;root.dataset.placed="1";var used={};
+  $$("h2,h3,h4,h5,h6",root).forEach(function(h){var i=find(normal(h.textContent),used);if(i>-1){used[i]=1;h.after(makeShot(shots[i]));}});}
+
+/* language text becomes a guided tour: one numbered step per heading, its screenshot after its text */
+function stepify(lt){if(lt.dataset.built)return;lt.dataset.built="1";
+  var c=code(),kids=Array.from(lt.childNodes),frag=document.createDocumentFragment(),cur=null,lead=null,n=0,used={},steps=[];
+  kids.forEach(function(node){
+    if(node.nodeType===1&&/^H[2-4]$/.test(node.tagName)){n++;
+      cur=document.createElement("section");cur.className="step";cur.dataset.n=n;
+      var num=document.createElement("div");num.className="step-n";num.textContent=n;num.setAttribute("aria-hidden","true");
+      var body=document.createElement("div");body.className="step-body";
+      cur.appendChild(num);cur.appendChild(body);if(!node.id)node.id="tour-"+c+"-"+n;body.appendChild(node);frag.appendChild(cur);steps.push({el:cur,body:body,h:node});}
+    else if(!cur){if(!lead){lead=document.createElement("div");lead.className="lead";frag.insertBefore(lead,frag.firstChild);}lead.appendChild(node);}
+    else steps[steps.length-1].body.appendChild(node);});
+  steps.forEach(function(s){findAll(normal(s.h.textContent),used).forEach(function(k){used[k]=1;s.body.appendChild(makeShot(shots[k]));});});
+  /* a screenshot with no matching heading goes after the first block of text that names it (the intro first) */
+  shots.forEach(function(s,k){if(used[k]||!s.key)return;var hosts=(lead?[lead]:[]).concat(steps.map(function(x){return x.body;}));
+    for(var j=0;j<hosts.length;j++)if(normal(hosts[j].textContent).indexOf(s.key)>-1){hosts[j].appendChild(makeShot(s));used[k]=1;break;}});
+  steps.forEach(function(s,i){
+    if(i<steps.length-1){var nx=steps[i+1],a=document.createElement("a");a.className="next";a.href="#"+nx.h.id;
+      var l=document.createElement("b");l.dataset.i="next";l.textContent=t("next");var sp=document.createElement("span");sp.textContent=nx.h.textContent;a.appendChild(l);a.appendChild(document.createTextNode("→"));a.appendChild(sp);s.body.appendChild(a);}});
+  lt.replaceChildren(frag);lt.dataset.steps=n;
+  var txt=lt.textContent||"",cjk=/[\u3040-\u30ff\u4e00-\u9fff\uac00-\ud7af]/.test(txt);
+  lt.dataset.mins=Math.max(1,Math.round(cjk?txt.length/400:txt.split(/\s+/).length/200));}
+
+function meta(){var m=document.getElementById("tour-meta");if(!m)return;var lt=$(".langtext:not([hidden])");
+  if(!lt){m.textContent="";return;}var parts=[];if(+lt.dataset.steps)parts.push(t("steps",{t:lt.dataset.steps}));parts.push(t("min",{m:lt.dataset.mins||1}));if(shots.length)parts.push(t("zoom"));m.textContent=parts.join(" · ");}
+
+/* page index: sidebar (wide screens) and drawer (narrow screens) from the same headings */
+var items=[];
+function index(){var lists=[$("#toc"),$("#toc-m")].filter(Boolean);lists.forEach(function(l){l.replaceChildren();});items=[];
+  function add(el,id,text,sub,num){items.push({h:el,id:id});lists.forEach(function(l){var a=document.createElement("a");a.href="#"+id;a.className=sub?"lv2":"lv1";a.dataset.id=id;
+    if(num){var b=document.createElement("span");b.className="n";b.textContent=num;a.appendChild(b);}var s=document.createElement("span");s.textContent=text;a.appendChild(s);l.appendChild(a);});}
+  $$("#application h2,#application h3,#application h4,#application h5,#application h6").forEach(function(h,i){
+    if(h.closest("[hidden]"))return;if(!h.id)h.id="section-"+i;
+    var sub=!!h.closest(".langtext,#description-text,#features-body"),st=h.closest(".step");
+    add(h,h.id,h.textContent,sub,st?st.dataset.n:"");});
+  var f=document.getElementById("connect");if(f)add(f,"connect",t("contact")||"Contact and funding",false,"");}
+T.en.contact="Contact and funding";
+
+/* follow the reader: highlight in the index, step tracker on narrow screens */
+var raf=0,narrow=window.matchMedia("(max-width:999px)");
+function H(){var tb=document.getElementById("topbar");var h=tb?tb.offsetHeight:64;document.documentElement.style.setProperty("--hh",h+"px");return h;}
+function spy(){raf=0;var hh=H(),cur=null;
+  items.forEach(function(it){if(it.h.getBoundingClientRect().top<=hh+70)cur=it;});
+  $$(".toc a").forEach(function(a){a.classList.toggle("on",!!cur&&a.dataset.id===cur.id);});
+  var side=$(".side"),act=$("#toc a.on");
+  if(side&&act&&side.offsetParent!==null){var r=act.getBoundingClientRect(),sr=side.getBoundingClientRect();if(r.top<sr.top+30)side.scrollTop-=sr.top+30-r.top;else if(r.bottom>sr.bottom-10)side.scrollTop+=r.bottom-sr.bottom+10;}
+  var steps=$$(".langtext:not([hidden]) .step"),bar=document.getElementById("tourbar"),idx=-1;
+  steps.forEach(function(s,i){if(s.getBoundingClientRect().top<=hh+70)idx=i;s.classList.remove("cur");});
+  var on=narrow.matches&&steps.length&&idx>-1&&steps[steps.length-1].getBoundingClientRect().bottom>hh+10;
+  if(idx>-1)steps[idx].classList.add("cur");
+  bar.hidden=!on;if(on){$("#tb-step").textContent=t("step",{n:idx+1,t:steps.length});$("#tb-title").textContent=steps[idx].querySelector(".step-body>h2,.step-body>h3,.step-body>h4").textContent;
+    $("#tb-fill").style.width=((idx+1)/steps.length*100)+"%";$("#tb-prev").disabled=idx<1;$("#tb-next").disabled=idx>=steps.length-1;bar._steps=steps;bar._idx=idx;}}
+function req(){if(!raf)raf=requestAnimationFrame(spy);}
+function go(d){var bar=document.getElementById("tourbar"),s=bar._steps,i=bar._idx+d;if(s&&s[i])s[i].scrollIntoView({behavior:"smooth",block:"start"});}
+document.getElementById("tb-prev").onclick=function(){go(-1);};document.getElementById("tb-next").onclick=function(){go(1);};
+window.addEventListener("scroll",req,{passive:true});window.addEventListener("resize",req);
+
+/* hamburger drawer */
+var drawer=document.getElementById("drawer"),scrim=document.getElementById("scrim"),burger=document.getElementById("burger");
+function openMenu(){drawer.classList.add("open");scrim.classList.add("open");drawer.setAttribute("aria-hidden","false");burger.setAttribute("aria-expanded","true");document.documentElement.style.overflow="hidden";document.getElementById("dr-close").focus();}
+function closeMenu(back){drawer.classList.remove("open");scrim.classList.remove("open");drawer.setAttribute("aria-hidden","true");burger.setAttribute("aria-expanded","false");document.documentElement.style.overflow="";if(back)burger.focus();}
+burger.onclick=function(){drawer.classList.contains("open")?closeMenu(true):openMenu();};
+document.getElementById("dr-close").onclick=function(){closeMenu(true);};scrim.onclick=function(){closeMenu(true);};
+drawer.addEventListener("click",function(e){if(e.target.closest("a"))closeMenu(false);});
+document.addEventListener("keydown",function(e){if(!drawer.classList.contains("open"))return;
+  if(e.key==="Escape")closeMenu(true);
+  if(e.key==="Tab"){var f=$$("a[href],button,select",drawer).filter(function(x){return !x.disabled&&x.offsetParent!==null;});if(!f.length)return;var a=f[0],z=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus();}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus();}}});
+narrow.addEventListener&&narrow.addEventListener("change",function(){if(!narrow.matches)closeMenu(false);req();});
+
+/* language */
+function language(){
+  if(sel){$$(".langtext").forEach(function(d){d.hidden=d.dataset.lang!==sel.value;});document.documentElement.lang=sel.value;if(sel2)sel2.value=sel.value;}
+  $$(".langtext:not([hidden])").forEach(stepify);
+  i18n();meta();index();req();}
+placeInto(document.getElementById("description-text"));placeInto(document.getElementById("features-body"));
+if(sel){var saved="";try{saved=localStorage.getItem(storageKey)||"";}catch(e){}
+  var options=Array.from(sel.options);var choice=options.find(function(o){return o.value===saved;})||options.find(function(o){return /^en(?:[-_]|$)/i.test(o.value)||/^English$/i.test(o.textContent.trim());});if(choice)sel.value=choice.value;
+  var holder=document.getElementById("dr-sel");if(holder){sel2=sel.cloneNode(true);sel2.id="doclang2";sel2.value=sel.value;holder.replaceWith(sel2);}
+  function chosen(v){sel.value=v;try{localStorage.setItem(storageKey,sel.value);}catch(e){}language();}
+  sel.addEventListener("change",function(){chosen(sel.value);});
+  if(sel2)sel2.addEventListener("change",function(){chosen(sel2.value);});}
+
+var extra=document.getElementById("extra-links"),extraM=document.getElementById("extra-links-m"),seenPages=new Set();
+document.querySelectorAll("#repository-files a[href],#description-text a[href],#langtexts a[href],#features a[href]").forEach(function(a){
+  if(a.classList.contains("next"))return;
+  var url;try{url=new URL(a.getAttribute("href"),document.baseURI);}catch(e){return;}
+  if(!/\.html?$/i.test(url.pathname)||seenPages.has(url.href))return;seenPages.add(url.href);
+  [extra,extraM].forEach(function(box){if(!box)return;var copy=a.cloneNode(true);copy.className="lv1";box.appendChild(copy);});
+});
+if(extra&&extra.children.length){document.getElementById("extra-pages").hidden=false;document.getElementById("extra-m").hidden=false;}
+language();
+var description=document.getElementById("description-text").textContent.trim().replace(/\s+/g," ");if(description)document.getElementById("header-description").textContent=description.length>120?description.slice(0,117)+"…":description;
+H();req();
+})();
+var modal=document.getElementById("viewer"),img=document.getElementById("v-img"),link=document.getElementById("v-link"),stage=document.getElementById("v-stage"),vt=document.getElementById("v-title"),scale=1,fitW=0;
+function apply(){if(scale<=1){scale=1;img.style.maxWidth=img.style.maxHeight=img.style.width="";return;}img.style.maxWidth="none";img.style.maxHeight="none";img.style.width=Math.round(fitW*scale)+"px";}
+function zoom(f){if(scale===1)fitW=img.getBoundingClientRect().width;scale=Math.min(8,Math.max(1,scale*f));apply();}
+function shut(){modal.close();}
+document.getElementById("application").addEventListener("click",function(e){var picture=e.target.closest(".shot img,.gallery img,.posters img");if(!picture)return;e.preventDefault();scale=1;apply();img.src=picture.src;img.alt=picture.alt;link.href=picture.src;vt.textContent=picture.alt;modal.showModal();stage.scrollTop=stage.scrollLeft=0;});
+document.getElementById("v-in").onclick=function(){zoom(1.25);};document.getElementById("v-out").onclick=function(){zoom(.8);};document.getElementById("v-fit").onclick=function(){scale=1;apply();};document.getElementById("v-close").onclick=shut;
+modal.addEventListener("click",function(e){if(e.target===modal)shut();});stage.addEventListener("wheel",function(e){if(e.ctrlKey){e.preventDefault();zoom(e.deltaY<0?1.2:.83);}},{passive:false});
+
+</script>
+</body></html>

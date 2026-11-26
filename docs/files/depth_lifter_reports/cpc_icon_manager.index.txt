@@ -1,0 +1,148 @@
+source_file = cpc_icon_manager.py
+source_modified = 2026-11-20 21:12:49
+name(parameters) -> return  [decorators]    first line   (classes: first-last)
+
+_deep_copy_default()    424
+_normalize_splash_template(data)    358
+attach(parent, context=None)    3665
+load_config()    428
+main()    3669
+read_py_vars(path)    343
+save_config(data)    454
+class IconManagerApp(tk.Frame)    458-3662
+    __init__(self, master, embedded=False, host_context=None)    459
+    _apply_fallback_theme(self, theme)    3614
+    _apply_gateway_layout(self)    1180
+    _apply_ui_choices_legacy(self)    3433
+    _assign_gateway_icon_image(self, source)    2841
+    _available_splash_font_names(self)    2401
+    _available_theme_names(self)    3533
+    _build_config_tab(self)    713
+        _config_body_changed(_event=None)    729
+        _config_canvas_changed(event)    732
+    _build_folder_tab(self)    1212
+    _build_gateway_icons_tab(self)    1037
+    _build_gateway_tab(self)    1794
+    _build_icons_tab(self)    652
+    _build_legacy_ui_choices_tab(self)    1691
+    _build_process_tab(self)    1576
+    _build_splash_tab(self)    806
+    _build_ui(self)    614
+    _build_ui_choices_tab(self)    1653
+    _close_startup_splash(self)    603
+    _configure_combobox_readability(self, theme=None)    3563
+    _create_folder_assets(self, source)    1520
+    _current_splash_style_values(self)    963
+    _draw_process_diagram(self)    3070
+        card(cx, y, fill, title, body)    3104
+    _draw_splash_text_overlay(self, image, field_map)    2535
+    _draw_text_block(self, draw, lines, font, center_x, top_y, fill=(255, 255, 255, 255), spacing=8)    2519
+    _folder_field_map(self, py, meta)    1410
+    _folder_show_preview(self, py, meta)    1429
+    _format_splash_metadata_time(self, value)    2452
+    _gateway_app_name(app)  [@staticmethod]    1851
+    _gateway_application_path(self, app)    1866
+    _gateway_data_is_current(self)    2173
+    _gateway_drop_paths(event)  [@staticmethod]    2075
+    _gateway_icon_destination(self, app)    2185
+    _gateway_icon_file_name(self, app)    2153
+    _gateway_icon_status(self, app)    1921
+    _gateway_modified_splash_destination(self, app)    2337
+    _gateway_splash_destination(self, app)    2331
+    _gateway_stamp(path)  [@staticmethod]    1859
+    _load_splash_font(self, font_name, size)    2443
+    _make_icon_for_gateway_app(self, app, source=None)    2747
+    _on_common_ui_applied(self, theme=None, density=None, _config=None)    1685
+    _open_in_file_manager(path)  [@staticmethod]    3339
+    _pillow_glyph_icon(self, app, destination)    2722
+    _pillow_icon_from_image(self, source, destination)    2365
+    _pillow_splash_from_image(self, source, destination, app=None)    2389
+    _process_folder_drop(self, source)    1496
+    _process_gateway_icon_drop(self, source)    2129
+    _rebuild_splash_style_rows(self, style_values=None)    983
+    _record_status(rec)  [@staticmethod]    3030
+    _render_modified_splash_image(self, app)    2619
+    _render_splash_template_text(self, template_text, field_map)    2503
+        replace_match(match)    2505
+    _resolve_gateway_icon(self, app)    1885
+    _restore_gateway_assets(snapshots)  [@staticmethod]    2357
+    _restore_tab(self)    3632
+    _sample_splash_background(self, width=720, height=400)    2609
+    _save_gateway_icon_data(self)    2801
+    _select_name(self, name)    3323
+    _show_splash_preview(self, field_map, detail_text)    2659
+    _show_startup_splash(self)    568
+    _snapshot_gateway_assets(paths, backup_directory)  [@staticmethod]    2344
+    _splash_color_editor(self, parent, row, column, line_key, field)    895
+    _splash_font_candidates(self, font_name)    2421
+    _splash_message_value(self)    2408
+    _splash_template_text_changed(self, _event=None)    960
+    _splash_text_content(self, app=None, source=None)    2466
+    _splash_version_source(self, app)    2198
+    _startup_splash_path(self)    557
+    _store_window_choice_vars(self)    3503
+    _sync_splash_config_from_widgets(self)    2410
+    _sync_splash_template_from_widgets(self)    926
+    _template_text_lines(self, rendered_text, wrap_width)    2510
+    _theme_is_dark(self, theme_name)    3053
+    _update_process_dashboard(self)    3044
+    _update_ui_state_summary(self)    3518
+    _validate_gateway_icon_source(self, source)    2158
+    _wrap_splash_text(self, text_value, width=52)    2461
+    apply_ui_choices(self)    3426
+    browse_folder(self)    1316
+    capture_current_size(self, update_saved=True)    3485
+    choose_folder_image(self, _event=None)    1453
+    choose_gateway_icon_image(self, _event=None)    2083
+    choose_gateway_json(self)    3373
+    choose_icon_dir(self)    3368
+    choose_splash_template_color(self, line_key, field)    905
+    clear_search(self)    3221
+    copy_selected_path(self)    3331
+    delete_selected(self)    3305
+    edit_config_json(self)    3411
+    folder_drop_refused(self, *details)    1511
+    folder_image_dropped(self, event)    1469
+    folder_link_refused(self, _event=None)    1507
+    folder_tree_selected(self, _event=None)    1393
+    folder_url_refused(self, _link, _filename=None)    1504
+    gateway_icon_drop_refused(self, *details)    2144
+    gateway_icon_image_dropped(self, event)    2099
+    gateway_icon_link_refused(self, _event=None)    2140
+    gateway_icon_selected(self, _event=None)    2037
+    gateway_icon_url_refused(self, _link, _filename=None)    2137
+    gateway_json_path(self)    1814
+    generate_all_missing_gateway_icons(self)    2949
+    generate_from_source(self)    3225
+    generate_glyph_dialog(self)    3244
+    generate_recipe_set(self)    3276
+    generate_selected_gateway_icon(self)    2902
+    get_selected_gateway_app(self)    2325
+    icon_dir(self)  [@property]    2996
+    on_close(self)    3659
+    open_gateway_json(self)    3418
+    open_icon_folder(self)    3358
+    open_selected_file(self)    3350
+    populate_gateway_icon_tree(self, selected_index=None)    1970
+    populate_splash_tree(self, selected_index=None)    2205
+    populate_tree(self)    3166
+    preview_sample_splash(self)    2672
+    preview_selected_gateway_splash(self)    2688
+    refresh_folder_files(self, keep=None)    1336
+    refresh_gateway_icons(self, manual=False)    1929
+    refresh_icons(self)    3141
+    regenerate_selected(self)    3291
+    reset_splash_template(self)    914
+    save_config_from_ui(self)    3379
+    save_selected_gateway_splash(self)    2631
+    save_ui_choices(self)    3477
+    scan_records(self)    2999
+    selected_folder_py(self)    1328
+    selected_gateway_icon_app(self)    2026
+    selected_record(self)    3183
+    selected_splash_app(self)    2283
+    selected_splash_apps(self)    2271
+    show_selected_preview(self, _event=None)    3190
+    shutdown(self)    3639
+    sort_tree(self, col)    3217
+    splash_tree_selected(self, _event=None)    2295
